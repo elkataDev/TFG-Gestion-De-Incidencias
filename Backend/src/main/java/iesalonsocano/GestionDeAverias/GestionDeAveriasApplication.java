@@ -10,4 +10,5 @@ public class GestionDeAveriasApplication {
 		SpringApplication.run(GestionDeAveriasApplication.class, args);
 	}
 //hola pruebas
+	//
 }
