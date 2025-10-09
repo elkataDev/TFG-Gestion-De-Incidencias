@@ -1,0 +1,56 @@
+# Configuración para normalizar finales de línea
+# Esto asegura que todos los archivos de texto usen LF (Unix) en el repositorio
+
+# Configuración por defecto para archivos de texto
+* text=auto eol=lf
+
+# Archivos de código fuente
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+*.html text eol=lf
+*.htm text eol=lf
+*.xml text eol=lf
+*.svg text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+
+# Archivos de configuración
+*.config.js text eol=lf
+*.config.ts text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.prettierrc text eol=lf
+.prettierignore text eol=lf
+.eslintrc.* text eol=lf
+tsconfig*.json text eol=lf
+package.json text eol=lf
+package-lock.json text eol=lf
+pnpm-lock.yaml text eol=lf
+
+# Archivos que deben mantener sus finales de línea originales
+*.sh text eol=lf
+*.bat text eol=crlf
+
+# Archivos binarios (no modificar)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+*.woff binary
+*.woff2 binary
+*.eot binary
+*.ttf binary
+*.otf binary
