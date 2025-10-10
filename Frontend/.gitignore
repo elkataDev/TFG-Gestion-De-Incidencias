@@ -27,3 +27,7 @@ dist-ssr
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# Prueba de componentes
+AppPrueba.tsx
+AppPrueba.jsx
