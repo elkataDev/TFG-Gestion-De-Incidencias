@@ -10,7 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-*.local
+# *.local - TEMPORALMENTE COMENTADO PARA PRIMER COMMIT (.env.local)
 
 # Editor directories and files
 .vscode/*
@@ -28,6 +28,6 @@ pnpm-lock.yaml
 package-lock.json
 yarn.lock
 
-# Prueba de componentes
-AppPrueba.tsx
-AppPrueba.jsx
+# Prueba de componentes - TEMPORALMENTE COMENTADO PARA PRIMER COMMIT
+# AppPrueba.tsx
+# AppPrueba.jsx
