@@ -31,3 +31,6 @@ yarn.lock
 # Prueba de componentes - TEMPORALMENTE COMENTADO PARA PRIMER COMMIT
 AppPrueba.tsx
 AppPrueba.jsx
+AppPrueba.ts
+AppPrueba.js
+AppPrueba.css
