@@ -55,22 +55,23 @@ public class IncidenciasEntity {
     @PrePersist
     protected void onCreate() {
         fechaReporte = LocalDateTime.now();
-        if (estado == null) estado = EstadoIncidencia.PENDIENTE;
+        if (estado == null) estado = EstadoIncidencia.EN_ESPERA;
     }
 
     //Fecha de cierre actual cuando el estado de la incidencia este resuelto o cancelada
     @PreUpdate
     protected void onUpdate() {
-        if (estado == EstadoIncidencia.RESUELTA || estado == EstadoIncidencia.CANCELADA) {
+        if (estado == EstadoIncidencia.RESUELTO || estado == EstadoIncidencia.CERRADO) {
             fechaCierre = LocalDateTime.now();
         }
     }
 
     // Enum para los estados posibles de la incidencia
     public enum EstadoIncidencia {
-        PENDIENTE,
-        EN_PROCESO,
-        RESUELTA,
-        CANCELADA
+        EN_CURSO,
+        EN_ESPERA,
+        RESUELTO,
+        CERRADO,
+        REABIERTO
     }
 }

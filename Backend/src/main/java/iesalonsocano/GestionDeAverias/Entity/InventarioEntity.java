@@ -1,9 +1,11 @@
 package com.tuempresa.tuapp.model.entity;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,7 +35,7 @@ public class InventarioEntity {
     private String codigo_QR;
 
     @Column(name = "estado", length = 50)
-    private String estado; // Ejemplo: "Disponible", "En uso", "Dañado"
+    private estadoInventario estado;
 
     @Column(name = "fecha_ingreso", nullable = false, updatable = false)
     private LocalDateTime fechaIngreso;
@@ -46,6 +48,12 @@ public class InventarioEntity {
     @PrePersist
     protected void onCreate() {
         fechaIngreso = LocalDateTime.now();
+    }
+
+    public enum estadoInventario {
+        DISPONIBLE,
+        EN_USO,
+        DAÑADO
     }
 }
  /*nombre, cantidad, codigoInventario: datos principales de cada ítem del inventario.

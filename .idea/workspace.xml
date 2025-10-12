@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="63d47daa-0a04-4435-9e83-0db6d937d497" name="Changes" comment="Creacion de las entidades UsuariosEntity, IncidenciasEntity, InventarioEntity y AulasEntity">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/IncidenciasEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/IncidenciasEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/InventarioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/InventarioEntity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,16 +22,16 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "history": [
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
     {
-      "state": "OPEN",
-      "assignee": "elkataDev",
-      "author": "elkataDev"
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;elkataDev&quot;,
+      &quot;author&quot;: &quot;elkataDev&quot;
     }
   ],
-  "lastFilter": {}
-}]]></component>
+  &quot;lastFilter&quot;: {}
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/elkataDev/TFG-Gestion-De-Incidencias.git&quot;,
@@ -48,7 +50,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Backend&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;backend-elkatadev&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/PcVIP/Desktop/TFG&quot;
