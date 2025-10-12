@@ -53,7 +53,7 @@ public class InventarioEntity {
     public enum estadoInventario {
         DISPONIBLE,
         EN_USO,
-        DAÑADO
+        DANADO
     }
 }
  /*nombre, cantidad, codigoInventario: datos principales de cada ítem del inventario.

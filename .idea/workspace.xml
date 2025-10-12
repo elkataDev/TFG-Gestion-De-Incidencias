@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="63d47daa-0a04-4435-9e83-0db6d937d497" name="Changes" comment="Creacion de las entidades UsuariosEntity, IncidenciasEntity, InventarioEntity y AulasEntity">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/IncidenciasEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/IncidenciasEntity.java" afterDir="false" />
+    <list default="true" id="63d47daa-0a04-4435-9e83-0db6d937d497" name="Changes" comment="cambio de nombres de varibles del enum estadoIncidencias (IncidenciasEntity) y creación de nuevo enum para InventarioEntity (estado del inventario)">
       <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/InventarioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/InventarioEntity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,12 +30,22 @@
   ],
   &quot;lastFilter&quot;: {}
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/elkataDev/TFG-Gestion-De-Incidencias.git&quot;,
-    &quot;accountId&quot;: &quot;e90edabb-4bc6-42d2-9c33-2af16bde48a1&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/elkataDev/TFG-Gestion-De-Incidencias.git",
+    "accountId": "e90edabb-4bc6-42d2-9c33-2af16bde48a1"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "elkataDev",
+    "repository": "TFG-Gestion-De-Incidencias"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -46,16 +54,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;backend-elkatadev&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/PcVIP/Desktop/TFG&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "#7 on backend-elkatadev",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/PcVIP/Desktop/TFG"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -81,12 +89,21 @@
       <option name="project" value="LOCAL" />
       <updated>1759952345603</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="cambio de nombres de varibles del enum estadoIncidencias (IncidenciasEntity) y creación de nuevo enum para InventarioEntity (estado del inventario)">
+      <option name="closed" value="true" />
+      <created>1760279505561</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1760279505561</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="borrar comentarios innecesarios" />
     <MESSAGE value="Creacion de las entidades UsuariosEntity, IncidenciasEntity, InventarioEntity y AulasEntity" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creacion de las entidades UsuariosEntity, IncidenciasEntity, InventarioEntity y AulasEntity" />
+    <MESSAGE value="cambio de nombres de varibles del enum estadoIncidencias (IncidenciasEntity) y creación de nuevo enum para InventarioEntity (estado del inventario)" />
+    <option name="LAST_COMMIT_MESSAGE" value="cambio de nombres de varibles del enum estadoIncidencias (IncidenciasEntity) y creación de nuevo enum para InventarioEntity (estado del inventario)" />
   </component>
 </project>
