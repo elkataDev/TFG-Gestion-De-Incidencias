@@ -10,6 +10,10 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  transition:
+    transform 0.3s ease,
+    width 0.3s ease;
+  transform: translateX(-50%);
 }
 .sidebar-title {
   text-align: left;
@@ -45,4 +49,8 @@
   background-color: #135092;
   color: rgb(237, 149, 6);
   width: 100%;
+}
+
+.sidebar:hover {
+  transform: translateX(0);
 }
