@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button';
 
-interface ButtonPrimarioProps {
+export interface ButtonPrimarioProps {
   text: string;
   disabled?: boolean;
   fullWidth?: boolean;
