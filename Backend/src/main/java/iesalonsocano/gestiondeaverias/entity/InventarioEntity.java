@@ -1,4 +1,4 @@
-package com.tuempresa.tuapp.model.entity;
+package  iesalonsocano.gestiondeaverias.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
