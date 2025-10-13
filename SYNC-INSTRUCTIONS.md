@@ -4,22 +4,19 @@ Scripts para mantener sincronizadas las ramas personales con la rama `Frontend` 
 
 ## 📋 Archivos
 
-- **`sync-frontend.sh`** - Para Linux/Mac (Bash)
-- **`sync-frontend.ps1`** - Para Windows (PowerShell)
-- **`sync-frontend.bat`** - Para Windows (CMD/Command Prompt)
+Todos los scripts están ubicados en la carpeta `Frontend/`:
+
+- **`Frontend/sync-frontend.ps1`** - Para Windows (PowerShell)
+- **`Frontend/sync-frontend.bat`** - Para Windows (CMD/Command Prompt)
+
+Para Linux/Mac se usa el alias de Git `syncfrontend` configurado automáticamente.
 
 ## 🐧 Linux / Mac (Antonio)
 
-### Opción 1: Usando el script directamente
+### Usando el alias de Git
 
 ```bash
-cd /ruta/al/proyecto/TFG-Gestion-De-Incidencias
-./sync-frontend.sh
-```
-
-### Opción 2: Usando el alias de Git (recomendado)
-
-```bash
+cd /ruta/al/proyecto/TFG-Gestion-De-Incidencias/Frontend
 git syncfrontend
 ```
 
@@ -45,7 +42,7 @@ git config alias.syncfrontend '!f() {
 ### Opción 1: PowerShell (Recomendado)
 
 ```powershell
-cd C:\ruta\al\proyecto\TFG-Gestion-De-Incidencias
+cd C:\ruta\al\proyecto\TFG-Gestion-De-Incidencias\Frontend
 .\sync-frontend.ps1
 ```
 
@@ -58,16 +55,16 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ### Opción 2: Command Prompt (CMD)
 
 ```cmd
-cd C:\ruta\al\proyecto\TFG-Gestion-De-Incidencias
+cd C:\ruta\al\proyecto\TFG-Gestion-De-Incidencias\Frontend
 sync-frontend.bat
 ```
 
 ### Opción 3: Alias de Git en Windows
 
-Abre PowerShell o Git Bash y ejecuta:
+Abre PowerShell o Git Bash en la carpeta Frontend y ejecuta:
 
 ```bash
-cd TFG-Gestion-De-Incidencias
+cd TFG-Gestion-De-Incidencias\Frontend
 git config alias.syncfrontend "!powershell -ExecutionPolicy Bypass -File sync-frontend.ps1"
 ```
 
