@@ -28,9 +28,11 @@ pnpm-lock.yaml
 package-lock.json
 yarn.lock
 
-# Prueba de componentes - TEMPORALMENTE COMENTADO PARA PRIMER COMMIT
+# Prueba de componentes - Ignorar modificaciones locales
+src/AppPrueba.tsx
+src/AppPrueba.jsx
+src/AppPrueba.ts
+src/AppPrueba.js
 AppPrueba.tsx
 AppPrueba.jsx
-AppPrueba.ts
-AppPrueba.js
 AppPrueba.css
