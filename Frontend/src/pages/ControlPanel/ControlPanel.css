@@ -1,0 +1,88 @@
+body {
+  color: white;
+}
+
+.breakdown-gen-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.breakdown-gen-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #2d384b;
+
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #cbd5e1;
+  height: 20vh;
+}
+
+.breakdown-gen-card-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: white;
+  font-weight: bold;
+}
+
+.breakdown-number {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.progress-text {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  margin-top: 10px;
+}
+
+.breakdown-gen-header {
+  display: flex;
+  flex-direction: column;
+}
+.breakdown-subtext {
+  margin-top: 5px;
+  align-items: end;
+}
+
+.breakdown-gen-card:nth-child(4) {
+  grid-column: span 3;
+  height: 47vh;
+}
+
+.control-panel-title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  background-color: #2b2f37;
+  border-radius: 4px;
+  height: 20px;
+  margin-top: 8px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: deepskyblue;
+  border-radius: 4px;
+  text-align: right;
+  padding-right: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+.breakdown-subtext.hidden {
+  display: none;
+}

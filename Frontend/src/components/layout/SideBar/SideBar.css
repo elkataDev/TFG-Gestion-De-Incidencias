@@ -4,8 +4,13 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: #26262d;
+  font-family: monospace;
+}
+
 .sidebar {
-  background-color: #262d38;
+  background-color: #2d384b;
   width: 20%;
   height: 100vh;
   display: flex;
@@ -22,7 +27,6 @@
   padding: 10px;
   margin-left: 5px;
   margin-bottom: 24px;
-  font-family: monospace;
 }
 
 .sidebar-nav {
