@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import { AppPrueba } from './AppPrueba';
 import { BrowserRouter } from 'react-router-dom';
+import '../src/styles/modern-normalize-main/modern-normalize.css';
 
 const rootElement = document.getElementById('root');
 

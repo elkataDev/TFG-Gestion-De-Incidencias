@@ -2,8 +2,9 @@ import './App.css';
 import SideBar from './components/layout/SideBar/SideBar';
 import SideBarNav from './components/layout/SideBar/SideBarNav/SideBarNav';
 import SideBarUser from './components/layout/SideBar/SideBarUser/SideBarUser';
-import ControlPanel from './pages/ControlPanel/ControlPanel';
-import CP_Card from './pages/ControlPanel/CP_Card';
+import ControlPanel from './components/layout/ControlPanel/ControlPanel';
+import CP_Card from './components/layout/ControlPanel/CP_Card';
+import BurguerButton from './components/common/BurguerButton/BurguerButton';
 
 function App() {
   return (

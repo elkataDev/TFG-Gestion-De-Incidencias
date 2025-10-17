@@ -15,8 +15,11 @@ export default function CP_Card(props: CP_Card) {
     <div className="breakdown-gen-card">
       <div className="breakdown-gen-header">
         <span className="breakdown-gen-card-title"> {props.titulo}</span>
-        <span className="breakdown-number">{props.numb}</span>
-        <span className={`breakdown-subtext ${hasProgress ?? 'hidden'}`}>Total</span>
+
+        <div className="breakdown-number-row">
+          <span className="breakdown-number">{props.numb}</span>
+          <span className={`breakdown-subtext ${hasProgress ?? 'hidden'}`}>Total</span>
+        </div>
       </div>
       {hasProgress && (
         <div className="breakdown-progress">

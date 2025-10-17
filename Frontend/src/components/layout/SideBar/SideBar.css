@@ -18,15 +18,41 @@ body {
   transition:
     transform 0.3s ease,
     width 0.3s ease;
-  transform: translateX(-50%);
 }
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #394867;
+  padding: 10px 5px;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 10px;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 2px;
+}
+
 .sidebar-title {
-  text-align: left;
   color: #fff;
   font-size: 1.75rem;
-  padding: 10px;
-  margin-left: 5px;
-  margin-bottom: 24px;
+  margin: 0;
 }
 
 .sidebar-nav {
@@ -55,6 +81,6 @@ body {
   width: 100%;
 }
 
-.sidebar:hover {
-  transform: translateX(0);
+.sidebar.inactive {
+  transform: translateX(-80%);
 }
