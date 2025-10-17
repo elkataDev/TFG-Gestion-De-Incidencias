@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="63d47daa-0a04-4435-9e83-0db6d937d497" name="Changes" comment="cambio DAÑADO A DANADO">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/InventarioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/GestionDeAverias/Entity/InventarioEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/AulasController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/AulasController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/IncidenciaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/IncidenciaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/InventarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/InventarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/UsuariosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/UsuariosController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +37,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/elkataDev/TFG-Gestion-De-Incidencias.git&quot;,
-    &quot;accountId&quot;: &quot;e90edabb-4bc6-42d2-9c33-2af16bde48a1&quot;
+    &quot;accountId&quot;: &quot;aa8fc745-3322-4fc0-9ee1-157db7b16239&quot;
   },
   &quot;recentNewPullRequestHead&quot;: {
     &quot;server&quot;: {
@@ -59,7 +62,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;backend-elkatadev&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Backend-Karim&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/PcVIP/Desktop/TFG&quot;
