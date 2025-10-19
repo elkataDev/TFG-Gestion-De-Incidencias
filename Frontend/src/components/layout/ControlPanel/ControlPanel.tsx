@@ -1,4 +1,6 @@
 import './ControlPanel.css';
+import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
+import BotonSecundario from '@/components/common/BotonSecundario/BotonSecundario';
 
 type ControlPanelProps = {
   titulo: string;
@@ -10,6 +12,13 @@ export default function ControlPanel(props: ControlPanelProps) {
     <>
       <h1 className="control-panel-title">{props.titulo}</h1>
       <div className="breakdown-gen-container">{props.children}</div>
+      <div className="control-panel-footer">
+        <h2>Acciones Rapidas</h2>
+        <span className="button-container">
+          <BotonPrimario text="Nuevo Activo"></BotonPrimario>
+          <BotonSecundario text="Nueva Averia"></BotonSecundario>
+        </span>
+      </div>
     </>
   );
 }
