@@ -29,7 +29,7 @@ $currentBranch = git branch --show-current
 # Verificar cambios sin commitear
 $status = git status --porcelain
 if ($status) {
-    Write-ColorOutput Red "❌ Error: Tienes cambios sin commitear"
+    Write-ColorOutput Red "[X] Error: Tienes cambios sin commitear"
     Write-ColorOutput Yellow "`nHaz commit o stash de tus cambios primero:"
     Write-Output "   git add ."
     Write-Output "   git commit -m 'tu mensaje'"
@@ -38,41 +38,41 @@ if ($status) {
     exit 1
 }
 
-Write-ColorOutput Blue "📍 Rama actual: $currentBranch"
+Write-ColorOutput Blue "[>] Rama actual: $currentBranch"
 Write-Output ""
 
 # Guardar hash actual
 $currentHash = git rev-parse HEAD
-Write-ColorOutput Blue "💾 Hash actual guardado: $currentHash"
+Write-ColorOutput Blue "[*] Hash actual guardado: $currentHash"
 Write-Output ""
 
 # Fetch de Frontend
-Write-ColorOutput Yellow "📥 Obteniendo cambios de origin/Frontend..."
+Write-ColorOutput Yellow "[>>] Obteniendo cambios de origin/Frontend..."
 git fetch origin Frontend
 
 # Intentar merge
-Write-ColorOutput Yellow "🔄 Mergeando origin/Frontend en $currentBranch..."
+Write-ColorOutput Yellow "[~] Mergeando origin/Frontend en $currentBranch..."
 try {
     git merge origin/Frontend --no-ff -m "chore: sync with Frontend branch"
-    
-    Write-ColorOutput Green "✅ Merge exitoso"
+
+    Write-ColorOutput Green "[OK] Merge exitoso"
     Write-Output ""
-    
+
     # Push a rama actual
-    Write-ColorOutput Yellow "📤 Pusheando a origin/$currentBranch..."
+    Write-ColorOutput Yellow "[<<] Pusheando a origin/$currentBranch..."
     git push origin $currentBranch
-    
+
     # Push a Frontend
-    Write-ColorOutput Yellow "📤 Pusheando a origin/Frontend..."
+    Write-ColorOutput Yellow "[<<] Pusheando a origin/Frontend..."
     git push origin HEAD:Frontend
-    
+
     Write-Output ""
-    Write-Header "🎉 Sincronización completa!"
+    Write-Header "[!] Sincronizacion completa!"
 }
 catch {
     Write-Output ""
     Write-ColorOutput Red "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    Write-ColorOutput Red "   ⚠️  CONFLICTOS DETECTADOS"
+    Write-ColorOutput Red "   [!]  CONFLICTOS DETECTADOS"
     Write-ColorOutput Red "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     Write-Output ""
     Write-ColorOutput Yellow "Pasos a seguir:"
