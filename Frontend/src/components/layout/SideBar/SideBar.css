@@ -1,43 +1,86 @@
+/* SideBar.css */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  background-color: var(--color-bg-body);
+  font-family: var(--font-family);
+}
+
 .sidebar {
-  background-color: #262d38;
-  width: 20%;
+  background-color: var(--color-bg-sidebar);
+  width: var(--sidebar-width);
   height: 100vh;
   display: flex;
   flex-direction: column;
   transition:
     transform 0.3s ease,
     width 0.3s ease;
-  transform: translateX(-50%);
+  flex-shrink: 0;
 }
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--color-border);
+  padding: var(--padding-sidebar);
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: var(--hamburger-width);
+  height: var(--hamburger-height);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 10px;
+}
+
+.hamburger span {
+  display: block;
+  height: var(--hamburger-line-height);
+  width: 100%;
+  background-color: var(--color-text-primary);
+  border-radius: var(--border-radius-hamburger);
+}
+
 .sidebar-title {
-  text-align: left;
-  color: #fff;
-  font-size: 1.75rem;
-  padding: 10px;
-  margin-left: 5px;
-  margin-bottom: 24px;
-  font-family: monospace;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-subtitle);
+  margin: 0;
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--gap-sidebar-links);
 }
 
 .sidebar-link {
   padding: 8px 16px;
-  color: #cbd5e1;
+  color: var(--color-text-secondary);
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius-card);
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
+
+.sidebar-link:hover {
+  color: var(--color-text-primary);
+}
+
 .sidebar-icon {
   width: 40px;
   height: 40px;
@@ -46,11 +89,24 @@
 }
 
 .sidebar-link.active {
-  background-color: #135092;
+  background-color: var(--color-bg-active-link);
   color: rgb(237, 149, 6);
   width: 100%;
 }
 
-.sidebar:hover {
-  transform: translateX(0);
+.sidebar.inactive {
+  transform: translateX(-80%);
+}
+
+.nav-icon {
+  margin-right: 10px;
+}
+
+.nav-icon.active {
+  fill: rgb(237, 149, 6);
+}
+
+.hamburger:hover {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
 }
