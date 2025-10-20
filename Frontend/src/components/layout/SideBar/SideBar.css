@@ -103,6 +103,10 @@ body {
 }
 
 .nav-icon.active {
-  color: rgb(237, 149, 6);
   fill: rgb(237, 149, 6);
+}
+
+.hamburger:hover {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
 }

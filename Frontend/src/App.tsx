@@ -5,16 +5,28 @@ import MainLayout from './components/layout/MainLayout/MainLayout';
 import PagInventario from './pages/PagInventario/PagInventario';
 import NotFound from './pages/404/NotFound';
 import '../src/styles/modern-normalize-main/modern-normalize.css';
+import PagAverias from './pages/PagAverias/PagAverias';
+import PagNuevaAveria from './pages/PagNuevaAveria/PagNuevaAveria';
 
 function App() {
   return (
     <Routes>
+      {
+        //Rutas Con Sidebar
+      }
       <Route path="/" element={<MainLayout />}>
         <Route index path="/" element={<PagPanelControl />} />
         <Route path="inventario" element={<PagInventario />} />
+        <Route path="averias" element={<PagAverias></PagAverias>} />
+
+        <Route path="usuarios" element={<PagInventario></PagInventario>} />
       </Route>
 
+      {
+        //Rutas Sin SideBar
+      }
       <Route path="*" element={<NotFound></NotFound>} />
+      <Route path="/nuevaAveria" element={<PagNuevaAveria></PagNuevaAveria>} />
     </Routes>
   );
 }

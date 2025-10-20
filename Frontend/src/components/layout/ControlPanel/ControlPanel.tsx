@@ -1,6 +1,7 @@
 import './ControlPanel.css';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import BotonSecundario from '@/components/common/BotonSecundario/BotonSecundario';
+import { useNavigate } from 'react-router-dom';
 
 type ControlPanelProps = {
   titulo: string;
@@ -8,6 +9,8 @@ type ControlPanelProps = {
 };
 
 export default function ControlPanel(props: ControlPanelProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       <h1 className="control-panel-title">{props.titulo}</h1>
@@ -16,7 +19,12 @@ export default function ControlPanel(props: ControlPanelProps) {
         <h2>Acciones Rapidas</h2>
         <span className="button-container">
           <BotonPrimario text="Nuevo Activo"></BotonPrimario>
-          <BotonSecundario text="Nueva Averia"></BotonSecundario>
+          <BotonSecundario
+            onClick={() => {
+              void navigate('nuevaAveria');
+            }}
+            text="Nueva Averia"
+          ></BotonSecundario>
         </span>
       </div>
     </>
