@@ -1,30 +1,34 @@
 import { NavLink } from 'react-router-dom';
 
-import icon0 from '../SideBarImgs/icon1.svg';
-import icon1 from '../SideBarImgs/icon2.svg';
-import icon2 from '../SideBarImgs/icon3.svg';
-import icon3 from '../SideBarImgs/icon4.svg';
+import { Home, Wrench, Package, Users } from 'lucide-react';
 
 const menuItems = [
-  { name: 'Panel de control', path: '/', icon: icon0 },
-  { name: 'Inventario', path: '/inventario', icon: icon1 },
-  { name: 'Averías', path: '/averias', icon: icon2 },
-  { name: 'Usuarios', path: '/usuarios', icon: icon3 },
+  { name: 'Panel de control', path: '/', icon: Home },
+  { name: 'Inventario', path: '/inventario', icon: Package },
+  { name: 'Averías', path: '/averias', icon: Wrench },
+  { name: 'Usuarios', path: '/usuarios', icon: Users },
 ];
 
 export default function SideBarNav() {
   return (
     <nav className="sidebar-nav">
-      {menuItems.map((item) => (
-        <NavLink
-          key={item.name}
-          to={item.path}
-          className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-        >
-          <img className="sidebar-icon" src={item.icon} alt="p   " />
-          {item.name}
-        </NavLink>
-      ))}
+      {menuItems.map((item) => {
+        const Icon = item.icon;
+        return (
+          <NavLink
+            key={item.name}
+            to={item.path}
+            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+          >
+            {({ isActive }) => (
+              <>
+                <Icon className={`nav-icon ${isActive ? 'active' : ''}`} />
+                <span>{item.name}</span>
+              </>
+            )}
+          </NavLink>
+        );
+      })}
     </nav>
   );
 }

@@ -1,10 +1,12 @@
+/* SideBarUser.css */
+
 .user-picture {
-  width: 50px;
-  height: 50px;
+  width: var(--user-picture-size);
+  height: var(--user-picture-size);
   border-radius: 50%;
   margin-right: 10px;
-  border: 2px solid #f8f8f8;
-  fill: white;
+  border: 2px solid var(--color-text-primary);
+  fill: var(--color-text-primary);
 }
 
 .user-container {
@@ -12,10 +14,10 @@
   display: flex;
   align-items: center;
   padding: 15px;
-  color: #cbd5e1;
-  border-bottom: 1px solid #404856;
-  border-top: 1px solid #404856;
-  background-color: #2d384b;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border-light);
+  border-top: 1px solid var(--color-border-light);
+  background-color: var(--color-bg-sidebar);
 }
 
 .user-text-container {
@@ -30,6 +32,6 @@
 
 .user-email {
   font-size: 0.9rem;
-  color: #a0aec0;
+  color: var(--color-text-tertiary);
   margin-top: 4px;
 }

@@ -27,7 +27,7 @@ dist-ssr
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
-
+.npmrc
 # Prueba de componentes - Ignorar modificaciones locales
 src/AppPrueba.tsx
 src/AppPrueba.jsx
@@ -36,3 +36,4 @@ src/AppPrueba.js
 AppPrueba.tsx
 AppPrueba.jsx
 AppPrueba.css
+\src\AppPrueba.tsx
