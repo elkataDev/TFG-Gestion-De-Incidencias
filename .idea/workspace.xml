@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="63d47daa-0a04-4435-9e83-0db6d937d497" name="Changes" comment="cambio DAÑADO A DANADO">
+    <list default="true" id="b1981b41-4e0f-460e-ad0e-04b24e592929" name="Changes" comment="cambio Package">
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Repository/AulasRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Repository/IncidenciasRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Repository/InventarioRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Repository/UsuariosRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/AulasController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/AulasController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/IncidenciaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/IncidenciaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/InventarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/InventarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/UsuariosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/UsuariosController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,104 +20,72 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="elkatadev" />
+        <entry key="$PROJECT_DIR$" value="Backend" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-  &quot;history&quot;: [
-    {
-      &quot;state&quot;: &quot;OPEN&quot;,
-      &quot;assignee&quot;: &quot;elkataDev&quot;,
-      &quot;author&quot;: &quot;elkataDev&quot;
-    }
-  ],
-  &quot;lastFilter&quot;: {}
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;elkataDev&quot;
+  }
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/elkataDev/TFG-Gestion-De-Incidencias.git&quot;,
-    &quot;accountId&quot;: &quot;aa8fc745-3322-4fc0-9ee1-157db7b16239&quot;
-  },
-  &quot;recentNewPullRequestHead&quot;: {
-    &quot;server&quot;: {
-      &quot;useHttp&quot;: false,
-      &quot;host&quot;: &quot;github.com&quot;,
-      &quot;port&quot;: null,
-      &quot;suffix&quot;: null
-    },
-    &quot;owner&quot;: &quot;elkataDev&quot;,
-    &quot;repository&quot;: &quot;TFG-Gestion-De-Incidencias&quot;
+    &quot;accountId&quot;: &quot;e90edabb-4bc6-42d2-9c33-2af16bde48a1&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 0
+  &quot;associatedIndex&quot;: 1
 }</component>
-  <component name="ProjectId" id="33kFpopXGjYuTQk3zl88H7WiVHL" />
+  <component name="ProjectId" id="34YIX0eaKr6htvAZwIo9Ljft7jc" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Backend-Karim&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/PcVIP/Desktop/TFG&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "backend-elkatadev",
+    "kotlin-language-version-configured": "true",
+    "run.code.analysis.last.selected.profile": "pProject Default"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
+    ]
   }
-}</component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="TFG" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="TFG" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="63d47daa-0a04-4435-9e83-0db6d937d497" name="Changes" comment="" />
-      <created>1759853348333</created>
+      <changelist id="b1981b41-4e0f-460e-ad0e-04b24e592929" name="Changes" comment="cambio Package" />
+      <created>1761384113689</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1759853348333</updated>
+      <updated>1761384113689</updated>
     </task>
-    <task id="LOCAL-00001" summary="borrar comentarios innecesarios">
-      <option name="closed" value="true" />
-      <created>1759853449159</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1759853449159</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Creacion de las entidades UsuariosEntity, IncidenciasEntity, InventarioEntity y AulasEntity">
-      <option name="closed" value="true" />
-      <created>1759952345603</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1759952345603</updated>
-    </task>
-    <task id="LOCAL-00003" summary="cambio de nombres de varibles del enum estadoIncidencias (IncidenciasEntity) y creación de nuevo enum para InventarioEntity (estado del inventario)">
-      <option name="closed" value="true" />
-      <created>1760279505561</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1760279505561</updated>
-    </task>
-    <task id="LOCAL-00004" summary="cambio DAÑADO A DANADO">
-      <option name="closed" value="true" />
-      <created>1760279748252</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1760279748252</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
     <servers />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="borrar comentarios innecesarios" />
-    <MESSAGE value="Creacion de las entidades UsuariosEntity, IncidenciasEntity, InventarioEntity y AulasEntity" />
-    <MESSAGE value="cambio de nombres de varibles del enum estadoIncidencias (IncidenciasEntity) y creación de nuevo enum para InventarioEntity (estado del inventario)" />
-    <MESSAGE value="cambio DAÑADO A DANADO" />
-    <option name="LAST_COMMIT_MESSAGE" value="cambio DAÑADO A DANADO" />
   </component>
 </project>
