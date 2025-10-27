@@ -13,7 +13,7 @@ import java.util.Optional;
  * Implementación de UsuariosService.
  * ATENCIÓN: Esta versión NO hashea contraseñas. Es para desarrollo/pruebas.
  * Implementation of UsuariosService.
- * ATTENTION: This version DOES NOT hash passwords. It is for development/testing only.
+ * ATTENTION!: This version DOES NOT hash passwords. It is for development/testing only.
  */
 @Service
 public class UsuariosServiceImpl implements UsuariosService {
