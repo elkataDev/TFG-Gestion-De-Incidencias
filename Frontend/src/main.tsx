@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles/modern-normalize.css';
 import App from './App';
-import { AppPrueba } from './AppPrueba';
+import AppPrueba from './AppPrueba';
 import { BrowserRouter } from 'react-router-dom';
 
 const rootElement = document.getElementById('root');

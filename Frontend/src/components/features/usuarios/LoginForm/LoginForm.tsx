@@ -26,6 +26,12 @@ export const LoginForm = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        backgroundColor: 'white',
+        paddingInline: 4,
+        paddingY: 2,
+        borderRadius: 2,
+        boxShadow: 3,
+        gap: 2,
       }}
     >
       <Input

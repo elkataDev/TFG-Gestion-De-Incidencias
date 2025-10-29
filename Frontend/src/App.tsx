@@ -4,7 +4,7 @@ import PagPanelControl from './pages/PagPanelControl/PagPanelControl';
 import MainLayout from './components/layout/MainLayout/MainLayout';
 import PagInventario from './pages/PagInventario/PagInventario';
 import NotFound from './pages/404/NotFound';
-import '../src/styles/modern-normalize-main/modern-normalize.css';
+import './styles/modern-normalize.css';
 import PagAverias from './pages/PagAverias/PagAverias';
 import PagNuevaAveria from './pages/PagNuevaAveria/PagNuevaAveria';
 
