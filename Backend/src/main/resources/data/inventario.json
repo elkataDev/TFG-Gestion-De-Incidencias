@@ -1,0 +1,83 @@
+{
+  "inventario": {
+    "Aula 203": {
+      "ordenadores": 20,
+      "proyector": 1,
+      "monitores": 21
+    },
+    "Aula Ateca": {
+      "pantalla": 1,
+      "proyector": 1
+    },
+    "Aula Taller": {
+      "ordenadores": 2,
+      "monitores": 3,
+      "impresora": 1,
+      "limpiador_ultrasonico": 1,
+      "impresora_3D": 1,
+      "secador_moviles": 1,
+      "cortador_laser": 1,
+      "microscopio": 1,
+      "secador_resina": 1,
+      "impresora_resina": 1
+    },
+    "Aula 201": {
+      "ordenadores": 16,
+      "monitores": 16,
+      "proyector": 1
+    },
+    "Aula 101": {
+      "ordenadores": 21,
+      "portatiles": 13,
+      "proyector": 1,
+      "monitores": 21
+    },
+    "Aula FPB1": {
+      "ordenadores": 15,
+      "monitores": 25,
+      "proyector": 1,
+      "pantalla_proyector": 1,
+      "discos_duros": 56,
+      "caja_ram": 1,
+      "lectores_disco": 8,
+      "placa_base": 50,
+      "tarjeta_red_cajas": 3,
+      "impresora": 1
+    },
+    "Jefatura": {
+      "ordenadores": 5,
+      "impresoras": 2
+    },
+    "Direccion": {
+      "ordenador": 1,
+      "impresora": 1
+    },
+    "Sala Profes": {
+      "ordenadores": 2,
+      "impresora": 1
+    },
+    "Secretaria": {
+      "ordenadores": 2,
+      "impresora": 1
+    },
+    "Conserjeria": {
+      "ordenadores": 2,
+      "portatiles": 2,
+      "impresora": 1
+    },
+    "Aula 006": {
+      "ordenadores": 20,
+      "proyector": 1,
+      "impresora": 1,
+      "portatiles": 21
+    },
+    "Salon de actos": {
+      "proyector": 1,
+      "equipo_megafonia": 1
+    },
+    "Biblioteca": {
+      "ordenador": 1,
+      "impresora": 1
+    }
+  }
+}
