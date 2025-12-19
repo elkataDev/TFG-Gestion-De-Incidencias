@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1981b41-4e0f-460e-ad0e-04b24e592929" name="Changes" comment="creación de la carpeta test">
-      <change afterPath="$PROJECT_DIR$/Backend/src/test/test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_25_10_2025_11_43_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_25_10_2025_11_43__Changes_.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/GestionDeAveriasApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/config/DataLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/config/SwaggerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/data/inventario.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/test/java/iesalonsocano/gestiondeaverias/GestionDeAveriasApplicationTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,12 +33,12 @@
     &quot;assignee&quot;: &quot;elkataDev&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/elkataDev/TFG-Gestion-De-Incidencias.git",
-    "accountId": "0a937ab1-d3ec-49b4-bbe4-0f09620764d8"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/elkataDev/TFG-Gestion-De-Incidencias.git&quot;,
+    &quot;accountId&quot;: &quot;0a937ab1-d3ec-49b4-bbe4-0f09620764d8&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -52,7 +56,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "backend-anabel",
+    "git-widget-placeholder": "backend-elkatadev",
     "kotlin-language-version-configured": "true",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "preferences.lookFeel"
@@ -65,6 +69,12 @@
     ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\PcVIP\Desktop\TFG\Backend\src\main\java\iesalonsocano\gestiondeaverias" />
+      <recent name="C:\Users\PcVIP\Desktop\TFG\Backend\src" />
+    </key>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b1981b41-4e0f-460e-ad0e-04b24e592929" name="Changes" comment="cambio Package" />
