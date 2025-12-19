@@ -43,7 +43,7 @@ public class UsuariosEntity {
     protected void onCreate() {
         fechaCreacion = LocalDateTime.now();
     }}
-}
+
 
 /*@Entity y @Table: declaran que esta clase es una tabla de base de datos llamada usuarios.
 
