@@ -1,7 +1,7 @@
-package iesalonsocano.gestiondeaverias.controller;
+package iesalonsocano.gestiondeaverias.Controllers;
 
 import iesalonsocano.gestiondeaverias.entity.AulasEntity;
-import iesalonsocano.gestiondeaverias.service.AulasService;
+import iesalonsocano.gestiondeaverias.Services.AulasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
