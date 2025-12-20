@@ -1,4 +1,4 @@
-package iesalonsocano.gestiondeaverias.service;
+package iesalonsocano.gestiondeaverias.services;
 
 import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import java.util.List;

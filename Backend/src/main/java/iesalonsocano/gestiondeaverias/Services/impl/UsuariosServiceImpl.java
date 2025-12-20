@@ -1,20 +1,15 @@
-package iesalonsocano.gestiondeaverias.service.impl; // Usando el subpaquete 'impl'
+package iesalonsocano.gestiondeaverias.services.impl;
 
 import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import iesalonsocano.gestiondeaverias.repository.UsuariosRepository;
-import iesalonsocano.gestiondeaverias.service.UsuariosService;
+import iesalonsocano.gestiondeaverias.services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Implementación de UsuariosService.
- * ATENCIÓN: Esta versión NO hashea contraseñas. Es para desarrollo/pruebas.
- * Implementation of UsuariosService.
- * ATTENTION!: This version DOES NOT hash passwords. It is for development/testing only.
- */
 @Service
 public class UsuariosServiceImpl implements UsuariosService {
 
@@ -22,45 +17,43 @@ public class UsuariosServiceImpl implements UsuariosService {
     private UsuariosRepository usuariosRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<UsuariosEntity> findAll() {
         return usuariosRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<UsuariosEntity> findById(Long id) {
         return usuariosRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public UsuariosEntity save(UsuariosEntity usuario) {
-
-        // --- LÓGICA DE GUARDADO SIMPLE ---
-        // La contraseña se guarda en texto plano tal como viene.
-        // Simple save logic. Password is saved as plain text as received.
-
         return usuariosRepository.save(usuario);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
-        // Elimina el usuario. / Deletes the user.
         usuariosRepository.deleteById(id);
     }
 
-    // --- Métodos de búsqueda del repositorio ---
-    // --- Repository search methods ---
-
     @Override
+    @Transactional(readOnly = true)
     public Optional<UsuariosEntity> findByNombreUsuario(String nombreUsuario) {
         return usuariosRepository.findByNombreUsuario(nombreUsuario);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<UsuariosEntity> findByEmail(String email) {
         return usuariosRepository.findByEmail(email);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UsuariosEntity> findByActivoTrue() {
         return usuariosRepository.findByActivoTrue();
     }

@@ -1,4 +1,4 @@
-package iesalonsocano.gestiondeaverias.Services; // Se recomienda usar un subpaquete 'impl'
+package iesalonsocano.gestiondeaverias.services.impl; // Se recomienda usar un subpaquete 'impl'
 
 import iesalonsocano.gestiondeaverias.entity.AulasEntity;
 import iesalonsocano.gestiondeaverias.Repository.AulasRepository;

@@ -1,4 +1,4 @@
-package iesalonsocano.gestiondeaverias.service.impl; // Se recomienda usar un subpaquete 'impl'
+package iesalonsocano.gestiondeaverias.services.impl; // Se recomienda usar un subpaquete 'impl'
 
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
 import iesalonsocano.gestiondeaverias.repository.InventarioRepository;
