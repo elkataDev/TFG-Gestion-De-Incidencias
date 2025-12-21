@@ -1,14 +1,9 @@
-<<<<<<< Updated upstream
-package iesalonsocano.gestiondeaverias.controller;
-
-import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
-import iesalonsocano.gestiondeaverias.service.UsuariosService;
-=======
 package iesalonsocano.gestiondeaverias.Controllers;
 
 import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import iesalonsocano.gestiondeaverias.Services.UsuariosService;
->>>>>>> Stashed changes
+
+import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-package iesalonsocano.gestiondeaverias.service;
-=======
 package iesalonsocano.gestiondeaverias.Services;
->>>>>>> Stashed changes
 
 import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import java.util.List;

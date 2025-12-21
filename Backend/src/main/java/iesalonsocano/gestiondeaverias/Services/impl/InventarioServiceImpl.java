@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream:Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/InventarioServiceImpl.java
-package iesalonsocano.gestiondeaverias.service.impl; // Se recomienda usar un subpaquete 'impl'
-=======
 package iesalonsocano.gestiondeaverias.Services.impl; // Se recomienda usar un subpaquete 'impl'
->>>>>>> Stashed changes:Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/impl/InventarioServiceImpl.java
 
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
 import iesalonsocano.gestiondeaverias.Repository.InventarioRepository;

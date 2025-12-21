@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream:Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/IncidenciasServiceImpl.java
-package iesalonsocano.gestiondeaverias.service.impl; // Se recomienda usar un subpaquete 'impl'
-=======
 package iesalonsocano.gestiondeaverias.Services.impl;
->>>>>>> Stashed changes:Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/impl/IncidenciasServiceImpl.java
 
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
 import iesalonsocano.gestiondeaverias.Repository.IncidenciasRepository;
@@ -14,6 +10,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementación de IncidenciasService.
+ * Implementation of IncidenciasService.
+ */
 @Service
 public class IncidenciasServiceImpl implements IncidenciasService {
 
@@ -22,11 +22,13 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
     @Override
     public List<IncidenciasEntity> findAll() {
+        // Retorna todas las incidencias. / Returns all incidents.
         return incidenciasRepository.findAll();
     }
 
     @Override
     public Optional<IncidenciasEntity> findById(Long id) {
+        // Busca una incidencia por su identificador. / Finds an incident by its identifier.
         return incidenciasRepository.findById(id);
     }
 
@@ -45,22 +47,26 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
     @Override
     public void deleteById(Long id) {
+        // Elimina la incidencia por ID. / Deletes the incident by ID.
         incidenciasRepository.deleteById(id);
     }
 
     // Filtros para Informes y Métricas
     @Override
     public List<IncidenciasEntity> findByEstado(IncidenciasEntity.EstadoIncidencia estado) {
+        // Busca incidencias filtrando por el estado. / Finds incidents filtered by status.
         return incidenciasRepository.findByEstado(estado);
     }
 
     @Override
     public List<IncidenciasEntity> findByUsuarioId(Long usuarioId) {
+        // Busca incidencias filtrando por el usuario. / Finds incidents filtered by user.
         return incidenciasRepository.findByUsuarioId(usuarioId);
     }
 
     @Override
     public List<IncidenciasEntity> findByAulaId(Long aulaId) {
+        // Busca incidencias filtrando por el aula. / Finds incidents filtered by classroom.
         return incidenciasRepository.findByAulaId(aulaId);
     }
 
