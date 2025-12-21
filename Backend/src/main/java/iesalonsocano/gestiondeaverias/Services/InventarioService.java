@@ -1,4 +1,4 @@
-package iesalonsocano.gestiondeaverias.service;
+package iesalonsocano.gestiondeaverias.Services;
 
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
 import java.util.List;

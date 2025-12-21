@@ -1,8 +1,12 @@
+<<<<<<< Updated upstream:Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/InventarioServiceImpl.java
 package iesalonsocano.gestiondeaverias.service.impl; // Se recomienda usar un subpaquete 'impl'
+=======
+package iesalonsocano.gestiondeaverias.Services.impl; // Se recomienda usar un subpaquete 'impl'
+>>>>>>> Stashed changes:Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/impl/InventarioServiceImpl.java
 
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
-import iesalonsocano.gestiondeaverias.repository.InventarioRepository;
-import iesalonsocano.gestiondeaverias.service.InventarioService;
+import iesalonsocano.gestiondeaverias.Repository.InventarioRepository;
+import iesalonsocano.gestiondeaverias.Services.InventarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +62,6 @@ public class InventarioServiceImpl implements InventarioService {
     @Override
     public InventarioEntity findByCodigo_QR(String codigo_QR) {
         // Busca por código QR. / Finds by QR code.
-        return inventarioRepository.findByCodigo_QR(codigo_QR);
+        return inventarioRepository.findByCodigoQR(codigo_QR);
     }
 }

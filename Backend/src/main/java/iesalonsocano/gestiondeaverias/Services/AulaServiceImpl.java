@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream:Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/AulaServiceImpl.java
 package iesalonsocano.gestiondeaverias.service.impl; // Se recomienda usar un subpaquete 'impl'
+=======
+package iesalonsocano.gestiondeaverias.Services.impl; // Se recomienda usar un subpaquete 'impl'
+>>>>>>> Stashed changes:Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/impl/AulasServiceImpl.java
 
 import iesalonsocano.gestiondeaverias.entity.AulasEntity;
 import iesalonsocano.gestiondeaverias.repository.AulasRepository;

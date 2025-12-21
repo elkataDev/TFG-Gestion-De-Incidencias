@@ -1,79 +1,64 @@
-package iesalonsocano.gestiondeaverias.controller;
+package iesalonsocano.gestiondeaverias.Controllers;
 
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
-import iesalonsocano.gestiondeaverias.service.IncidenciasService;
+import iesalonsocano.gestiondeaverias.Services.IncidenciasService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/incidencias")
+@RequestMapping("/api/incidencias")
+@CrossOrigin(origins = "http://localhost:5173") // Permitir React (Vite)
 public class IncidenciaController {
 
     @Autowired
     private IncidenciasService incidenciasService;
 
-    // Obtener todas las incidencias
+    // 1. OBTENER TODAS O FILTRAR POR ESTADO (Req 1.3.3)
     @GetMapping
-    public List<IncidenciasEntity> getAllIncidencias() {
+    public List<IncidenciasEntity> getIncidencias(@RequestParam(required = false) IncidenciasEntity.EstadoIncidencia estado) {
+        if (estado != null) {
+            return incidenciasService.findByEstado(estado); // Usa tu nuevo método
+        }
         return incidenciasService.findAll();
     }
 
-    // Obtener una incidencia por su ID
-    @GetMapping("/{id}")
-    public ResponseEntity<IncidenciasEntity> getIncidenciaById(@PathVariable Long id) {
-        Optional<IncidenciasEntity> optionalIncidencia = incidenciasService.findById(id);
-
-        if (optionalIncidencia.isPresent()) {
-            return ResponseEntity.ok(optionalIncidencia.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    // 2. BUSCAR POR USUARIO (Para que el profesor vea sus tickets)
+    @GetMapping("/usuario/{usuarioId}")
+    public List<IncidenciasEntity> getByUsuario(@PathVariable Long usuarioId) {
+        return incidenciasService.findByUsuarioId(usuarioId);
     }
 
-    // Crear una nueva incidencia
-    @PostMapping
-    public ResponseEntity<IncidenciasEntity> createIncidencia(@Valid @RequestBody IncidenciasEntity incidencia) {
-        IncidenciasEntity nuevaIncidencia = incidenciasService.save(incidencia);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaIncidencia);
+    // 3. BUSCAR POR AULA (Para ver el historial de un aula)
+    @GetMapping("/aula/{aulaId}")
+    public List<IncidenciasEntity> getByAula(@PathVariable Long aulaId) {
+        return incidenciasService.findByAulaId(aulaId);
     }
 
-    // Actualizar una incidencia existente
-    @PutMapping("/{id}")
-    public ResponseEntity<IncidenciasEntity> updateIncidencia(@PathVariable Long id, @Valid @RequestBody IncidenciasEntity incidenciaDetails) {
-        Optional<IncidenciasEntity> optionalIncidencia = incidenciasService.findById(id);
+    // 4. CAMBIAR ESTADO (El flujo: Abierto -> En curso -> Resuelto)
+    // Usamos PatchMapping porque solo modificamos un campo (el estado)
+    @PatchMapping("/{id}/estado")
+    @PreAuthorize("hasAnyRole('tecnico', 'administrador')")
+    public ResponseEntity<IncidenciasEntity> updateEstado(
+            @PathVariable Long id,
+            @RequestBody IncidenciasEntity.EstadoIncidencia nuevoEstado) {
 
-        if (optionalIncidencia.isPresent()) {
-            IncidenciasEntity incidenciaExistente = optionalIncidencia.get();
-
-            incidenciaExistente.setTitulo(incidenciaDetails.getTitulo());
-            incidenciaExistente.setDescripcion(incidenciaDetails.getDescripcion());
-            incidenciaExistente.setEstado(incidenciaDetails.getEstado());
-            incidenciaExistente.setUsuario(incidenciaDetails.getUsuario());
-            incidenciaExistente.setAula(incidenciaDetails.getAula());
-
-            IncidenciasEntity actualizada = incidenciasService.save(incidenciaExistente);
-            return ResponseEntity.ok(actualizada);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        // Aquí llamaríamos al método actualizarEstado que te sugerí añadir al Service
+        // para que registre la fecha de cierre automáticamente
+        return ResponseEntity.ok(incidenciasService.save(incidenciasService.findById(id)
+                .map(i -> {
+                    i.setEstado(nuevoEstado);
+                    return i;
+                }).orElseThrow()));
     }
 
-    // Eliminar una incidencia
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIncidencia(@PathVariable Long id) {
-        Optional<IncidenciasEntity> optionalIncidencia = incidenciasService.findById(id);
-
-        if (optionalIncidencia.isPresent()) {
-            incidenciasService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    // 5. CREAR INCIDENCIA (Página de Averías)
+    @PostMapping("/reportar")
+    public ResponseEntity<IncidenciasEntity> reportar(@RequestBody IncidenciasEntity incidencia) {
+        // Al guardar, el Service pondrá estado 'abierta' y fecha_reporte
+        return ResponseEntity.ok(incidenciasService.save(incidencia));
     }
 }
