@@ -7,6 +7,7 @@ import iesalonsocano.gestiondeaverias.Services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,11 +27,15 @@ public class AuthController {
     // LOGIN
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        // 1. Validar credenciales con Spring Security
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // 1. Crear el "sobre" con la información cruda
+        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(),
+                loginRequest.getPassword()
+        );
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
+        // 3. Guardar la sesión en memoria (si pasó el paso 2)
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         // 2. Generar el Token
         String token = tokenProvider.generateToken(authentication);
 
