@@ -1,83 +1,191 @@
-{
-  "inventario": {
-    "Aula 203": {
-      "ordenadores": 20,
-      "proyector": 1,
-      "monitores": 21
-    },
-    "Aula Ateca": {
-      "pantalla": 1,
-      "proyector": 1
-    },
-    "Aula Taller": {
-      "ordenadores": 2,
-      "monitores": 3,
-      "impresora": 1,
-      "limpiador_ultrasonico": 1,
-      "impresora_3D": 1,
-      "secador_moviles": 1,
-      "cortador_laser": 1,
-      "microscopio": 1,
-      "secador_resina": 1,
-      "impresora_resina": 1
-    },
-    "Aula 201": {
-      "ordenadores": 16,
-      "monitores": 16,
-      "proyector": 1
-    },
-    "Aula 101": {
-      "ordenadores": 21,
-      "portatiles": 13,
-      "proyector": 1,
-      "monitores": 21
-    },
-    "Aula FPB1": {
-      "ordenadores": 15,
-      "monitores": 25,
-      "proyector": 1,
-      "pantalla_proyector": 1,
-      "discos_duros": 56,
-      "caja_ram": 1,
-      "lectores_disco": 8,
-      "placa_base": 50,
-      "tarjeta_red_cajas": 3,
-      "impresora": 1
-    },
-    "Jefatura": {
-      "ordenadores": 5,
-      "impresoras": 2
-    },
-    "Direccion": {
-      "ordenador": 1,
-      "impresora": 1
-    },
-    "Sala Profes": {
-      "ordenadores": 2,
-      "impresora": 1
-    },
-    "Secretaria": {
-      "ordenadores": 2,
-      "impresora": 1
-    },
-    "Conserjeria": {
-      "ordenadores": 2,
-      "portatiles": 2,
-      "impresora": 1
-    },
-    "Aula 006": {
-      "ordenadores": 20,
-      "proyector": 1,
-      "impresora": 1,
-      "portatiles": 21
-    },
-    "Salon de actos": {
-      "proyector": 1,
-      "equipo_megafonia": 1
-    },
-    "Biblioteca": {
-      "ordenador": 1,
-      "impresora": 1
+[
+  {
+    "nombre": "Ordenadores HP",
+    "descripcion": "20 unidades. Equipos de sobremesa.",
+    "codigoQR": "QR-A203-001",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula 203"
+    }
+  },
+  {
+    "nombre": "Proyector Epson",
+    "descripcion": "1 unidad.",
+    "codigoQR": "QR-A203-002",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula 203"
+    }
+  },
+  {
+    "nombre": "Monitores Dell",
+    "descripcion": "21 unidades.",
+    "codigoQR": "QR-A203-003",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula 203"
+    }
+  },
+  {
+    "nombre": "Pantalla Interactiva",
+    "descripcion": "1 unidad.",
+    "codigoQR": "QR-ATECA-001",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula Ateca"
+    }
+  },
+  {
+    "nombre": "Ordenadores Taller",
+    "descripcion": "2 unidades.",
+    "codigoQR": "QR-TALLER-001",
+    "estado": "EN_USO",
+    "aula": {
+      "nombre": "Aula Taller"
+    }
+  },
+  {
+    "nombre": "Impresora 3D",
+    "descripcion": "1 unidad. Modelo Prusa.",
+    "codigoQR": "QR-TALLER-002",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula Taller"
+    }
+  },
+  {
+    "nombre": "Cortadora Láser",
+    "descripcion": "1 unidad.",
+    "codigoQR": "QR-TALLER-003",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula Taller"
+    }
+  },
+  {
+    "nombre": "Ordenadores Aula 201",
+    "descripcion": "16 unidades.",
+    "codigoQR": "QR-A201-001",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula 201"
+    }
+  },
+  {
+    "nombre": "Ordenadores Aula 101",
+    "descripcion": "21 unidades.",
+    "codigoQR": "QR-A101-001",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula 101"
+    }
+  },
+  {
+    "nombre": "Portátiles Lenovo",
+    "descripcion": "13 unidades. Carrito de carga.",
+    "codigoQR": "QR-A101-002",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula 101"
+    }
+  },
+  {
+    "nombre": "Equipos FPB",
+    "descripcion": "15 unidades.",
+    "codigoQR": "QR-FPB1-001",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula FPB1"
+    }
+  },
+  {
+    "nombre": "Discos Duros",
+    "descripcion": "56 unidades para prácticas.",
+    "codigoQR": "QR-FPB1-002",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula FPB1"
+    }
+  },
+  {
+    "nombre": "Placas Base",
+    "descripcion": "50 unidades para montaje.",
+    "codigoQR": "QR-FPB1-003",
+    "estado": "DANADO",
+    "aula": {
+      "nombre": "Aula FPB1"
+    }
+  },
+  {
+    "nombre": "Ordenadores Jefatura",
+    "descripcion": "5 unidades.",
+    "codigoQR": "QR-JEF-001",
+    "estado": "EN_USO",
+    "aula": {
+      "nombre": "Jefatura"
+    }
+  },
+  {
+    "nombre": "PC Dirección",
+    "descripcion": "1 unidad.",
+    "codigoQR": "QR-DIR-001",
+    "estado": "EN_USO",
+    "aula": {
+      "nombre": "Direccion"
+    }
+  },
+  {
+    "nombre": "PC Sala Profesores",
+    "descripcion": "2 unidades.",
+    "codigoQR": "QR-PROF-001",
+    "estado": "EN_USO",
+    "aula": {
+      "nombre": "Sala Profes"
+    }
+  },
+  {
+    "nombre": "PC Secretaría",
+    "descripcion": "2 unidades.",
+    "codigoQR": "QR-SEC-001",
+    "estado": "EN_USO",
+    "aula": {
+      "nombre": "Secretaria"
+    }
+  },
+  {
+    "nombre": "PC Conserjería",
+    "descripcion": "2 unidades.",
+    "codigoQR": "QR-CON-001",
+    "estado": "EN_USO",
+    "aula": {
+      "nombre": "Conserjeria"
+    }
+  },
+  {
+    "nombre": "PC Aula 006",
+    "descripcion": "20 unidades.",
+    "codigoQR": "QR-A006-001",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Aula 006"
+    }
+  },
+  {
+    "nombre": "Proyector Salón Actos",
+    "descripcion": "1 unidad.",
+    "codigoQR": "QR-ACTOS-001",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Salon de actos"
+    }
+  },
+  {
+    "nombre": "PC Biblioteca",
+    "descripcion": "1 unidad.",
+    "codigoQR": "QR-BIB-001",
+    "estado": "DISPONIBLE",
+    "aula": {
+      "nombre": "Biblioteca"
     }
   }
-}
+]

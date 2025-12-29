@@ -1,11 +1,12 @@
-package iesalonsocano.gestiondeaverias.service.impl; // Se recomienda usar un subpaquete 'impl'
+package iesalonsocano.gestiondeaverias.Services.impl;
 
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
-import iesalonsocano.gestiondeaverias.repository.IncidenciasRepository;
-import iesalonsocano.gestiondeaverias.service.IncidenciasService;
+import iesalonsocano.gestiondeaverias.Repository.IncidenciasRepository;
+import iesalonsocano.gestiondeaverias.Services.IncidenciasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,14 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
     @Override
     public IncidenciasEntity save(IncidenciasEntity incidencia) {
-        // Guarda la incidencia. / Saves the incident.
+        // 1. En tu entidad el campo es 'id', por eso usamos getId()
+        if (incidencia.getId() == null) {
+            // 2. Usamos uno de los estados de tu Enum (EN_ESPERA es tu valor por defecto)
+            incidencia.setEstado(IncidenciasEntity.EstadoIncidencia.EN_ESPERA);
+
+            // 3. En tu entidad el campo es 'fechaReporte' (CamelCase), no 'fecha_reporte'
+            incidencia.setFechaReporte(LocalDateTime.now());
+        }
         return incidenciasRepository.save(incidencia);
     }
 
@@ -43,6 +51,7 @@ public class IncidenciasServiceImpl implements IncidenciasService {
         incidenciasRepository.deleteById(id);
     }
 
+    // Filtros para Informes y Métricas
     @Override
     public List<IncidenciasEntity> findByEstado(IncidenciasEntity.EstadoIncidencia estado) {
         // Busca incidencias filtrando por el estado. / Finds incidents filtered by status.
@@ -59,5 +68,22 @@ public class IncidenciasServiceImpl implements IncidenciasService {
     public List<IncidenciasEntity> findByAulaId(Long aulaId) {
         // Busca incidencias filtrando por el aula. / Finds incidents filtered by classroom.
         return incidenciasRepository.findByAulaId(aulaId);
+    }
+
+    // Lógica de Flujo de Estados
+    public IncidenciasEntity actualizarEstado(Long id, IncidenciasEntity.EstadoIncidencia nuevoEstado) {
+        IncidenciasEntity incidencia = incidenciasRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+
+        incidencia.setEstado(nuevoEstado);
+
+        // 1. Corregimos los nombres de los estados (Mayúsculas según tu Enum)
+        // 2. Corregimos el nombre del campo (fechaCierre en lugar de fecha_cierre)
+        if (nuevoEstado == IncidenciasEntity.EstadoIncidencia.RESUELTO ||
+                nuevoEstado == IncidenciasEntity.EstadoIncidencia.CERRADO) {
+            incidencia.setFechaCierre(LocalDateTime.now());
+        }
+
+        return incidenciasRepository.save(incidencia);
     }
 }

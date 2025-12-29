@@ -1,4 +1,4 @@
-package iesalonsocano.gestiondeaverias.repository;
+package iesalonsocano.gestiondeaverias.Repository;
 
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity.EstadoIncidencia;

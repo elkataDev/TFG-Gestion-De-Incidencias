@@ -32,7 +32,7 @@ public class InventarioEntity {
 
     @Size(max = 50, message = "El código de inventario no puede tener más de 50 caracteres")
     @Column(name = "codigo_QR", unique = true, length = 50)
-    private String codigo_QR;
+    private String codigoQR;
 
     @Column(name = "estado", length = 50)
     private estadoInventario estado;

@@ -1,4 +1,4 @@
-package iesalonsocano.gestiondeaverias.repository;
+package iesalonsocano.gestiondeaverias.Repository;
 
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity.estadoInventario;
@@ -32,5 +32,5 @@ public interface InventarioRepository extends JpaRepository<InventarioEntity, Lo
     // Find inventory items by QR code
     // Buscar artículos por código QR
     // ---------------------------------------------
-    InventarioEntity findByCodigo_QR(String codigo_QR);
+    InventarioEntity findByCodigoQR(String codigo_QR);
 }

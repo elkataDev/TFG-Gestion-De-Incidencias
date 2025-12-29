@@ -1,8 +1,12 @@
-package iesalonsocano.gestiondeaverias.service.impl; // Usando el subpaquete 'impl'
+package iesalonsocano.gestiondeaverias.Services.impl;
 
 import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
-import iesalonsocano.gestiondeaverias.repository.UsuariosRepository;
-import iesalonsocano.gestiondeaverias.service.UsuariosService;
+import iesalonsocano.gestiondeaverias.Repository.UsuariosRepository;
+import iesalonsocano.gestiondeaverias.Services.UsuariosService;
+
+import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
+import iesalonsocano.gestiondeaverias.Repository.UsuariosRepository;
+import iesalonsocano.gestiondeaverias.Services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
