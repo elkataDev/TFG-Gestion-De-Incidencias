@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom';
 
-import { Home, Wrench, Package, Users } from 'lucide-react';
+import { Home, Wrench, Package, Users, Monitor } from 'lucide-react';
 
 const menuItems = [
   { name: 'Panel de control', path: '/', icon: Home },
   { name: 'Inventario', path: '/inventario', icon: Package },
   { name: 'Averías', path: '/averias', icon: Wrench },
   { name: 'Usuarios', path: '/usuarios', icon: Users },
+  { name: 'Activos', path: '/activos', icon: Monitor },
 ];
 
 export default function SideBarNav() {

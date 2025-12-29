@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import './styles/modern-normalize.css';
 import './App.css';
 import App from './App';
-import AppPrueba from './AppPrueba';
 import { BrowserRouter } from 'react-router-dom';
 
 const rootElement = document.getElementById('root');
@@ -17,6 +16,8 @@ const USE_PLAYGROUND = import.meta.env.VITE_USE_PLAYGROUND === 'true';
 
 createRoot(rootElement).render(
   <BrowserRouter>
-    <StrictMode>{USE_PLAYGROUND ? <AppPrueba /> : <App />}</StrictMode>
+    <StrictMode>
+      <App />
+    </StrictMode>
   </BrowserRouter>
 );

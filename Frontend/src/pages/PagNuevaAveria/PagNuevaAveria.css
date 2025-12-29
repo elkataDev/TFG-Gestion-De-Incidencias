@@ -59,3 +59,8 @@ p {
   margin-bottom: 20px;
   width: 100%;
 }
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}

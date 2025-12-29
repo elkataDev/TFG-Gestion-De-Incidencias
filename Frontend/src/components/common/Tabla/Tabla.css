@@ -61,3 +61,27 @@
 .estado-cerrado {
   background-color: #6b7280; /* gris */
 }
+
+.estado-activo {
+  background-color: #22c55e;
+}
+
+.estado-inactivo {
+  background-color: gray;
+}
+
+.estado-admin {
+  background-color: red;
+}
+
+.estado-user {
+  background-color: #2563eb;
+}
+
+.estado-mantenimiento {
+  background-color: #f59e0b;
+}
+
+.estado-dañado {
+  background-color: red;
+}

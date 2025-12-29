@@ -7,70 +7,42 @@ import Select, { type SelectChangeEvent } from '@mui/material/Select';
 type SelectProps = {
   inputText: string;
   options: { label: string }[];
+  value?: string;
+  onChange?: (value: string) => void;
 };
 
 export default function SelectAutoWidth(props: SelectProps) {
-  const [age, setAge] = React.useState('');
+  const [selected, setSelected] = React.useState(props.value || '');
 
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+    setSelected(event.target.value);
+    if (props.onChange) props.onChange(event.target.value);
   };
 
-  return (
-    <div>
-      <FormControl
-        className="select"
-        sx={{
-          minWidth: 150,
-          '& .MuiInputLabel-root': {
-            color: '#ccc', // color del label
-          },
-          '& .MuiOutlinedInput-root': {
-            // bordes redondeados
-            '& fieldset': {
-              borderColor: '#888', // borde normal
-            },
-            '&:hover fieldset': {
-              borderColor: '#1976d2', // borde al pasar el mouse
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: '#42a5f5', // borde cuando está enfocado
-            },
-          },
-          '& .MuiSelect-select': {
-            color: '#fff', // color del texto seleccionado
-            backgroundColor: '#1e293b', // fondo del select
-            padding: '10px 14px',
-          },
-          '& .MuiMenuItem-root': {
-            backgroundColor: '#1e293b',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#334155',
-            },
-          },
-        }}
-      >
-        <InputLabel id="demo-simple-select-autowidth-label">{props.inputText}</InputLabel>
-        <Select
-          labelId="select-autowidth-label"
-          id="select-autowidth"
-          value={age}
-          onChange={handleChange}
-          autoWidth
-          label="Edad"
-        >
-          <MenuItem value="">
-            <em>Ninguna</em>
-          </MenuItem>
+  // Sincroniza si value externo cambia
+  React.useEffect(() => {
+    if (props.value !== undefined) setSelected(props.value);
+  }, [props.value]);
 
-          {props.options.map((item, index) => (
-            <MenuItem key={index} value={item.label}>
-              {item.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+  return (
+    <FormControl className="select" sx={{ minWidth: 150 }}>
+      <InputLabel id="select-autowidth-label">{props.inputText}</InputLabel>
+      <Select
+        labelId="select-autowidth-label"
+        id="select-autowidth"
+        value={selected}
+        onChange={handleChange}
+        autoWidth
+      >
+        <MenuItem value="">
+          <em>Ninguna</em>
+        </MenuItem>
+        {props.options.map((item, index) => (
+          <MenuItem key={index} value={item.label}>
+            {item.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

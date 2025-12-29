@@ -3,6 +3,12 @@ import { Input } from '@/components/common/Input/Input';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import { Box } from '@mui/material';
 
+interface LoginResponse {
+  ok: boolean;
+  token?: string;
+  message?: string;
+}
+
 export const LoginForm = () => {
   const [form, setForm] = useState({ email: '', password: '' });
 
@@ -10,15 +16,41 @@ export const LoginForm = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login data:', form);
+
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data: LoginResponse = await response.json();
+
+      if (!response.ok || !data.ok) {
+        alert(data.message ?? 'Credenciales incorrectas');
+        return;
+      }
+
+      console.log('Login correcto');
+      console.log('Token:', data.token);
+
+      localStorage.setItem('token', data.token!);
+    } catch (error) {
+      console.error('Error al conectar con la API', error);
+      alert('Error de conexión');
+    }
   };
 
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={(e) => {
+        void handleSubmit(e);
+      }}
       sx={{
         width: '100%',
         maxWidth: 400,

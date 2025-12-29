@@ -1,0 +1,30 @@
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background-color: var(--color-bg-body);
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+img {
+  max-width: 150px;
+  margin-bottom: 20px;
+}
+h1 {
+  font-size: 6rem;
+  margin-bottom: 10px;
+}
+h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  width: 40%;
+}
