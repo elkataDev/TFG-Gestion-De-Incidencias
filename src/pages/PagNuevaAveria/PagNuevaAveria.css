@@ -1,0 +1,66 @@
+.pag-nueva-averia {
+  padding: 20px;
+  background-color: var(--color-background-secondary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.report-container {
+  background-color: var(--color-bg-card);
+  padding: 30px;
+  border-radius: var(--border-radius-card);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+.text-area {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--color-bg-body);
+  font-family: monospace;
+  font-size: 1rem;
+  resize: vertical;
+  margin-bottom: 20px;
+  color: var(--color-text-tertiary);
+}
+
+.text-area:focus {
+  outline: none;
+  box-shadow: 0 0 5px var(--color-progress-fill);
+}
+
+.select-container {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 30px;
+  position: relative;
+}
+/* Estilo del placeholder */
+.text-area::placeholder {
+  color: #888;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.select {
+  width: 100%;
+}
+.select-container h3 {
+  margin-bottom: 10px;
+}
+
+.report-container p {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,7 @@
+.botones-paginacion {
+  display: flex;
+  gap: 10px; /* espacio entre botones */
+  justify-content: center; /* centrado horizontal */
+  margin-top: 15px; /* separación respecto a la tabla */
+  background-color: var(--color-bg-card);
+}
