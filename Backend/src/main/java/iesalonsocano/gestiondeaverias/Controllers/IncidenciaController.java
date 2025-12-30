@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/incidencias")
@@ -29,11 +30,21 @@ public class IncidenciaController {
 
     // 1. OBTENER TODAS O FILTRAR POR ESTADO (Req 1.3.3)
     @GetMapping
-    public List<IncidenciasEntity> getIncidencias(@RequestParam(required = false) IncidenciasEntity.EstadoIncidencia estado) {
+    public ResponseEntity<List<IncidenciasDTO>> getIncidencias(@RequestParam(required = false) IncidenciasEntity.EstadoIncidencia estado) {
+        List<IncidenciasEntity> entidades;
+
         if (estado != null) {
-            return incidenciasService.findByEstado(estado); // Usa tu nuevo método
+            entidades = incidenciasService.findByEstado(estado);
+        } else {
+            entidades = incidenciasService.findAll();
         }
-        return incidenciasService.findAll();
+
+        // Convertimos la lista de Entidades a lista de DTOs
+        List<IncidenciasDTO> dtos = entidades.stream()
+                .map(IncidenciasDTO::fromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
     }
 
     // 2. BUSCAR POR USUARIO (Para que el profesor vea sus tickets)

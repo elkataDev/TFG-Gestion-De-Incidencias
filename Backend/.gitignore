@@ -55,3 +55,16 @@ secret.properties
 # --- Sistema Operativo (Basura de Mac/Windows) ---
 .DS_Store
 Thumbs.db
+
+# Archivos compilados
+*.class
+
+# Carpetas de compilación (Maven y Gradle)
+target/
+build/
+bin/
+
+# Archivos de configuración del IDE (opcional pero recomendado)
+.idea/
+.vscode/
+*.iml
