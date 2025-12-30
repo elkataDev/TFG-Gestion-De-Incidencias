@@ -1,5 +1,6 @@
 package  iesalonsocano.gestiondeaverias.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -44,11 +45,13 @@ public class IncidenciasEntity {
     // Relación con Usuario (quien reporta la incidencia)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private UsuariosEntity usuario;
 
     // Relación con Aula (dónde ocurrió la incidencia)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aula_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AulasEntity aula;
 
     //Fecha de creacion de incidencia
