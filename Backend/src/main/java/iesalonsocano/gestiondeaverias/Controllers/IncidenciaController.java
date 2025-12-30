@@ -49,31 +49,48 @@ public class IncidenciaController {
 
     // 2. BUSCAR POR USUARIO (Para que el profesor vea sus tickets)
     @GetMapping("/usuario/{usuarioId}")
-    public List<IncidenciasEntity> getByUsuario(@PathVariable Long usuarioId) {
-        return incidenciasService.findByUsuarioId(usuarioId);
+    public ResponseEntity<List<IncidenciasDTO>> getByUsuario(@PathVariable Long usuarioId) {
+        List<IncidenciasEntity> entidades = incidenciasService.findByUsuarioId(usuarioId);
+
+        List<IncidenciasDTO> dtos = entidades.stream()
+                .map(IncidenciasDTO::fromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
     }
 
     // 3. BUSCAR POR AULA (Para ver el historial de un aula)
     @GetMapping("/aula/{aulaId}")
-    public List<IncidenciasEntity> getByAula(@PathVariable Long aulaId) {
-        return incidenciasService.findByAulaId(aulaId);
+    public ResponseEntity<List<IncidenciasDTO>> getByAula(@PathVariable Long aulaId) {
+        List<IncidenciasEntity> entidades = incidenciasService.findByAulaId(aulaId);
+
+        List<IncidenciasDTO> dtos = entidades.stream()
+                .map(IncidenciasDTO::fromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
     }
 
     // 4. CAMBIAR ESTADO (El flujo: Abierto -> En curso -> Resuelto)
     // Usamos PatchMapping porque solo modificamos un campo (el estado)
+    //TODO NO DETECTA QUE EL ADMIN SEA UN ADMIN, NO SE PUEDE OBTENER LOS DATOS
     @PatchMapping("/{id}/estado")
     @PreAuthorize("hasAnyRole('tecnico', 'administrador')")
-    public ResponseEntity<IncidenciasEntity> updateEstado(
+    public ResponseEntity<IncidenciasDTO> updateEstado(
             @PathVariable Long id,
             @RequestBody IncidenciasEntity.EstadoIncidencia nuevoEstado) {
+        // Buscamos la entidad
+        IncidenciasEntity incidencia = incidenciasService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
 
-        // Aquí llamaríamos al método actualizarEstado que te sugerí añadir al Service
-        // para que registre la fecha de cierre automáticamente
-        return ResponseEntity.ok(incidenciasService.save(incidenciasService.findById(id)
-                .map(i -> {
-                    i.setEstado(nuevoEstado);
-                    return i;
-                }).orElseThrow()));
+        // Modificamos el estado
+        incidencia.setEstado(nuevoEstado);
+
+        // Guardamos (el service devuelve la entidad guardada)
+        IncidenciasEntity guardada = incidenciasService.save(incidencia);
+
+        // Convertimos a DTO y devolvemos
+        return ResponseEntity.ok(IncidenciasDTO.fromEntity(guardada));
     }
 
     // 5. CREAR INCIDENCIA (Página de Averías)
