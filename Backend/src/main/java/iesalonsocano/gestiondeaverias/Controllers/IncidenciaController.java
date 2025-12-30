@@ -75,7 +75,7 @@ public class IncidenciaController {
     // Usamos PatchMapping porque solo modificamos un campo (el estado)
     //TODO NO DETECTA QUE EL ADMIN SEA UN ADMIN, NO SE PUEDE OBTENER LOS DATOS
     @PatchMapping("/{id}/estado")
-    @PreAuthorize("hasAnyRole('tecnico', 'administrador')")
+    @PreAuthorize("hasAnyRole('TECNICO', 'ADMIN')")
     public ResponseEntity<IncidenciasDTO> updateEstado(
             @PathVariable Long id,
             @RequestBody IncidenciasEntity.EstadoIncidencia nuevoEstado) {

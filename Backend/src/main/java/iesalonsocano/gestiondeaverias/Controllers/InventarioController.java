@@ -1,5 +1,6 @@
 package iesalonsocano.gestiondeaverias.Controllers;
 
+import iesalonsocano.gestiondeaverias.DTO.InventarioDTO;
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
 import iesalonsocano.gestiondeaverias.Services.InventarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,62 +11,57 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/inventario") // Añadido /api por consistencia con tu SecurityConfig
-@CrossOrigin(origins = "http://localhost:5173") // Para permitir conexión desde React (Vite)
+@RequestMapping("/api/inventario")
+@CrossOrigin(origins = "http://localhost:5173")
 public class InventarioController {
 
     @Autowired
     private InventarioService inventarioService;
 
-    // Obtener todos: Visible para cualquier usuario autenticado (para reportar averías)
     @GetMapping
-    public List<InventarioEntity> getAllInventario() {
-        return inventarioService.findAll();
+    public ResponseEntity<List<InventarioDTO>> getAllInventario() {
+        List<InventarioDTO> dtos = inventarioService.findAll().stream()
+                .map(InventarioDTO::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InventarioEntity> getInventarioById(@PathVariable Long id) {
+    public ResponseEntity<InventarioDTO> getInventarioById(@PathVariable Long id) {
         return inventarioService.findById(id)
-                .map(ResponseEntity::ok)
+                .map(item -> ResponseEntity.ok(InventarioDTO.fromEntity(item)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear: Solo Administrador o Técnico TIC
     @PostMapping
-    @PreAuthorize("hasAnyRole('administrador', 'tecnico')")
-    public ResponseEntity<InventarioEntity> createInventario(@Valid @RequestBody InventarioEntity inventario) {
-        // El servicio debería generar el código QR aquí antes de guardar
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
+    public ResponseEntity<InventarioDTO> createInventario(@Valid @RequestBody InventarioEntity inventario) {
         InventarioEntity nuevoItem = inventarioService.save(inventario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoItem);
+        return ResponseEntity.status(HttpStatus.CREATED).body(InventarioDTO.fromEntity(nuevoItem));
     }
 
-    // Actualizar: Solo Administrador o Técnico TIC
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('administrador', 'tecnico')")
-    public ResponseEntity<InventarioEntity> updateInventario(@PathVariable Long id, @Valid @RequestBody InventarioEntity inventarioDetails) {
-        Optional<InventarioEntity> optionalItem = inventarioService.findById(id);
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
+    public ResponseEntity<InventarioDTO> updateInventario(@PathVariable Long id, @Valid @RequestBody InventarioEntity details) {
+        return inventarioService.findById(id)
+                .map(item -> {
+                    item.setNombre(details.getNombre());
+                    item.setDescripcion(details.getDescripcion());
+                    item.setCodigoQR(details.getCodigoQR());
+                    item.setEstado(details.getEstado());
+                    item.setAula(details.getAula());
 
-        if (optionalItem.isPresent()) {
-            InventarioEntity itemExistente = optionalItem.get();
-
-            // Actualización de campos según Requisito 1.3.1
-            itemExistente.setNombre(inventarioDetails.getNombre());
-            itemExistente.setDescripcion(inventarioDetails.getDescripcion());
-            itemExistente.setCodigoQR(inventarioDetails.getCodigoQR());
-            itemExistente.setEstado(inventarioDetails.getEstado());
-            itemExistente.setAula(inventarioDetails.getAula());
-
-            return ResponseEntity.ok(inventarioService.save(itemExistente));
-        }
-        return ResponseEntity.notFound().build();
+                    InventarioEntity actualizado = inventarioService.save(item);
+                    return ResponseEntity.ok(InventarioDTO.fromEntity(actualizado));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Eliminar: Solo Administrador
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('administrador')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteInventario(@PathVariable Long id) {
         if (inventarioService.findById(id).isPresent()) {
             inventarioService.deleteById(id);
