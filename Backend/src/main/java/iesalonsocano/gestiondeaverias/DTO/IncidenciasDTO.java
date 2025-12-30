@@ -18,13 +18,13 @@ public class IncidenciasDTO {
 
     // --- DATOS DEL AULA ---
     private Long aulaId;
-    // Opcional: private String nombreAula; (p.ej "Aula 202")
+
 
     // --- DATOS DEL USUARIO ---
     private Long usuarioId;
     private String nombreUsuario; // Muy útil para mostrarlo en la tabla directamente
 
-    // --- MÉTODO CONVERSOR ---
+    // --- CONVERSOR ---
     public static IncidenciasDTO fromEntity(IncidenciasEntity entity) {
         if (entity == null) {
             return null;
@@ -43,8 +43,8 @@ public class IncidenciasDTO {
 
                 // Mapeo del Usuario (asumiendo que usuario nunca es null por la BD, pero protegemos igual)
                 .usuarioId(entity.getUsuario() != null ? entity.getUsuario().getId() : null)
-                // Aquí podrías poner .getNombre(), .getEmail() o .getNombreUsuario() según tu entidad
-                .nombreUsuario(entity.getUsuario() != null ? entity.getUsuario().getEmail() : "Desconocido")
+
+                .nombreUsuario(entity.getUsuario() != null ? entity.getUsuario().getNombreUsuario() : "Desconocido")
                 .build();
     }
 }

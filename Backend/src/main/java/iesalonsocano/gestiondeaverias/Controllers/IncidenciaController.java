@@ -88,7 +88,7 @@ public class IncidenciaController {
             incidencia.setAula(aula);
         }
         // Al guardar, el Service pondrá estado 'abierta' y fecha_reporte
-        incidenciasService.save(incidencia);
-        return  ResponseEntity.ok(IncidenciasDTO.fromEntity(incidencia));
+        IncidenciasEntity incidenciaGuardada = incidenciasService.save(incidencia);
+        return  ResponseEntity.ok(IncidenciasDTO.fromEntity(incidenciaGuardada));
     }
 }
