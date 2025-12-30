@@ -1,12 +1,18 @@
 package iesalonsocano.gestiondeaverias.Controllers;
 
+import iesalonsocano.gestiondeaverias.DTO.IncidenciasDTO;
+import iesalonsocano.gestiondeaverias.Services.AulasService;
+import iesalonsocano.gestiondeaverias.Services.UsuariosService;
+import iesalonsocano.gestiondeaverias.entity.AulasEntity;
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
 import iesalonsocano.gestiondeaverias.Services.IncidenciasService;
+import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -16,6 +22,10 @@ public class IncidenciaController {
 
     @Autowired
     private IncidenciasService incidenciasService;
+    @Autowired
+    private UsuariosService usuariosService;
+    @Autowired
+    private AulasService aulasService;
 
     // 1. OBTENER TODAS O FILTRAR POR ESTADO (Req 1.3.3)
     @GetMapping
@@ -57,8 +67,28 @@ public class IncidenciaController {
 
     // 5. CREAR INCIDENCIA (Página de Averías)
     @PostMapping("/reportar")
-    public ResponseEntity<IncidenciasEntity> reportar(@RequestBody IncidenciasEntity incidencia) {
+    public ResponseEntity<IncidenciasDTO> reportar(@RequestBody IncidenciasDTO dto, Principal principal) {
+        // 1. Buscamos al usuario real que está logueado
+        String username = principal.getName();
+        UsuariosEntity usuario = usuariosService.findByNombreUsuario(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // 2. Mapeamos a la entidad
+        IncidenciasEntity incidencia = new IncidenciasEntity();
+        incidencia.setTitulo(dto.getTitulo());
+        incidencia.setDescripcion(dto.getDescripcion());
+
+        // ASIGNAMOS EL USUARIO AUTENTICADO
+        incidencia.setUsuario(usuario);
+
+        // 3. Asignamos el aula si viene en el DTO
+        if (dto.getAulaId() != null) {
+            AulasEntity aula = aulasService.findById(dto.getAulaId())
+                    .orElseThrow(() -> new RuntimeException("Aula no encontrada"));
+            incidencia.setAula(aula);
+        }
         // Al guardar, el Service pondrá estado 'abierta' y fecha_reporte
-        return ResponseEntity.ok(incidenciasService.save(incidencia));
+        incidenciasService.save(incidencia);
+        return  ResponseEntity.ok(IncidenciasDTO.fromEntity(incidencia));
     }
 }

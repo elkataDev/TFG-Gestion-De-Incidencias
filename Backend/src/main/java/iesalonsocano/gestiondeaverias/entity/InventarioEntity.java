@@ -1,5 +1,6 @@
 package  iesalonsocano.gestiondeaverias.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,8 +42,9 @@ public class InventarioEntity {
     private LocalDateTime fechaIngreso;
 
     // Relación con Aula
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "aula_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AulasEntity aula;
 
     @PrePersist
