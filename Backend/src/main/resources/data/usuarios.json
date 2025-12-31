@@ -19,5 +19,12 @@
     "password": "user123",
     "rol": "USER",
     "activo": true
+  },
+  {
+    "nombreUsuario": "tecnico",
+    "email": "tecnico@centro.com",
+    "password": "tecnico",
+    "rol": "TECNICO",
+    "activo": true
   }
 ]

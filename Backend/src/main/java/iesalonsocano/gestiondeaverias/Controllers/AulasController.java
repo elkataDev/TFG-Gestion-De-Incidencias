@@ -1,8 +1,10 @@
 package iesalonsocano.gestiondeaverias.Controllers;
 
 import iesalonsocano.gestiondeaverias.DTO.AulasDTO;
+import iesalonsocano.gestiondeaverias.Services.IncidenciasService;
 import iesalonsocano.gestiondeaverias.entity.AulasEntity;
 import iesalonsocano.gestiondeaverias.Services.AulasService;
+import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ public class AulasController {
 
     @Autowired
     private AulasService aulasService;
+
+    @Autowired
+    private IncidenciasService incidenciasService;
 
     // Obtener todas las aulas: Accesible para cualquier usuario autenticado
     @GetMapping
@@ -63,10 +68,19 @@ public class AulasController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<Void> deleteAula(@PathVariable Long id) {
-        if (aulasService.findById(id).isPresent()) {
+
+        if (aulasService.findById(id).isEmpty()) return ResponseEntity.notFound().build();
+
+        // 1. Buscar todas las incidencias de este aula
+        List<IncidenciasEntity> incidencias = incidenciasService.findByAulaId(id);
+
+        // 2. Desvincularlas (poner el aula a null)
+        for (IncidenciasEntity incidencia : incidencias) {
+            incidencia.setAula(null);
+            incidenciasService.save(incidencia);
+        }
             aulasService.deleteById(id);
             return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+
     }
 }

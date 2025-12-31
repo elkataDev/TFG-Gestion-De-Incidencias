@@ -38,10 +38,11 @@ public class SecurityConfig {
                         // Rutas públicas
                         .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 
+                        /*
                         // Rutas protegidas de ejemplo
                         .requestMatchers(HttpMethod.POST, "/api/aulas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/aulas/**").hasRole("ADMIN")
-
+                        */
                         // El resto requiere autenticación
                         .anyRequest().authenticated()
                 )
