@@ -18,35 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Controlador REST para la gestión de incidencias técnicas.
- * <p>
- * Proporciona endpoints para:
- * <ul>
- *   <li>Listar y filtrar incidencias por estado, usuario o aula</li>
- *   <li>Cambiar el estado de una incidencia (flujo: Abierto → En Progreso → Resuelto)</li>
- *   <li>Reportar nuevas incidencias</li>
- * </ul>
- * </p>
- *
- * <p>
- * Seguridad:
- * <ul>
- *   <li>GET - Accesible para usuarios autenticados</li>
- *   <li>POST - Usuarios autenticados pueden reportar incidencias</li>
- *   <li>PATCH - Solo TECNICO o ADMIN pueden cambiar estados</li>
- * </ul>
- * </p>
- *
- * <p>
- * Base URL: {@code /api/incidencias}
- * </p>
- *
- * @author IES Alonso Cano
- * @version 1.0.0
- * @see IncidenciasService
- * @see IncidenciasDTO
- */
 @RestController
 @RequestMapping("/api/incidencias")
 @CrossOrigin(origins = "http://localhost:5173") // Permitir React (Vite)
@@ -59,16 +30,7 @@ public class IncidenciaController {
     @Autowired
     private AulasService aulasService;
 
-    /**
-     * Obtiene todas las incidencias o filtra por estado.
-     * <p>
-     * Si no se proporciona el parámetro {@code estado}, devuelve todas las incidencias.
-     * Si se proporciona, filtra solo las incidencias con ese estado.
-     * </p>
-     *
-     * @param estado (opcional) estado de incidencia para filtrar (EN_PROGRESO, RESUELTO, etc.)
-     * @return ResponseEntity con lista de IncidenciasDTO
-     */
+    // 1. OBTENER TODAS O FILTRAR POR ESTADO (Req 1.3.3)
     @GetMapping
     public ResponseEntity<List<IncidenciasDTO>> getIncidencias(@RequestParam(required = false) IncidenciasEntity.EstadoIncidencia estado) {
         List<IncidenciasEntity> entidades;
@@ -87,15 +49,7 @@ public class IncidenciaController {
         return ResponseEntity.ok(dtos);
     }
 
-    /**
-     * Busca todas las incidencias reportadas por un usuario específico.
-     * <p>
-     * Útil para que los profesores vean el historial de sus tickets reportados.
-     * </p>
-     *
-     * @param usuarioId identificador del usuario
-     * @return ResponseEntity con lista de IncidenciasDTO del usuario
-     */
+    // 2. BUSCAR POR USUARIO (Para que el profesor vea sus tickets)
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<IncidenciasDTO>> getByUsuario(@PathVariable Long usuarioId) {
         List<IncidenciasEntity> entidades = incidenciasService.findByUsuarioId(usuarioId);
@@ -107,15 +61,7 @@ public class IncidenciaController {
         return ResponseEntity.ok(dtos);
     }
 
-    /**
-     * Busca todas las incidencias asociadas a un aula específica.
-     * <p>
-     * Permite ver el historial de problemas de un aula determinada.
-     * </p>
-     *
-     * @param aulaId identificador del aula
-     * @return ResponseEntity con lista de IncidenciasDTO del aula
-     */
+    // 3. BUSCAR POR AULA (Para ver el historial de un aula)
     @GetMapping("/aula/{aulaId}")
     public ResponseEntity<List<IncidenciasDTO>> getByAula(@PathVariable Long aulaId) {
         List<IncidenciasEntity> entidades = incidenciasService.findByAulaId(aulaId);
@@ -127,23 +73,8 @@ public class IncidenciaController {
         return ResponseEntity.ok(dtos);
     }
 
-    /**
-     * Cambia el estado de una incidencia.
-     * <p>
-     * Flujo típico de estados: ABIERTO → EN_PROGRESO → RESUELTO
-     * </p>
-     * <p>
-     * Cuando el estado cambia a RESUELTO, se actualiza automáticamente
-     * la fecha de cierre.
-     * </p>
-     * <p>
-     * Acceso: Solo TECNICO o ADMIN
-     * </p>
-     *
-     * @param id identificador de la incidencia
-     * @param requestBody mapa JSON con el campo "estado" y su nuevo valor
-     * @return ResponseEntity con IncidenciasDTO actualizada, o mensaje de error
-     */
+    // 4. CAMBIAR ESTADO (El flujo: Abierto -> En curso -> Resuelto)
+    // Usamos PatchMapping porque solo modificamos un campo (el estado)
     @PatchMapping("/{id}/estado")
     @PreAuthorize("hasAnyRole('TECNICO', 'ADMIN')")
     public ResponseEntity<?> updateEstado(
@@ -170,7 +101,8 @@ public class IncidenciaController {
             incidencia.setEstado(nuevoEstado);
 
             // Actualizamos fecha de cierre si corresponde
-            if (nuevoEstado == IncidenciasEntity.EstadoIncidencia.RESUELTO ) {
+            if (nuevoEstado == IncidenciasEntity.EstadoIncidencia.RESUELTO ||
+                    nuevoEstado == IncidenciasEntity.EstadoIncidencia.CERRADO) {
                 incidencia.setFechaCierre(LocalDateTime.now());
             }
 
@@ -184,22 +116,7 @@ public class IncidenciaController {
         }
     }
 
-    /**
-     * Permite a un usuario reportar una nueva incidencia.
-     * <p>
-     * El usuario que reporta la incidencia se obtiene automáticamente del
-     * contexto de seguridad (usuario autenticado).
-     * </p>
-     * <p>
-     * El estado inicial será "ABIERTO" y la fecha de reporte se establecerá
-     * automáticamente.
-     * </p>
-     *
-     * @param dto datos de la incidencia (título, descripción, aulaId opcional)
-     * @param principal objeto con la información del usuario autenticado
-     * @return ResponseEntity con IncidenciasDTO de la incidencia creada
-     * @throws RuntimeException si el usuario autenticado no existe o el aula no se encuentra
-     */
+    // 5. CREAR INCIDENCIA (Página de Averías)
     @PostMapping("/reportar")
     public ResponseEntity<IncidenciasDTO> reportar(@RequestBody IncidenciasDTO dto, Principal principal) {
         // 1. Buscamos al usuario real que está logueado
