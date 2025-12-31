@@ -4,188 +4,167 @@
     "descripcion": "20 unidades. Equipos de sobremesa.",
     "codigoQR": "QR-A203-001",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula 203"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Aula 203" }
   },
   {
     "nombre": "Proyector Epson",
     "descripcion": "1 unidad.",
     "codigoQR": "QR-A203-002",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula 203"
-    }
+    "categoria": "PROYECTOR",
+    "aula": { "nombre": "Aula 203" }
   },
   {
     "nombre": "Monitores Dell",
     "descripcion": "21 unidades.",
     "codigoQR": "QR-A203-003",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula 203"
-    }
+    "categoria": "MONITOR",
+    "aula": { "nombre": "Aula 203" }
   },
   {
     "nombre": "Pantalla Interactiva",
     "descripcion": "1 unidad.",
     "codigoQR": "QR-ATECA-001",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula Ateca"
-    }
+    "categoria": "MONITOR",
+    "aula": { "nombre": "Aula Ateca" }
   },
   {
     "nombre": "Ordenadores Taller",
     "descripcion": "2 unidades.",
     "codigoQR": "QR-TALLER-001",
     "estado": "EN_USO",
-    "aula": {
-      "nombre": "Aula Taller"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Aula Taller" }
   },
   {
     "nombre": "Impresora 3D",
     "descripcion": "1 unidad. Modelo Prusa.",
     "codigoQR": "QR-TALLER-002",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula Taller"
-    }
+    "categoria": "IMPRESORA",
+    "aula": { "nombre": "Aula Taller" }
   },
   {
     "nombre": "Cortadora Láser",
     "descripcion": "1 unidad.",
     "codigoQR": "QR-TALLER-003",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula Taller"
-    }
+    "categoria": "PERIFERICO",
+    "aula": { "nombre": "Aula Taller" }
   },
   {
     "nombre": "Ordenadores Aula 201",
     "descripcion": "16 unidades.",
     "codigoQR": "QR-A201-001",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula 201"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Aula 201" }
   },
   {
     "nombre": "Ordenadores Aula 101",
     "descripcion": "21 unidades.",
     "codigoQR": "QR-A101-001",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula 101"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Aula 101" }
   },
   {
     "nombre": "Portátiles Lenovo",
     "descripcion": "13 unidades. Carrito de carga.",
     "codigoQR": "QR-A101-002",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula 101"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Aula 101" }
   },
   {
     "nombre": "Equipos FPB",
     "descripcion": "15 unidades.",
     "codigoQR": "QR-FPB1-001",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula FPB1"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Aula FPB1" }
   },
   {
     "nombre": "Discos Duros",
     "descripcion": "56 unidades para prácticas.",
     "codigoQR": "QR-FPB1-002",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula FPB1"
-    }
+    "categoria": "PERIFERICO",
+    "aula": { "nombre": "Aula FPB1" }
   },
   {
     "nombre": "Placas Base",
     "descripcion": "50 unidades para montaje.",
     "codigoQR": "QR-FPB1-003",
     "estado": "DANADO",
-    "aula": {
-      "nombre": "Aula FPB1"
-    }
+    "categoria": "PERIFERICO",
+    "aula": { "nombre": "Aula FPB1" }
   },
   {
     "nombre": "Ordenadores Jefatura",
     "descripcion": "5 unidades.",
     "codigoQR": "QR-JEF-001",
     "estado": "EN_USO",
-    "aula": {
-      "nombre": "Jefatura"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Jefatura" }
   },
   {
     "nombre": "PC Dirección",
     "descripcion": "1 unidad.",
     "codigoQR": "QR-DIR-001",
     "estado": "EN_USO",
-    "aula": {
-      "nombre": "Direccion"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Direccion" }
   },
   {
     "nombre": "PC Sala Profesores",
     "descripcion": "2 unidades.",
     "codigoQR": "QR-PROF-001",
     "estado": "EN_USO",
-    "aula": {
-      "nombre": "Sala Profes"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Sala Profes" }
   },
   {
     "nombre": "PC Secretaría",
     "descripcion": "2 unidades.",
     "codigoQR": "QR-SEC-001",
     "estado": "EN_USO",
-    "aula": {
-      "nombre": "Secretaria"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Secretaria" }
   },
   {
     "nombre": "PC Conserjería",
     "descripcion": "2 unidades.",
     "codigoQR": "QR-CON-001",
     "estado": "EN_USO",
-    "aula": {
-      "nombre": "Conserjeria"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Conserjeria" }
   },
   {
     "nombre": "PC Aula 006",
     "descripcion": "20 unidades.",
     "codigoQR": "QR-A006-001",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Aula 006"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Aula 006" }
   },
   {
     "nombre": "Proyector Salón Actos",
     "descripcion": "1 unidad.",
     "codigoQR": "QR-ACTOS-001",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Salon de actos"
-    }
+    "categoria": "PROYECTOR",
+    "aula": { "nombre": "Salon de actos" }
   },
   {
     "nombre": "PC Biblioteca",
     "descripcion": "1 unidad.",
     "codigoQR": "QR-BIB-001",
     "estado": "DISPONIBLE",
-    "aula": {
-      "nombre": "Biblioteca"
-    }
+    "categoria": "COMPUTADORA",
+    "aula": { "nombre": "Biblioteca" }
   }
 ]

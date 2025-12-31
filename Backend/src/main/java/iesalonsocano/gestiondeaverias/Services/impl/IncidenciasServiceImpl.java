@@ -37,7 +37,7 @@ public class IncidenciasServiceImpl implements IncidenciasService {
         // 1. En tu entidad el campo es 'id', por eso usamos getId()
         if (incidencia.getId() == null) {
             // 2. Usamos uno de los estados de tu Enum (EN_ESPERA es tu valor por defecto)
-            incidencia.setEstado(IncidenciasEntity.EstadoIncidencia.EN_ESPERA);
+            incidencia.setEstado(IncidenciasEntity.EstadoIncidencia.EN_PROGRESO);
 
             // 3. En tu entidad el campo es 'fechaReporte' (CamelCase), no 'fecha_reporte'
             incidencia.setFechaReporte(LocalDateTime.now());
@@ -79,8 +79,7 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
         // 1. Corregimos los nombres de los estados (Mayúsculas según tu Enum)
         // 2. Corregimos el nombre del campo (fechaCierre en lugar de fecha_cierre)
-        if (nuevoEstado == IncidenciasEntity.EstadoIncidencia.RESUELTO ||
-                nuevoEstado == IncidenciasEntity.EstadoIncidencia.CERRADO) {
+        if (nuevoEstado == IncidenciasEntity.EstadoIncidencia.RESUELTO) {
             incidencia.setFechaCierre(LocalDateTime.now());
         }
 
