@@ -3,12 +3,30 @@ import { useParams, useNavigate } from 'react-router-dom';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import './PagEditarActivo.css';
 
+/* ===================== TIPOS ===================== */
+
+type Categoria =
+  | 'COMPUTADORA'
+  | 'IMPRESORA'
+  | 'PROYECTOR'
+  | 'MONITOR'
+  | 'RED'
+  | 'SERVIDOR'
+  | 'PERIFERICO'
+  | 'SEGURIDAD';
+
 type Activo = {
-  id: string;
+  id: number;
   nombre: string;
-  categoria: string;
-  ubicacion: string;
+  descripcion: string;
+  codigoQR: string;
+  categoria: Categoria;
+  estado: 0 | 1; // 0 = DISPONIBLE, 1 = OCUPADO
+  fechaIngreso: string;
+  aulaId: number;
 };
+
+/* ===================== COMPONENTE ===================== */
 
 export default function EditarActivo() {
   const { id } = useParams<{ id: string }>();
@@ -17,42 +35,104 @@ export default function EditarActivo() {
   const [activo, setActivo] = useState<Activo | null>(null);
   const [loading, setLoading] = useState(true);
 
+  /* ===================== CARGAR ACTIVO ===================== */
   useEffect(() => {
     if (!id) return;
 
-    fetch(`/api/activos/${id}`)
-      .then((res) => res.json() as Promise<Activo>)
-      .then((data) => {
-        setActivo(data);
+    const token = localStorage.getItem('token');
+
+    console.log('🔐 Token:', token);
+    console.log('📡 Cargando activo con id:', id);
+
+    fetch(`http://localhost:5555/api/inventario/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    })
+      .then(async (res) => {
+        console.log('➡️ Status:', res.status, 'OK:', res.ok);
+
+        const text = await res.text();
+
+        try {
+          const data = JSON.parse(text);
+          console.log('📦 Datos recibidos:', data);
+
+          const activoData: Activo = {
+            id: data.id,
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            codigoQR: data.codigoQR,
+            categoria: data.categoria, // 👈 MAYÚSCULAS
+            estado: data.estado === 'DISPONIBLE' ? 0 : 1,
+            fechaIngreso: data.fechaIngreso.slice(0, 10),
+            aulaId: data.aulaId,
+          };
+
+          setActivo(activoData);
+        } catch (err) {
+          console.error('❌ Respuesta no es JSON:', text, err);
+          alert('Error: la respuesta del servidor no es válida');
+        }
+
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error('❌ Error al cargar el activo:', err);
         alert('Error al cargar el activo');
         setLoading(false);
       });
   }, [id]);
 
-  // 🔹 Manejar cambios
-  const handleChange = (field: keyof Activo, value: string) => {
+  /* ===================== HANDLERS ===================== */
+
+  const handleChange = (field: keyof Activo, value: any) => {
+    console.log('✏️ Campo modificado:', field, value);
     if (!activo) return;
+
     setActivo({ ...activo, [field]: value });
   };
 
-  // 🔹 Guardar cambios
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!activo) return;
 
-    fetch(`/api/activos/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(activo),
-    })
-      .then(() => {
-        alert('Activo actualizado correctamente');
-        void navigate('/activos');
-      })
-      .catch(() => alert('Error al guardar'));
+    console.log('🚀 Enviando datos al backend:', activo);
+
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await fetch(`http://localhost:5555/api/inventario/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(activo),
+      });
+
+      console.log('⬅️ Status guardar:', response.status, 'OK:', response.ok);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ Error al guardar:', errorText);
+        alert('Error al guardar activo');
+        return;
+      }
+
+      const data = await response.json();
+      console.log('✅ Activo actualizado:', data);
+
+      alert('Activo actualizado correctamente');
+      void navigate('/activos');
+    } catch (err) {
+      console.error('❌ Error de conexión:', err);
+      alert('Error de conexión');
+    }
   };
+
+  /* ===================== RENDER ===================== */
 
   if (loading) return <p>Cargando activo...</p>;
   if (!activo) return <p>No se encontró el activo</p>;
@@ -61,7 +141,7 @@ export default function EditarActivo() {
     <div className="form-container">
       <h1>Editar Activo</h1>
 
-      <form onSubmit={handleSubmit} className="form-activo">
+      <form onSubmit={(e) => void handleSubmit(e)} className="form-activo">
         {/* Nombre */}
         <label>
           Nombre
@@ -73,33 +153,67 @@ export default function EditarActivo() {
           />
         </label>
 
+        {/* Descripción */}
+        <label>
+          Descripción
+          <textarea
+            value={activo.descripcion}
+            onChange={(e) => handleChange('descripcion', e.target.value)}
+            rows={4}
+            required
+          />
+        </label>
+
+        {/* Código QR */}
+        <label>
+          Código QR
+          <input
+            type="text"
+            value={activo.codigoQR}
+            onChange={(e) => handleChange('codigoQR', e.target.value)}
+            required
+          />
+        </label>
+
         {/* Categoría */}
         <label>
           Categoría
           <select
             value={activo.categoria}
-            onChange={(e) => handleChange('categoria', e.target.value)}
+            onChange={(e) => handleChange('categoria', e.target.value as Categoria)}
             required
           >
-            <option value="">Seleccionar</option>
-            <option value="Computadora">Computadora</option>
-            <option value="Impresora">Impresora</option>
-            <option value="Proyector">Proyector</option>
-            <option value="Monitor">Monitor</option>
-            <option value="Red">Red</option>
-            <option value="Servidor">Servidor</option>
-            <option value="Periférico">Periférico</option>
-            <option value="Seguridad">Seguridad</option>
+            <option value="COMPUTADORA">Computadora</option>
+            <option value="IMPRESORA">Impresora</option>
+            <option value="PROYECTOR">Proyector</option>
+            <option value="MONITOR">Monitor</option>
+            <option value="RED">Red</option>
+            <option value="SERVIDOR">Servidor</option>
+            <option value="PERIFERICO">Periférico</option>
+            <option value="SEGURIDAD">Seguridad</option>
           </select>
         </label>
 
-        {/* Ubicación */}
+        {/* Estado */}
         <label>
-          Ubicación
+          Estado
+          <select
+            value={activo.estado}
+            onChange={(e) => handleChange('estado', Number(e.target.value) as 0 | 1)}
+            required
+          >
+            <option value={0}>DISPONIBLE</option>
+            <option value={1}>OCUPADO</option>
+          </select>
+        </label>
+
+        {/* Aula */}
+        <label>
+          Aula ID
           <input
-            type="text"
-            value={activo.ubicacion}
-            onChange={(e) => handleChange('ubicacion', e.target.value)}
+            type="number"
+            value={activo.aulaId}
+            onChange={(e) => handleChange('aulaId', Number(e.target.value))}
             required
           />
         </label>

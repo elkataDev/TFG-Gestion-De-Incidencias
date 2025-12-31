@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { Input } from '@/components/common/Input/Input';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
-import { Box, Typography, Link } from '@mui/material';
+import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-interface LoginResponse {
-  token?: string; // El JWT
-  role?: string; // El rol del usuario
-  message?: string; // Mensaje en caso de error
+interface RegisterResponse {
+  token?: string; // JWT tras registro automático
+  role?: string; // rol asignado
+  message?: string; // mensaje de error si lo hay
 }
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '' });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,30 +22,38 @@ export const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (form.password !== form.confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5555/api/auth/login', {
+      const response = await fetch('http://localhost:5555/api/auth/registro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          nombreUsuario: form.username, // 🔴 IMPORTANTE
+          email: form.email,
+          password: form.password,
+        }),
       });
 
-      const data: LoginResponse = await response.json();
+      const text = await response.text();
+      console.log('Respuesta cruda:', text, 'Status:', response.status);
 
-      if (!response.ok || !data.token) {
-        alert(data.message ?? 'Credenciales incorrectas');
+      if (!response.ok) {
+        alert(text || 'Error en el registro');
         setLoading(false);
         return;
       }
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('role', data.role ?? 'USER');
-
-      alert('Login correcto');
+      alert('Registro correcto, ahora puedes iniciar sesión');
       setLoading(false);
 
-      void navigate('/'); // Redirigir al dashboard
+      void navigate('/login');
     } catch (error) {
       console.error('Error al conectar con la API', error);
       alert('Error de conexión con el servidor');
@@ -80,6 +88,14 @@ export const LoginForm = () => {
         required
       />
       <Input
+        label="Email"
+        name="email"
+        type="email"
+        value={form.email}
+        onChange={handleChange}
+        required
+      />
+      <Input
         label="Contraseña"
         name="password"
         type="password"
@@ -87,15 +103,15 @@ export const LoginForm = () => {
         onChange={handleChange}
         required
       />
-      <BotonPrimario text={loading ? 'Cargando...' : 'Login'} type="submit" />
-
-      {/* Enlace a registro */}
-      <Typography variant="body2" sx={{ mt: 1 }}>
-        ¿No tienes cuenta?{' '}
-        <Link component="button" variant="body2" onClick={() => void navigate('/registro')}>
-          Regístrate aquí
-        </Link>
-      </Typography>
+      <Input
+        label="Confirmar Contraseña"
+        name="confirmPassword"
+        type="password"
+        value={form.confirmPassword}
+        onChange={handleChange}
+        required
+      />
+      <BotonPrimario text={loading ? 'Cargando...' : 'Registrarse'} type="submit" />
     </Box>
   );
 };

@@ -14,11 +14,13 @@ import PagActivos from './pages/PagActivos/PagActivos';
 import PagNuevoActivo from './pages/PagNuevoActivo/PagNuevoActivo';
 import EditarActivo from './pages/PagEditarActivo/PagEditarActivo';
 import { LoginPage } from './pages/Login/LoginPage';
+import { RegisterForm } from './components/features/usuarios/RegisterForm/RegisterForm';
 
 function App() {
   return (
     <Routes>
       {/* ================= RUTAS PÚBLICAS ================= */}
+      <Route path="/registro" element={<RegisterForm></RegisterForm>}></Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="*" element={<NotFound />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
@@ -27,7 +29,7 @@ function App() {
       <Route
         path="/"
         element={
-          <PrivateRoute allowedRoles={['ROLE_USER', 'ROLE_TECNICO', 'ROLE_ADMIN']}>
+          <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
             <MainLayout />
           </PrivateRoute>
         }
@@ -36,7 +38,7 @@ function App() {
         <Route
           index
           element={
-            <PrivateRoute allowedRoles={['ROLE_USER', 'ROLE_TECNICO', 'ROLE_ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
               <PagPanelControl />
             </PrivateRoute>
           }
@@ -46,7 +48,7 @@ function App() {
         <Route
           path="averias"
           element={
-            <PrivateRoute allowedRoles={['ROLE_USER', 'ROLE_TECNICO', 'ROLE_ADMIN']}>
+            <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
               <PagAverias />
             </PrivateRoute>
           }
@@ -56,7 +58,7 @@ function App() {
         <Route
           path="inventario"
           element={
-            <PrivateRoute allowedRoles={['ROLE_TECNICO', 'ROLE_ADMIN']}>
+            <PrivateRoute allowedRoles={['TECNICO', 'ADMIN']}>
               <PagInventario />
             </PrivateRoute>
           }
@@ -66,7 +68,7 @@ function App() {
         <Route
           path="activos"
           element={
-            <PrivateRoute allowedRoles={['ROLE_TECNICO', 'ROLE_ADMIN']}>
+            <PrivateRoute allowedRoles={['TECNICO', 'ADMIN']}>
               <PagActivos />
             </PrivateRoute>
           }
@@ -76,7 +78,7 @@ function App() {
         <Route
           path="usuarios"
           element={
-            <PrivateRoute allowedRoles={['ROLE_ADMIN']}>
+            <PrivateRoute allowedRoles={['ADMIN']}>
               <PagUsuarios />
             </PrivateRoute>
           }
@@ -89,7 +91,7 @@ function App() {
       <Route
         path="/nuevaAveria"
         element={
-          <PrivateRoute allowedRoles={['ROLE_USER', 'ROLE_TECNICO', 'ROLE_ADMIN']}>
+          <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
             <PagNuevaAveria />
           </PrivateRoute>
         }
@@ -99,7 +101,7 @@ function App() {
       <Route
         path="/nuevoActivo"
         element={
-          <PrivateRoute allowedRoles={['ROLE_ADMIN']}>
+          <PrivateRoute allowedRoles={['ADMIN']}>
             <PagNuevoActivo />
           </PrivateRoute>
         }
@@ -109,7 +111,7 @@ function App() {
       <Route
         path="/editarActivo/:id"
         element={
-          <PrivateRoute allowedRoles={['ROLE_ADMIN']}>
+          <PrivateRoute allowedRoles={['ADMIN']}>
             <EditarActivo />
           </PrivateRoute>
         }

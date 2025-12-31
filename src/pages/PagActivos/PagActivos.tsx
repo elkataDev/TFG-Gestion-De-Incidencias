@@ -225,21 +225,25 @@ export default function PagActivos() {
       <Selects />
       <div className="table-container">
         <BasicTable
-          data={activosEjemplo}
+          endpoint="http://localhost:5555/api/inventario"
           filasPorPagina={5}
-          renderCustomCell={(key, value, _row) => {
+          extraColumns={['acciones']}
+          renderCustomCell={(key, value, row) => {
             if (key === 'acciones') {
               return (
                 <button
                   className="link-editar"
-                  onClick={() => void navigate(`/editarActivo/${_row.id.replace('#', '')}`)}
+                  onClick={() => void navigate(`/editarActivo/${row.id}`)}
                 >
                   Editar
                 </button>
               );
             }
 
-            if (key === 'estado' || key === 'rol') return <EstadoBadge estado={String(value)} />;
+            if (key === 'estado') {
+              return <EstadoBadge estado={String(value)} />;
+            }
+
             return value as React.ReactNode;
           }}
         />

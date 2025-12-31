@@ -1,5 +1,5 @@
 //import { LoginForm } from '@/components/features/usuarios/LoginForm/LoginForm';
-import { LoginForm } from '@/components/features/usuarios/LoginForm/LoginDummy';
+import { LoginForm } from '@/components/features/usuarios/LoginForm/LoginForm';
 import './LoginPage.css';
 export const LoginPage = () => {
   return (
