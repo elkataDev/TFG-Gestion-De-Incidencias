@@ -8,6 +8,7 @@ import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import iesalonsocano.gestiondeaverias.Repository.UsuariosRepository;
 import iesalonsocano.gestiondeaverias.Services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +23,18 @@ import java.util.Optional;
 @Service
 public class UsuariosServiceImpl implements UsuariosService {
 
-    @Autowired
-    private UsuariosRepository usuariosRepository;
+    private final UsuariosRepository usuariosRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuariosServiceImpl(
+            UsuariosRepository usuariosRepository,
+            PasswordEncoder passwordEncoder
+    ) {
+        this.usuariosRepository = usuariosRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
 
     @Override
     public List<UsuariosEntity> findAll() {
@@ -38,9 +49,14 @@ public class UsuariosServiceImpl implements UsuariosService {
     @Override
     public UsuariosEntity save(UsuariosEntity usuario) {
 
-        // --- LÓGICA DE GUARDADO SIMPLE ---
-        // La contraseña se guarda en texto plano tal como viene.
-        // Simple save logic. Password is saved as plain text as received.
+
+        usuario.setPassword(
+                passwordEncoder.encode(usuario.getPassword())
+        );
+
+
+        usuario.setRol("USER");
+        usuario.setActivo(true);
 
         return usuariosRepository.save(usuario);
     }

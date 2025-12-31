@@ -5,6 +5,7 @@ import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import iesalonsocano.gestiondeaverias.security.JwtTokenProvider;
 import iesalonsocano.gestiondeaverias.Services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,8 +14,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
     @Autowired
@@ -53,12 +57,23 @@ public class AuthController {
         return ResponseEntity.ok(new LoginResponse(token, usuarioDb.getNombreUsuario(), role));
     }
 
-    // REGISTRO
     @PostMapping("/registro")
-    public ResponseEntity<UsuariosEntity> registrar(@RequestBody UsuariosEntity usuario) {
-        return ResponseEntity.ok(usuariosService.save(usuario));
+    public ResponseEntity<?> registrar(@RequestBody UsuariosEntity usuario) {
+
+        UsuariosEntity guardado = usuariosService.save(usuario);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Map.of(
+                        "message", "Usuario registrado correctamente",
+                        "id", guardado.getId(),
+                        "username", guardado.getNombreUsuario(),
+                        "email", guardado.getEmail()
+                )
+        );
     }
 }
+
+
 
 class LoginRequest {
     private String username;
