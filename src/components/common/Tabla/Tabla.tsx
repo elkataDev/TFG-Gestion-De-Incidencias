@@ -9,11 +9,12 @@ import Paper from '@mui/material/Paper';
 import Paginacion from '../Paginacion/Paginacion';
 import './Tabla.css';
 
-interface TablaGenericaProps<T> {
+interface TablaGenericaProps<T extends Record<string, unknown>> {
   endpoint?: string;
   data?: T[];
+  extraColumns?: string[];
   filasPorPagina?: number;
-  renderCustomCell?: (key: string, value: unknown, row: T) => React.ReactNode; // Para celdas personalizadas (como EstadoBadge)
+  renderCustomCell?: (key: string, value: unknown, row: Record<string, unknown>) => React.ReactNode;
 }
 
 export default function TablaGenerica<T extends Record<string, unknown>>({
@@ -21,30 +22,79 @@ export default function TablaGenerica<T extends Record<string, unknown>>({
   data,
   filasPorPagina = 5,
   renderCustomCell,
+  extraColumns = [],
 }: TablaGenericaProps<T>) {
-  const [rows, setRows] = useState<T[]>([]);
+  const [rows, setRows] = useState<Record<string, unknown>[]>([]);
   const [paginaActual, setPaginaActual] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  // Función para aplanar objetos anidados
+  const flattenObject = (obj: Record<string, unknown>): Record<string, unknown> => {
+    const flattened: Record<string, unknown> = {};
+    Object.entries(obj).forEach(([key, value]) => {
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        Object.entries(value as Record<string, unknown>).forEach(([subKey, subValue]) => {
+          flattened[subKey] = subValue;
+        });
+      } else {
+        flattened[key] = value;
+      }
+    });
+    return flattened;
+  };
+
+  // Cargar datos desde endpoint
   useEffect(() => {
     if (!endpoint) return;
 
     setLoading(true);
+    setError(null);
 
-    fetch(endpoint)
-      .then((res) => res.json())
-      .then((json: T[]) => setRows(json))
-      .catch((error) => console.error('Error al cargar datos:', error))
+    const token = localStorage.getItem('token');
+    console.log('Token usado:', token);
+
+    fetch(endpoint, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    })
+      .then(async (res) => {
+        if (res.status === 403) {
+          throw new Error('No autorizado (403). Comprueba tus permisos.');
+        }
+        if (!res.ok) {
+          throw new Error(`Error HTTP: ${res.status}`);
+        }
+
+        const text = await res.text();
+        if (!text) return [];
+
+        try {
+          const jsonData = JSON.parse(text);
+          return Array.isArray(jsonData) ? jsonData : [jsonData];
+        } catch (err) {
+          console.error('Error parseando JSON:', text, err);
+          return [];
+        }
+      })
+      .then((data) => {
+        setRows(data.map(flattenObject));
+      })
+      .catch((err: unknown) => {
+        console.error('Error al cargar datos:', err);
+        if (err instanceof Error) setError(err.message);
+      })
       .finally(() => setLoading(false));
   }, [endpoint]);
 
-  // Si se pasan datos por props, úsalos directamente
+  // Si se pasan datos por props
   useEffect(() => {
-    if (data) setRows(data);
+    if (data) setRows(data.map(flattenObject));
   }, [data]);
 
-  const columnas: string[] = rows.length > 0 ? Object.keys(rows[0]!) : [];
-
+  const columnas: string[] = rows.length > 0 ? [...Object.keys(rows[0]!), ...extraColumns] : [];
   const filasVisibles = rows.slice(
     paginaActual * filasPorPagina,
     (paginaActual + 1) * filasPorPagina
@@ -72,6 +122,12 @@ export default function TablaGenerica<T extends Record<string, unknown>>({
             <TableRow>
               <TableCell colSpan={columnas.length} align="center">
                 Cargando datos...
+              </TableCell>
+            </TableRow>
+          ) : error ? (
+            <TableRow>
+              <TableCell colSpan={columnas.length} align="center">
+                {error}
               </TableCell>
             </TableRow>
           ) : filasVisibles.length > 0 ? (

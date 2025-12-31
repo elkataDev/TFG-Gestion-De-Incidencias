@@ -4,44 +4,6 @@ import BasicTable from '@/components/common/Tabla/Tabla';
 import SelectAutoWidth from '@/components/common/Select/Select';
 import { EstadoBadge } from '@/components/common/EstadoBadge/EstadoBadge';
 
-const data = [
-  {
-    id: '1',
-    nombre: 'Juan Perez',
-    correo: 'juan.perez@example.com',
-    rol: 'admin',
-  },
-  {
-    id: '2',
-    nombre: 'Maria Gomez',
-    correo: 'maria.gomez@example.com',
-    rol: 'user',
-  },
-  {
-    id: '3',
-    nombre: 'Juan Perez',
-    correo: 'juan.perez@example.com',
-    rol: 'admin',
-  },
-  {
-    id: '4',
-    nombre: 'Maria Gomez',
-    correo: 'maria.gomez@example.com',
-    rol: 'user',
-  },
-  {
-    id: '5',
-    nombre: 'Juan Perez',
-    correo: 'juan.perez@example.com',
-    rol: 'admin',
-  },
-  {
-    id: '6',
-    nombre: 'Maria Gomez',
-    correo: 'maria.gomez@example.com',
-    rol: 'user',
-  },
-];
 function Selects() {
   return (
     <span className="selects-container">
@@ -71,7 +33,7 @@ export default function PagUsuarios() {
       <Selects />
       <div className="table-container">
         <BasicTable
-          data={data}
+          endpoint="http://localhost:5555/api/usuarios"
           filasPorPagina={5}
           renderCustomCell={(key, value, _row) => {
             if (key === 'estado' || key === 'rol') return <EstadoBadge estado={String(value)} />;
