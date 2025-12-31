@@ -2,16 +2,21 @@ package iesalonsocano.gestiondeaverias.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import iesalonsocano.gestiondeaverias.Repository.AulasRepository;
+import iesalonsocano.gestiondeaverias.Repository.IncidenciasRepository;
 import iesalonsocano.gestiondeaverias.Repository.InventarioRepository;
-import iesalonsocano.gestiondeaverias.Repository.UsuariosRepository; // <--- Nuevo
+import iesalonsocano.gestiondeaverias.Repository.UsuariosRepository;
 import iesalonsocano.gestiondeaverias.entity.AulasEntity;
+import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
-import iesalonsocano.gestiondeaverias.entity.UsuariosEntity; // <--- Nuevo
+import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.security.crypto.password.PasswordEncoder; // <--- Vital para encriptar
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -23,11 +28,17 @@ import java.util.Optional;
 public class DataLoader {
 
     @Bean
-    CommandLineRunner initDatabase(InventarioRepository inventarioRepository,
-                                   UsuariosRepository usuariosRepository, // Inyectamos repo usuarios
-                                   PasswordEncoder passwordEncoder) {     // Inyectamos encriptador
+    CommandLineRunner initDatabase(
+            InventarioRepository inventarioRepository,
+            UsuariosRepository usuariosRepository,
+            AulasRepository aulasRepository,
+            IncidenciasRepository incidenciasRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         return args -> {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
             // ==========================================
             // 1. CARGA DE USUARIOS
@@ -37,14 +48,9 @@ public class DataLoader {
                 List<UsuariosEntity> usuariosList = mapper.readValue(inputStream, typeRefUsers);
 
                 for (UsuariosEntity usuario : usuariosList) {
-                    // Comprobamos si existe para no dar error de duplicado
                     Optional<UsuariosEntity> existe = usuariosRepository.findByNombreUsuario(usuario.getNombreUsuario());
-
                     if (existe.isEmpty()) {
-                        // 🔐 ENCRIPTAMOS LA CONTRASEÑA ANTES DE GUARDAR
-                        String passSinEncriptar = usuario.getPassword();
-                        usuario.setPassword(passwordEncoder.encode(passSinEncriptar));
-
+                        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
                         usuariosRepository.save(usuario);
                         System.out.println("👤 Usuario creado: " + usuario.getNombreUsuario());
                     } else {
@@ -56,27 +62,25 @@ public class DataLoader {
             }
 
             // ==========================================
-            // 2. CARGA DE INVENTARIO (Tu código existente)
+            // 2. CARGA DE INVENTARIO
             // ==========================================
             if (inventarioRepository.count() == 0) {
                 try (InputStream inputStream = new ClassPathResource("data/inventario.json").getInputStream()) {
                     TypeReference<List<InventarioEntity>> typeRefInv = new TypeReference<>() {};
                     List<InventarioEntity> inventarioList = mapper.readValue(inputStream, typeRefInv);
 
-                    // Lógica para evitar duplicar Aulas
                     Map<String, AulasEntity> aulasCache = new HashMap<>();
-
                     for (InventarioEntity item : inventarioList) {
-                        // Asegúrate de que tu InventarioEntity tiene el campo 'aula' como Objeto, no String
-                        // Si lo cambiaste a String en el paso anterior, esta parte del mapa sobra.
-                        // Si sigues usando AulasEntity, mantén esto:
                         if (item.getAula() != null) {
                             String nombreAula = item.getAula().getNombre();
-                            if (aulasCache.containsKey(nombreAula)) {
-                                item.setAula(aulasCache.get(nombreAula));
-                            } else {
-                                aulasCache.put(nombreAula, item.getAula());
+                            AulasEntity aula = aulasCache.get(nombreAula);
+                            if (aula == null) {
+                                // Revisa si existe en DB
+                                Optional<AulasEntity> aulaDB = aulasRepository.findByNombre(nombreAula);
+                                aula = aulaDB.orElse(item.getAula());
+                                aulasCache.put(nombreAula, aula);
                             }
+                            item.setAula(aula);
                         }
                     }
                     inventarioRepository.saveAll(inventarioList);
@@ -86,6 +90,38 @@ public class DataLoader {
                 }
             } else {
                 System.out.println("ℹ️ El inventario ya tiene datos.");
+            }
+
+            // ==========================================
+            // 3. CARGA DE INCIDENCIAS
+            // ==========================================
+            if (incidenciasRepository.count() == 0) {
+                try (InputStream inputStream = new ClassPathResource("data/incidencias.json").getInputStream()) {
+                    TypeReference<List<IncidenciasEntity>> typeRefInc = new TypeReference<>() {};
+                    List<IncidenciasEntity> incidenciasList = mapper.readValue(inputStream, typeRefInc);
+
+                    for (IncidenciasEntity inc : incidenciasList) {
+                        // Mapear usuario
+                        if (inc.getUsuario() != null) {
+                            String nombreUsuario = inc.getUsuario().getNombreUsuario();
+                            Optional<UsuariosEntity> usuarioDB = usuariosRepository.findByNombreUsuario(nombreUsuario);
+                            usuarioDB.ifPresent(inc::setUsuario);
+                        }
+                        // Mapear aula
+                        if (inc.getAula() != null) {
+                            String nombreAula = inc.getAula().getNombre();
+                            Optional<AulasEntity> aulaDB = aulasRepository.findByNombre(nombreAula);
+                            aulaDB.ifPresent(inc::setAula);
+                        }
+                    }
+
+                    incidenciasRepository.saveAll(incidenciasList);
+                    System.out.println("✅ Incidencias cargadas correctamente.");
+                } catch (Exception e) {
+                    System.err.println("❌ Error al cargar incidencias: " + e.getMessage());
+                }
+            } else {
+                System.out.println("ℹ️ Las incidencias ya tienen datos.");
             }
         };
     }

@@ -1,0 +1,137 @@
+[
+  {
+    "titulo": "Fallo en router principal",
+    "descripcion": "El router principal de la sala no responde y no permite conexión a internet.",
+    "estado": "ABIERTO",
+    "categoria": "RED",
+    "aula": { "nombre": "Aula Ateca" },
+    "usuario": { "nombreUsuario": "admin" },
+    "fechaReporte": "2025-10-29T00:00:00"
+  },
+  {
+    "titulo": "Error en impresora 3D",
+    "descripcion": "La impresora 3D no finaliza la impresión y se detiene a mitad de proceso.",
+    "estado": "EN_PROGRESO",
+    "categoria": "HARDWARE",
+    "aula": { "nombre": "Aula FPB1" },
+    "usuario": { "nombreUsuario": "profesor" },
+    "fechaReporte": "2025-10-28T00:00:00"
+  },
+  {
+    "titulo": "Problema con software contable",
+    "descripcion": "El software contable muestra errores al generar informes.",
+    "estado": "ABIERTO",
+    "categoria": "SOFTWARE",
+    "aula": { "nombre": "Aula Taller" },
+    "usuario": { "nombreUsuario": "profesor" },
+    "fechaReporte": "2025-10-27T00:00:00"
+  },
+  {
+    "titulo": "Monitor sin señal",
+    "descripcion": "El monitor de la biblioteca no muestra imagen alguna.",
+    "estado": "RESUELTO",
+    "categoria": "HARDWARE",
+    "aula": { "nombre": "Biblioteca" },
+    "usuario": { "nombreUsuario": "conserje" },
+    "fechaReporte": "2025-10-26T00:00:00"
+  },
+  {
+    "titulo": "Fallo en switch de red",
+    "descripcion": "El switch de Conserjería no conecta los equipos correctamente.",
+    "estado": "ABIERTO",
+    "categoria": "RED",
+    "aula": { "nombre": "Conserjeria" },
+    "usuario": { "nombreUsuario": "conserje" },
+    "fechaReporte": "2025-10-25T00:00:00"
+  },
+  {
+    "titulo": "Actualización software educativo",
+    "descripcion": "No se puede actualizar el software educativo en los PCs de dirección.",
+    "estado": "EN_PROGRESO",
+    "categoria": "SOFTWARE",
+    "aula": { "nombre": "Direccion" },
+    "usuario": { "nombreUsuario": "admin" },
+    "fechaReporte": "2025-10-24T00:00:00"
+  },
+  {
+    "titulo": "PC del laboratorio no enciende",
+    "descripcion": "Uno de los PCs del laboratorio no enciende al presionar el botón de encendido.",
+    "estado": "ABIERTO",
+    "categoria": "HARDWARE",
+    "aula": { "nombre": "Jefatura" },
+    "usuario": { "nombreUsuario": "admin" },
+    "fechaReporte": "2025-10-23T00:00:00"
+  },
+  {
+    "titulo": "Conexión Wi-Fi inestable",
+    "descripcion": "La conexión Wi-Fi en la Sala de Profesores se cae constantemente.",
+    "estado": "EN_PROGRESO",
+    "categoria": "RED",
+    "aula": { "nombre": "Sala Profes" },
+    "usuario": { "nombreUsuario": "profesor" },
+    "fechaReporte": "2025-10-22T00:00:00"
+  },
+  {
+    "titulo": "Error de licencia en software de diseño",
+    "descripcion": "El software de diseño indica que la licencia ha expirado y no permite abrir proyectos.",
+    "estado": "ABIERTO",
+    "categoria": "SOFTWARE",
+    "aula": { "nombre": "Aula FPB1" },
+    "usuario": { "nombreUsuario": "profesor" },
+    "fechaReporte": "2025-10-21T00:00:00"
+  },
+  {
+    "titulo": "Teclado y ratón defectuosos",
+    "descripcion": "El teclado y ratón del salón de actos no responden a los comandos.",
+    "estado": "RESUELTO",
+    "categoria": "HARDWARE",
+    "aula": { "nombre": "Salon de actos" },
+    "usuario": { "nombreUsuario": "conserje" },
+    "fechaReporte": "2025-10-20T00:00:00"
+  },
+  {
+    "titulo": "Servidor principal no responde",
+    "descripcion": "El servidor principal de la red está apagado o no responde a pings.",
+    "estado": "ABIERTO",
+    "categoria": "RED",
+    "aula": { "nombre": "Aula Ateca" },
+    "usuario": { "nombreUsuario": "admin" },
+    "fechaReporte": "2025-10-19T00:00:00"
+  },
+  {
+    "titulo": "Fallo en instalación antivirus",
+    "descripcion": "El antivirus no se instala correctamente en los PCs del Aula Taller.",
+    "estado": "EN_PROGRESO",
+    "categoria": "SOFTWARE",
+    "aula": { "nombre": "Aula Taller" },
+    "usuario": { "nombreUsuario": "profesor" },
+    "fechaReporte": "2025-10-18T00:00:00"
+  },
+  {
+    "titulo": "Proyector no proyecta imagen",
+    "descripcion": "El proyector de la biblioteca no muestra la señal de la computadora.",
+    "estado": "ABIERTO",
+    "categoria": "HARDWARE",
+    "aula": { "nombre": "Biblioteca" },
+    "usuario": { "nombreUsuario": "conserje" },
+    "fechaReporte": "2025-10-17T00:00:00"
+  },
+  {
+    "titulo": "Problemas de red en laboratorio",
+    "descripcion": "La red del laboratorio FPB1 es inestable y se pierden paquetes.",
+    "estado": "EN_PROGRESO",
+    "categoria": "RED",
+    "aula": { "nombre": "Aula FPB1" },
+    "usuario": { "nombreUsuario": "profesor" },
+    "fechaReporte": "2025-10-16T00:00:00"
+  },
+  {
+    "titulo": "Actualización software fallida",
+    "descripcion": "La actualización del software en Secretaría falla con código de error 503.",
+    "estado": "ABIERTO",
+    "categoria": "SOFTWARE",
+    "aula": { "nombre": "Secretaria" },
+    "usuario": { "nombreUsuario": "conserje" },
+    "fechaReporte": "2025-10-15T00:00:00"
+  }
+]
