@@ -13,7 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -73,24 +75,45 @@ public class IncidenciaController {
 
     // 4. CAMBIAR ESTADO (El flujo: Abierto -> En curso -> Resuelto)
     // Usamos PatchMapping porque solo modificamos un campo (el estado)
-    //TODO NO DETECTA QUE EL ADMIN SEA UN ADMIN, NO SE PUEDE OBTENER LOS DATOS
     @PatchMapping("/{id}/estado")
     @PreAuthorize("hasAnyRole('TECNICO', 'ADMIN')")
-    public ResponseEntity<IncidenciasDTO> updateEstado(
+    public ResponseEntity<?> updateEstado(
+            // Usa ? para poder devolver errores de texto si falla
             @PathVariable Long id,
-            @RequestBody IncidenciasEntity.EstadoIncidencia nuevoEstado) {
-        // Buscamos la entidad
-        IncidenciasEntity incidencia = incidenciasService.findById(id)
-                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+            @RequestBody Map<String, String> requestBody) { // 1. Recibimos un JSON genérico
 
-        // Modificamos el estado
-        incidencia.setEstado(nuevoEstado);
+        // 2. Extraemos el valor del campo "estado"
+        String nuevoEstadoStr = requestBody.get("estado");
 
-        // Guardamos (el service devuelve la entidad guardada)
-        IncidenciasEntity guardada = incidenciasService.save(incidencia);
+        if (nuevoEstadoStr == null) {
+            return ResponseEntity.badRequest().body("El campo 'estado' es obligatorio");
+        }
 
-        // Convertimos a DTO y devolvemos
-        return ResponseEntity.ok(IncidenciasDTO.fromEntity(guardada));
+        try {
+            // 3. Convertimos el String al Enum (Valida que sea uno correcto: EN_CURSO, RESUELTO...)
+            IncidenciasEntity.EstadoIncidencia nuevoEstado =
+                    IncidenciasEntity.EstadoIncidencia.valueOf(nuevoEstadoStr.toUpperCase());
+
+            // 4. Lógica de negocio
+            IncidenciasEntity incidencia = incidenciasService.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+
+            incidencia.setEstado(nuevoEstado);
+
+            // Actualizamos fecha de cierre si corresponde
+            if (nuevoEstado == IncidenciasEntity.EstadoIncidencia.RESUELTO ||
+                    nuevoEstado == IncidenciasEntity.EstadoIncidencia.CERRADO) {
+                incidencia.setFechaCierre(LocalDateTime.now());
+            }
+
+            IncidenciasEntity guardada = incidenciasService.save(incidencia);
+
+            return ResponseEntity.ok(IncidenciasDTO.fromEntity(guardada));
+
+        } catch (IllegalArgumentException e) {
+            // 5. Capturamos si envían un estado inventado (ej: "TERMINADO")
+            return ResponseEntity.badRequest().body("Estado no válido. Valores permitidos: EN_CURSO, EN_ESPERA, RESUELTO, CERRADO, REABIERTO");
+        }
     }
 
     // 5. CREAR INCIDENCIA (Página de Averías)
