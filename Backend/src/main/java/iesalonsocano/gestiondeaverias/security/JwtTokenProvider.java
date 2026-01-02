@@ -30,7 +30,7 @@ public class JwtTokenProvider {
         String role = authentication.getAuthorities().stream()
                 .map(r -> r.getAuthority())
                 .findFirst()
-                .orElse("ROLE_usuario"); // Rol por defecto
+                .orElse("USUARIO"); // Rol por defecto
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
