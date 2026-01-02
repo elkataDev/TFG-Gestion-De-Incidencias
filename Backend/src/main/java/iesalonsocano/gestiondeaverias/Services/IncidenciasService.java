@@ -1,6 +1,9 @@
 package iesalonsocano.gestiondeaverias.Services;
 
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -57,4 +60,14 @@ public interface IncidenciasService {
      * @return lista de incidencias del aula
      */
     List<IncidenciasEntity> findByAulaId(Long aulaId);
+
+    List<IncidenciasEntity> filtrar(
+            IncidenciasEntity.EstadoIncidencia estado,
+            IncidenciasEntity.CategoriaIncidencia categoria,
+            String nombreAula
+    );
+
+
+
+
 }
