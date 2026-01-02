@@ -109,14 +109,44 @@ public class IncidenciaController {
         // ASIGNAMOS EL USUARIO AUTENTICADO
         incidencia.setUsuario(usuario);
 
-        // 3. Asignamos el aula si viene en el DTO
-        if (dto.getAulaId() != null) {
-            AulasEntity aula = aulasService.findById(dto.getAulaId())
-                    .orElseThrow(() -> new RuntimeException("Aula no encontrada"));
-            incidencia.setAula(aula);
-        }
+
         // Al guardar, el Service pondrá estado 'abierta' y fecha_reporte
         IncidenciasEntity incidenciaGuardada = incidenciasService.save(incidencia);
         return  ResponseEntity.ok(IncidenciasDTO.fromEntity(incidenciaGuardada));
     }
-}
+
+
+    @GetMapping("/filtrar")
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ResponseEntity<List<IncidenciasDTO>> filtrar(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String nombreAula
+    ) {
+        // Convertir Strings a enums
+        IncidenciasEntity.EstadoIncidencia estadoEnum = null;
+        if (estado != null) {
+            try {
+                estadoEnum = IncidenciasEntity.EstadoIncidencia.valueOf(estado.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Estado no válido: " + estado);
+            }
+        }
+
+        IncidenciasEntity.CategoriaIncidencia categoriaEnum = null;
+        if (categoria != null) {
+            try {
+                categoriaEnum = IncidenciasEntity.CategoriaIncidencia.valueOf(categoria.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Categoría no válida: " + categoria);
+            }
+        }
+
+        List<IncidenciasEntity> entidades = incidenciasService.filtrar(estadoEnum, categoriaEnum, nombreAula);
+
+        List<IncidenciasDTO> dtos = entidades.stream()
+                .map(IncidenciasDTO::fromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }}

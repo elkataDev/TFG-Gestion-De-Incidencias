@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas
-                        .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api/auth/login", "/api/auth/registro").permitAll()
+                        .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api/auth/login", "/api/auth/registro", "/api/incidencias/filtrar").permitAll()
 
                         // Rutas protegidas de ejemplo
                         .requestMatchers(HttpMethod.POST, "/api/aulas/**").hasRole("ADMIN")
