@@ -80,6 +80,7 @@ export default function TablaGenerica<T extends Record<string, unknown>>({
         }
       })
       .then((data) => {
+        console.log('Datos crudos recibidos del endpoint:', data); // <-- Aquí ves el JSON
         setRows(data.map(flattenObject));
       })
       .catch((err: unknown) => {
@@ -137,7 +138,9 @@ export default function TablaGenerica<T extends Record<string, unknown>>({
                   <TableCell key={key} align="center">
                     {renderCustomCell
                       ? renderCustomCell(key, row[key], row)
-                      : (row[key] as React.ReactNode)}
+                      : typeof row[key] === 'string' || typeof row[key] === 'number'
+                        ? row[key]
+                        : JSON.stringify(row[key] ?? '')}
                   </TableCell>
                 ))}
               </TableRow>

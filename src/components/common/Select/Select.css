@@ -1,0 +1,45 @@
+.select-blanco {
+  min-width: 150px;
+}
+
+/* Label */
+.select-blanco .MuiInputLabel-root {
+  color: #ffffff;
+}
+
+.select-blanco .MuiInputLabel-root.Mui-focused {
+  color: #ffffff;
+}
+
+/* Select / Input */
+.select-blanco .MuiOutlinedInput-root {
+  color: #ffffff;
+}
+
+.select-blanco .MuiOutlinedInput-root fieldset {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.select-blanco .MuiOutlinedInput-root:hover fieldset {
+  border-color: #ffffff;
+}
+
+.select-blanco .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: #ffffff;
+  border-width: 2px;
+}
+
+/* Icono desplegable */
+.select-blanco .MuiSelect-icon {
+  color: #ffffff;
+}
+
+/* Texto del menú */
+.MuiMenuItem-root {
+  color: #ffffff;
+}
+
+/* Fondo del desplegable (opcional, modo oscuro) */
+.MuiPaper-root {
+  background-color: #1e1e1e;
+}
