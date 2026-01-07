@@ -101,8 +101,7 @@ public class IncidenciaController {
             incidencia.setEstado(nuevoEstado);
 
             // Actualizamos fecha de cierre si corresponde
-            if (nuevoEstado == IncidenciasEntity.EstadoIncidencia.RESUELTO ||
-                    nuevoEstado == IncidenciasEntity.EstadoIncidencia.CERRADO) {
+            if (nuevoEstado == IncidenciasEntity.EstadoIncidencia.RESUELTO ) {
                 incidencia.setFechaCierre(LocalDateTime.now());
             }
 
