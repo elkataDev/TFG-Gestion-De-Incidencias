@@ -70,9 +70,17 @@ public class IncidenciasServiceImpl implements IncidenciasService {
         return incidenciasRepository.findByAulaId(aulaId);
     }
 
-
-
-    // Lógica de Flujo de Estados
+    /**
+     * Actualiza el estado de una incidencia.
+     * <p>
+     * Si el nuevo estado es RESUELTO, establece automáticamente la fecha de cierre.
+     * </p>
+     *
+     * @param id identificador de la incidencia
+     * @param nuevoEstado nuevo estado a establecer
+     * @return incidencia actualizada
+     * @throws RuntimeException si la incidencia no existe
+     */
     public IncidenciasEntity actualizarEstado(Long id, IncidenciasEntity.EstadoIncidencia nuevoEstado) {
         IncidenciasEntity incidencia = incidenciasRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
@@ -87,17 +95,4 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
         return incidenciasRepository.save(incidencia);
     }
-
-
-
-    @Override
-    public List<IncidenciasEntity> filtrar(
-            IncidenciasEntity.EstadoIncidencia estado,
-            IncidenciasEntity.CategoriaIncidencia categoria,
-            String nombreAula
-    ) {
-        // Aquí llamamos al repositorio
-        return incidenciasRepository.filtrarPorParametros(estado, categoria, nombreAula);
-    }
-
 }
