@@ -43,6 +43,9 @@ public class IncidenciasDTO {
     /**
      * Fecha y hora en que se reportó la incidencia.
      */
+    private String categoria; // <-- Enum como String
+    private String nombreAula; // <-- nombre del aula
+    private String nombreUsuario; // <-- nombre del usuario
     private LocalDateTime fechaReporte;
 
     /**
@@ -74,6 +77,7 @@ public class IncidenciasDTO {
      * @param entity entidad de incidencia a convertir
      * @return IncidenciasDTO con los datos de la entidad, o null si la entidad es null
      */
+    // --- CONVERSOR ---
     public static IncidenciasDTO fromEntity(IncidenciasEntity entity) {
         if (entity == null) {
             return null;
@@ -84,16 +88,11 @@ public class IncidenciasDTO {
                 .titulo(entity.getTitulo())
                 .descripcion(entity.getDescripcion())
                 .estado(entity.getEstado() != null ? entity.getEstado().name() : null)
+                .categoria(entity.getCategoria() != null ? entity.getCategoria().name() : null)
+                .nombreAula(entity.getAula() != null ? entity.getAula().getNombre() : "Desconocido")
+                .nombreUsuario(entity.getUsuario() != null ? entity.getUsuario().getNombreUsuario() : "Desconocido")
                 .fechaReporte(entity.getFechaReporte())
                 .fechaCierre(entity.getFechaCierre())
-
-                // Mapeo seguro del Aula
-                .aulaId(entity.getAula() != null ? entity.getAula().getId() : null)
-
-                // Mapeo del Usuario (asumiendo que usuario nunca es null por la BD, pero protegemos igual)
-                .usuarioId(entity.getUsuario() != null ? entity.getUsuario().getId() : null)
-
-                .nombreUsuario(entity.getUsuario() != null ? entity.getUsuario().getNombreUsuario() : "Desconocido")
                 .build();
     }
 }

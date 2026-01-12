@@ -81,6 +81,9 @@ public class IncidenciasServiceImpl implements IncidenciasService {
      * @return incidencia actualizada
      * @throws RuntimeException si la incidencia no existe
      */
+
+
+    // Lógica de Flujo de Estados
     public IncidenciasEntity actualizarEstado(Long id, IncidenciasEntity.EstadoIncidencia nuevoEstado) {
         IncidenciasEntity incidencia = incidenciasRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
@@ -95,4 +98,17 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
         return incidenciasRepository.save(incidencia);
     }
+
+
+
+    @Override
+    public List<IncidenciasEntity> filtrar(
+            IncidenciasEntity.EstadoIncidencia estado,
+            IncidenciasEntity.CategoriaIncidencia categoria,
+            String nombreAula
+    ) {
+        // Aquí llamamos al repositorio
+        return incidenciasRepository.filtrarPorParametros(estado, categoria, nombreAula);
+    }
+
 }
