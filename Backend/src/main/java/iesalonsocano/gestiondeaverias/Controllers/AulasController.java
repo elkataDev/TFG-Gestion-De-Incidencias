@@ -15,6 +15,30 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador REST para la gestión de aulas del centro educativo.
+ * <p>
+ * Proporciona endpoints para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
+ * sobre las aulas del instituto.
+ * </p>
+ *
+ * <p>
+ * Seguridad:
+ * <ul>
+ *   <li>GET - Accesible para cualquier usuario autenticado</li>
+ *   <li>POST, PUT, DELETE - Solo ADMIN o TECNICO</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Base URL: {@code /api/aulas}
+ * </p>
+ *
+ * @author IES Alonso Cano
+ * @version 1.0.0
+ * @see AulasService
+ * @see AulasDTO
+ */
 @RestController
 @RequestMapping("api/aulas")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -26,7 +50,14 @@ public class AulasController {
     @Autowired
     private IncidenciasService incidenciasService;
 
-    // Obtener todas las aulas: Accesible para cualquier usuario autenticado
+    /**
+     * Obtiene la lista de todas las aulas del centro.
+     * <p>
+     * Acceso: Cualquier usuario autenticado.
+     * </p>
+     *
+     * @return ResponseEntity con lista de AulasDTO y código HTTP 200
+     */
     @GetMapping
     public ResponseEntity<List<AulasDTO>> getAllAulas() {
         List<AulasDTO> dtos = aulasService.findAll().stream()
@@ -35,7 +66,15 @@ public class AulasController {
         return ResponseEntity.ok(dtos);
     }
 
-    // Obtener un aula por ID: Accesible para cualquier usuario autenticado
+    /**
+     * Obtiene un aula específica por su identificador.
+     * <p>
+     * Acceso: Cualquier usuario autenticado.
+     * </p>
+     *
+     * @param id identificador único del aula
+     * @return ResponseEntity con AulasDTO si existe, o 404 Not Found si no se encuentra
+     */
     @GetMapping("/{id}")
     public ResponseEntity<AulasDTO> getAulaById(@PathVariable Long id) {
         return aulasService.findById(id)
@@ -43,7 +82,15 @@ public class AulasController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear aula: Solo Administrador o Técnico
+    /**
+     * Crea un aula nueva en el sistema.
+     * <p>
+     * Acceso: Solo ADMIN o TECNICO.
+     * </p>
+     *
+     * @param aula entidad con los datos del aula a crear
+     * @return ResponseEntity con AulasDTO del aula creada y código HTTP 201 Created
+     */
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<AulasDTO> createAula(@Valid @RequestBody AulasEntity aula) {
@@ -51,7 +98,16 @@ public class AulasController {
         return ResponseEntity.status(HttpStatus.CREATED).body(AulasDTO.fromEntity(nuevaAula));
     }
 
-    // Actualizar aula: Solo Administrador o Técnico
+    /**
+     * Actualiza los datos de un aula existente.
+     * <p>
+     * Acceso: Solo ADMIN o TECNICO.
+     * </p>
+     *
+     * @param id identificador del aula a actualizar
+     * @param aulaDetails entidad con los nuevos datos del aula
+     * @return ResponseEntity con AulasDTO actualizada o 404 Not Found si no existe
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<AulasDTO> updateAula(@PathVariable Long id, @Valid @RequestBody AulasEntity aulaDetails) {
@@ -64,7 +120,19 @@ public class AulasController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Eliminar aula: Solo Administrador o Técnico
+    /**
+     * Elimina un aula del sistema.
+     * <p>
+     * Acceso: Solo ADMIN o TECNICO.
+     * </p>
+     * <p>
+     * Antes de eliminar el aula, desvincula todas las incidencias asociadas
+     * estableciendo su referencia a aula como null.
+     * </p>
+     *
+     * @param id identificador del aula a eliminar
+     * @return ResponseEntity vacío con código 204 No Content, o 404 Not Found si no existe
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<Void> deleteAula(@PathVariable Long id) {

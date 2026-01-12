@@ -6,15 +6,37 @@ import io.swagger.v3.oas.models.info.Contact;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuración de Swagger/OpenAPI para la documentación automática de la API REST.
+ * <p>
+ * Esta configuración genera una interfaz web interactiva donde se pueden visualizar
+ * y probar todos los endpoints de la API.
+ * </p>
+ *
+ * <p>
+ * La documentación está disponible en:
+ * <ul>
+ *   <li>UI interactiva: <a href="http://localhost:8080/swagger-ui.html">http://localhost:8080/swagger-ui.html</a></li>
+ *   <li>JSON de OpenAPI: <a href="http://localhost:8080/v3/api-docs">http://localhost:8080/v3/api-docs</a></li>
+ * </ul>
+ * </p>
+ *
+ * @author IES Alonso Cano
+ * @version 1.0.0
+ * @see OpenAPI
+ */
 @Configuration
 public class SwaggerConfig {
 
-    /*Este archivo genera automáticamente la documentación de tu API en Swagger UI, accesible en tu navegador en
-    * http://localhost:8080/swagger-ui.html
-    *
-    * This file automatically generates your API documentation in Swagger UI, accessible in your browser at
-    * http://localhost:8080/swagger-ui.html*/
-
+    /**
+     * Configura la información general de la API para la documentación OpenAPI.
+     * <p>
+     * Define metadatos como título, descripción, versión e información de contacto
+     * que se mostrarán en la interfaz de Swagger UI.
+     * </p>
+     *
+     * @return instancia configurada de OpenAPI con la información de la API
+     */
     @Bean
     public OpenAPI gestionDeAveriasAPI() {
         return new OpenAPI()

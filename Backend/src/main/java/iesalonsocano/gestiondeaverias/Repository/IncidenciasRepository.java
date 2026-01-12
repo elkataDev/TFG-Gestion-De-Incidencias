@@ -7,30 +7,52 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repositorio JPA para la gestión de persistencia de incidencias.
+ * <p>
+ * Proporciona métodos de consulta personalizados para filtrar incidencias
+ * por estado, usuario o aula.
+ * </p>
+ *
+ * @author IES Alonso Cano
+ * @version 1.0.0
+ * @see IncidenciasEntity
+ */
 @Repository
 public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, Long> {
 
-    // ---------------------------------------------
-    // Find incidents by status
-    // Buscar incidencias por estado
-    // ---------------------------------------------
+    /**
+     * Busca todas las incidencias que tienen un estado específico.
+     *
+     * @param estado estado de la incidencia a filtrar
+     * @return lista de incidencias con el estado especificado
+     */
     List<IncidenciasEntity> findByEstado(EstadoIncidencia estado);
 
-    // ---------------------------------------------
-    // Find incidents by user ID
-    // Buscar incidencias por ID del usuario
-    // ---------------------------------------------
+    /**
+     * Busca todas las incidencias reportadas por un usuario específico.
+     *
+     * @param usuarioId identificador del usuario
+     * @return lista de incidencias del usuario
+     */
     List<IncidenciasEntity> findByUsuarioId(Long usuarioId);
 
-    // ---------------------------------------------
-    // Find incidents by classroom ID
-    // Buscar incidencias por ID del aula
-    // ---------------------------------------------
+    /**
+     * Busca todas las incidencias asociadas a un aula específica.
+     *
+     * @param aulaId identificador del aula
+     * @return lista de incidencias del aula
+     */
     List<IncidenciasEntity> findByAulaId(Long aulaId);
 
-    // ---------------------------------------------
-    // Find open incidents (in progress or pending)
-    // Buscar incidencias abiertas (en curso o en espera)
-    // ---------------------------------------------
+    /**
+     * Busca incidencias que tengan uno de los estados especificados.
+     * <p>
+     * Útil para filtrar incidencias abiertas (EN_PROGRESO, EN_ESPERA, etc.)
+     * </p>
+     *
+     * @param estados lista de estados a buscar
+     * @return lista de incidencias con alguno de los estados especificados
+     */
     List<IncidenciasEntity> findByEstadoIn(List<EstadoIncidencia> estados);
 }

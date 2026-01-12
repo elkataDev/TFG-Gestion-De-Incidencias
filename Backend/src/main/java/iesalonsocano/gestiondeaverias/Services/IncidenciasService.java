@@ -35,20 +35,26 @@ public interface IncidenciasService {
     void deleteById(Long id);
 
     /**
-     * Busca incidencias por estado.
-     * Finds incidents by status.
+     * Busca incidencias por su estado.
+     *
+     * @param estado estado de la incidencia
+     * @return lista de incidencias con el estado especificado
      */
     List<IncidenciasEntity> findByEstado(IncidenciasEntity.EstadoIncidencia estado);
 
     /**
-     * Busca incidencias por ID de usuario.
-     * Finds incidents by user ID.
+     * Busca todas las incidencias reportadas por un usuario.
+     *
+     * @param usuarioId identificador del usuario
+     * @return lista de incidencias del usuario
      */
     List<IncidenciasEntity> findByUsuarioId(Long usuarioId);
 
     /**
-     * Busca incidencias por ID de aula.
-     * Finds incidents by classroom ID.
+     * Busca todas las incidencias de un aula específica.
+     *
+     * @param aulaId identificador del aula
+     * @return lista de incidencias del aula
      */
     List<IncidenciasEntity> findByAulaId(Long aulaId);
 }

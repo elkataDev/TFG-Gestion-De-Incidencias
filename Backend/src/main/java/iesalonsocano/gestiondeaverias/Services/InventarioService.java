@@ -35,20 +35,26 @@ public interface InventarioService {
     void deleteById(Long id);
 
     /**
-     * Busca artículos por estado.
-     * Finds items by status.
+     * Busca artículos por su estado.
+     *
+     * @param estado estado del artículo
+     * @return lista de artículos con el estado especificado
      */
     List<InventarioEntity> findByEstado(InventarioEntity.estadoInventario estado);
 
     /**
-     * Busca artículos por ID de aula.
-     * Finds items by classroom ID.
+     * Busca todos los artículos ubicados en un aula.
+     *
+     * @param aulaId identificador del aula
+     * @return lista de artículos del aula
      */
     List<InventarioEntity> findByAulaId(Long aulaId);
 
     /**
-     * Busca un artículo por código QR.
-     * Finds an item by QR code.
+     * Busca un artículo por su código QR.
+     *
+     * @param codigo_QR código QR del artículo
+     * @return artículo con el código QR especificado
      */
     InventarioEntity findByCodigo_QR(String codigo_QR);
 }

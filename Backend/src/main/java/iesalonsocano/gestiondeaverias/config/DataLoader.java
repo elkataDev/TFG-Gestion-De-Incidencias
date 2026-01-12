@@ -24,9 +24,56 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Configuración para la carga inicial de datos en la base de datos.
+ * <p>
+ * Esta clase se encarga de cargar datos de prueba desde archivos JSON ubicados
+ * en el directorio {@code resources/data/} al iniciar la aplicación.
+ * </p>
+ *
+ * <p>
+ * Los datos cargados incluyen:
+ * <ul>
+ *   <li>Usuarios del sistema con contraseñas encriptadas</li>
+ *   <li>Inventario de equipos informáticos</li>
+ *   <li>Incidencias técnicas de ejemplo</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * La carga es idempotente: si los datos ya existen, no se duplican.
+ * </p>
+ *
+ * @author IES Alonso Cano
+ * @version 1.0.0
+ * @see CommandLineRunner
+ */
 @Configuration
 public class DataLoader {
 
+    /**
+     * Bean que inicializa la base de datos con datos de prueba al arrancar la aplicación.
+     * <p>
+     * Este método se ejecuta automáticamente después de que el contexto de Spring
+     * ha sido completamente inicializado.
+     * </p>
+     *
+     * <p>
+     * Secuencia de carga:
+     * <ol>
+     *   <li>Usuarios - desde {@code data/usuarios.json}</li>
+     *   <li>Inventario - desde {@code data/inventario.json}</li>
+     *   <li>Incidencias - desde {@code data/incidencias.json}</li>
+     * </ol>
+     * </p>
+     *
+     * @param inventarioRepository repositorio para gestionar el inventario
+     * @param usuariosRepository repositorio para gestionar usuarios
+     * @param aulasRepository repositorio para gestionar aulas
+     * @param incidenciasRepository repositorio para gestionar incidencias
+     * @param passwordEncoder codificador de contraseñas para seguridad
+     * @return CommandLineRunner que ejecuta la lógica de carga
+     */
     @Bean
     CommandLineRunner initDatabase(
             InventarioRepository inventarioRepository,

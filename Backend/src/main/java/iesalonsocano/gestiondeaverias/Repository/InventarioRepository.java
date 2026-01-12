@@ -7,30 +7,55 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repositorio JPA para la gestión de persistencia del inventario.
+ * <p>
+ * Proporciona métodos de consulta para filtrar artículos por estado,
+ * aula, nombre o código QR.
+ * </p>
+ *
+ * @author IES Alonso Cano
+ * @version 1.0.0
+ * @see InventarioEntity
+ */
 @Repository
 public interface InventarioRepository extends JpaRepository<InventarioEntity, Long> {
 
-    // ---------------------------------------------
-    // Find inventory items by status
-    // Buscar artículos del inventario por estado
-    // ---------------------------------------------
+    /**
+     * Busca artículos del inventario por su estado.
+     *
+     * @param estado estado del artículo (DISPONIBLE, EN_USO, DANADO)
+     * @return lista de artículos con el estado especificado
+     */
     List<InventarioEntity> findByEstado(estadoInventario estado);
 
-    // ---------------------------------------------
-    // Find inventory items by classroom ID
-    // Buscar artículos del inventario por ID de aula
-    // ---------------------------------------------
+    /**
+     * Busca todos los artículos ubicados en un aula específica.
+     *
+     * @param aulaId identificador del aula
+     * @return lista de artículos del aula
+     */
     List<InventarioEntity> findByAulaId(Long aulaId);
 
-    // ---------------------------------------------
-    // Find inventory items by name containing text
-    // Buscar artículos cuyo nombre contenga un texto
-    // ---------------------------------------------
+    /**
+     * Busca artículos cuyo nombre contenga el texto especificado (búsqueda sin distinguir mayúsculas/minúsculas).
+     * <p>
+     * Útil para implementar funcionalidad de búsqueda en la UI.
+     * </p>
+     *
+     * @param nombre texto a buscar en el nombre
+     * @return lista de artículos que contienen el texto en su nombre
+     */
     List<InventarioEntity> findByNombreContainingIgnoreCase(String nombre);
 
-    // ---------------------------------------------
-    // Find inventory items by QR code
-    // Buscar artículos por código QR
-    // ---------------------------------------------
+    /**
+     * Busca un artículo por su código QR único.
+     * <p>
+     * Utilizado para escaneo rápido y gestión de inventario.
+     * </p>
+     *
+     * @param codigo_QR código QR del artículo
+     * @return artículo con el código QR especificado, o null si no existe
+     */
     InventarioEntity findByCodigoQR(String codigo_QR);
 }
