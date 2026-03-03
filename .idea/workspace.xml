@@ -5,18 +5,94 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1981b41-4e0f-460e-ad0e-04b24e592929" name="Changes" comment="creación de la carpeta test">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Backend/src/test/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/test/test.java" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/.idea/Backend.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/demo.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/DTO/AulasDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/DTO/IncidenciasDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/DTO/InventarioDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/DTO/LoginResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/DTO/UsuariosDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/GestionDeAveriasApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/config/SwaggerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/security/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/data/inventario.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/test/java/iesalonsocano/gestiondeaverias/GestionDeAveriasApplicationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/test/test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/AulasController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/AulasController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/UsuariosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Controllers/UsuariosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/AulaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/AulasService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/AulaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/impl/AulasServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/IncidenciasServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/impl/IncidenciasServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/InventarioServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/impl/InventarioServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/UsuariosService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/UsuariosService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/UsuariosServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/Services/impl/UsuariosServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/entity/UsuariosEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/iesalonsocano/gestiondeaverias/entity/UsuariosEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Controllers/AulasController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Controllers/AuthController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Controllers/LoginRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Controllers/UsuariosController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/DTO/AulasDTO$AulasDTOBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/DTO/AulasDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/DTO/IncidenciasDTO$IncidenciasDTOBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/DTO/IncidenciasDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/DTO/InventarioDTO$InventarioDTOBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/DTO/InventarioDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/DTO/LoginResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/DTO/UsuariosDTO$UsuariosDTOBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/DTO/UsuariosDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/GestionDeAveriasApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Services/AulasService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Services/JwtService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Services/UsuariosService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Services/impl/AulasServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Services/impl/IncidenciasServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Services/impl/InventarioServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Services/impl/UserDetailsServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/Services/impl/UsuariosServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/config/DataLoader$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/config/DataLoader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/config/SecurityConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/config/SwaggerConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/entity/InventarioEntity$InventarioEntityBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/entity/InventarioEntity$estadoInventario.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/entity/InventarioEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/entity/UsuariosEntity$UsuariosEntityBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/entity/UsuariosEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/repository/IncidenciasRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/repository/InventarioRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/repository/UsuariosRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/security/JwtAuthenticationFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/target/classes/iesalonsocano/gestiondeaverias/security/JwtTokenProvider.class" beforeDir="false" />
+>>>>>>> d2d40c53134017f3a6e942148753ae35df49d0ba
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Backend" />
+        <entry key="$PROJECT_DIR$" value="Backend-Karim" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -30,7 +106,11 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/elkataDev/TFG-Gestion-De-Incidencias.git&quot;,
+<<<<<<< HEAD
     &quot;accountId&quot;: &quot;0a937ab1-d3ec-49b4-bbe4-0f09620764d8&quot;
+=======
+    &quot;accountId&quot;: &quot;19de89e3-0068-4982-9807-0f03d956448c&quot;
+>>>>>>> d2d40c53134017f3a6e942148753ae35df49d0ba
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -44,6 +124,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
@@ -54,6 +135,28 @@
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.GestionDeAveriasApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.GestionDeAveriasApplication.executor": "Run",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "Backend-Karim",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Antonio/IdeaProjects/TFG-Gestion-De-Incidencias",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "to.speed.mode.migration.done": "true"
+>>>>>>> d2d40c53134017f3a6e942148753ae35df49d0ba
   },
   &quot;keyToStringList&quot;: {
     &quot;ChangesTree.GroupingKeys&quot;: [
@@ -62,7 +165,18 @@
       &quot;repository&quot;
     ]
   }
+<<<<<<< HEAD
 }</component>
+=======
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\PcVIP\Desktop\TFG\Backend\src\main\java\iesalonsocano\gestiondeaverias" />
+      <recent name="C:\Users\PcVIP\Desktop\TFG\Backend\src" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+>>>>>>> d2d40c53134017f3a6e942148753ae35df49d0ba
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b1981b41-4e0f-460e-ad0e-04b24e592929" name="Changes" comment="cambio Package" />

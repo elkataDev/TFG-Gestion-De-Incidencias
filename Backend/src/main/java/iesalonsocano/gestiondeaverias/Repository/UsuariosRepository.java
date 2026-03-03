@@ -1,4 +1,4 @@
-package iesalonsocano.gestiondeaverias.repository;
+package iesalonsocano.gestiondeaverias.Repository;
 
 import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

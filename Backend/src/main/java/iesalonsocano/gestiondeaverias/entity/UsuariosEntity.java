@@ -1,4 +1,5 @@
-package  iesalonsocano.gestiondeaverias.entity;
+package iesalonsocano.gestiondeaverias.entity;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -33,7 +34,13 @@ public class UsuariosEntity {
     @Column(nullable = false)
     private String password;
 
+    // --- CAMPO ROL ---
+    @Column(name = "rol", nullable = false)
+    @Builder.Default
+    private String rol = "USER";
+
     @Column(name = "activo", nullable = false)
+    @Builder.Default
     private Boolean activo = true;
 
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
@@ -42,8 +49,9 @@ public class UsuariosEntity {
     @PrePersist
     protected void onCreate() {
         fechaCreacion = LocalDateTime.now();
-    }}
+    }
 }
+
 
 /*@Entity y @Table: declaran que esta clase es una tabla de base de datos llamada usuarios.
 

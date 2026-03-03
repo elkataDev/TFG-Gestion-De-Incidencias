@@ -1,5 +1,6 @@
 package  iesalonsocano.gestiondeaverias.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,37 +42,51 @@ public class IncidenciasEntity {
     @Column(name = "fecha_cierre")
     private LocalDateTime fechaCierre;
 
+
+    @NotNull(message = "La categoría es obligatoria")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private CategoriaIncidencia categoria;
+
     // Relación con Usuario (quien reporta la incidencia)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private UsuariosEntity usuario;
 
     // Relación con Aula (dónde ocurrió la incidencia)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aula_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AulasEntity aula;
 
     //Fecha de creacion de incidencia
     @PrePersist
     protected void onCreate() {
         fechaReporte = LocalDateTime.now();
-        if (estado == null) estado = EstadoIncidencia.EN_ESPERA;
+        if (estado == null) estado = EstadoIncidencia.EN_PROGRESO;
     }
 
     //Fecha de cierre actual cuando el estado de la incidencia este resuelto o cancelada
     @PreUpdate
     protected void onUpdate() {
-        if (estado == EstadoIncidencia.RESUELTO || estado == EstadoIncidencia.CERRADO) {
+        if (estado == EstadoIncidencia.RESUELTO ) {
             fechaCierre = LocalDateTime.now();
         }
     }
 
+    public enum CategoriaIncidencia {
+        RED,
+        SOFTWARE,
+        HARDWARE
+    }
+
+
     // Enum para los estados posibles de la incidencia
     public enum EstadoIncidencia {
-        EN_CURSO,
-        EN_ESPERA,
+        ABIERTO,
+        EN_PROGRESO,
         RESUELTO,
-        CERRADO,
-        REABIERTO
+
     }
 }

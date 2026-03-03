@@ -1,8 +1,10 @@
-package iesalonsocano.gestiondeaverias.repository;
+package iesalonsocano.gestiondeaverias.Repository;
 
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity.EstadoIncidencia;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,4 +35,19 @@ public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, 
     // Buscar incidencias abiertas (en curso o en espera)
     // ---------------------------------------------
     List<IncidenciasEntity> findByEstadoIn(List<EstadoIncidencia> estados);
+
+
+    @Query("""
+        SELECT i FROM IncidenciasEntity i
+        WHERE (:estado IS NULL OR i.estado = :estado)
+          AND (:categoria IS NULL OR i.categoria = :categoria)
+          AND (:nombreAula IS NULL OR i.aula.nombre = :nombreAula)
+    """)
+    List<IncidenciasEntity> filtrarPorParametros(
+            @Param("estado") IncidenciasEntity.EstadoIncidencia estado,
+            @Param("categoria") IncidenciasEntity.CategoriaIncidencia categoria,
+            @Param("nombreAula") String nombreAula
+    );
 }
+
+

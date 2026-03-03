@@ -1,79 +1,152 @@
-package iesalonsocano.gestiondeaverias.controller;
+package iesalonsocano.gestiondeaverias.Controllers;
 
+import iesalonsocano.gestiondeaverias.DTO.IncidenciasDTO;
+import iesalonsocano.gestiondeaverias.Services.AulasService;
+import iesalonsocano.gestiondeaverias.Services.UsuariosService;
+import iesalonsocano.gestiondeaverias.entity.AulasEntity;
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
-import iesalonsocano.gestiondeaverias.service.IncidenciasService;
+import iesalonsocano.gestiondeaverias.Services.IncidenciasService;
+import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 
+import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/incidencias")
+@RequestMapping("/api/incidencias")
+@CrossOrigin(origins = "http://localhost:5173") // Permitir React (Vite)
 public class IncidenciaController {
 
     @Autowired
     private IncidenciasService incidenciasService;
+    @Autowired
+    private UsuariosService usuariosService;
+    @Autowired
+    private AulasService aulasService;
 
-    // Obtener todas las incidencias
+    // 1. OBTENER TODAS O FILTRAR POR ESTADO (Req 1.3.3)
     @GetMapping
-    public List<IncidenciasEntity> getAllIncidencias() {
-        return incidenciasService.findAll();
-    }
+    public ResponseEntity<List<IncidenciasDTO>> getIncidencias(@RequestParam(required = false) IncidenciasEntity.EstadoIncidencia estado) {
+        List<IncidenciasEntity> entidades;
 
-    // Obtener una incidencia por su ID
-    @GetMapping("/{id}")
-    public ResponseEntity<IncidenciasEntity> getIncidenciaById(@PathVariable Long id) {
-        Optional<IncidenciasEntity> optionalIncidencia = incidenciasService.findById(id);
-
-        if (optionalIncidencia.isPresent()) {
-            return ResponseEntity.ok(optionalIncidencia.get());
+        if (estado != null) {
+            entidades = incidenciasService.findByEstado(estado);
         } else {
-            return ResponseEntity.notFound().build();
+            entidades = incidenciasService.findAll();
         }
+
+        // Convertimos la lista de Entidades a lista de DTOs
+        List<IncidenciasDTO> dtos = entidades.stream()
+                .map(IncidenciasDTO::fromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
     }
 
-    // Crear una nueva incidencia
-    @PostMapping
-    public ResponseEntity<IncidenciasEntity> createIncidencia(@Valid @RequestBody IncidenciasEntity incidencia) {
-        IncidenciasEntity nuevaIncidencia = incidenciasService.save(incidencia);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaIncidencia);
+    // 2. BUSCAR POR USUARIO (Para que el profesor vea sus tickets)
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<IncidenciasDTO>> getByUsuario(@PathVariable Long usuarioId) {
+        List<IncidenciasEntity> entidades = incidenciasService.findByUsuarioId(usuarioId);
+
+        List<IncidenciasDTO> dtos = entidades.stream()
+                .map(IncidenciasDTO::fromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
     }
 
-    // Actualizar una incidencia existente
-    @PutMapping("/{id}")
-    public ResponseEntity<IncidenciasEntity> updateIncidencia(@PathVariable Long id, @Valid @RequestBody IncidenciasEntity incidenciaDetails) {
-        Optional<IncidenciasEntity> optionalIncidencia = incidenciasService.findById(id);
+    // 3. BUSCAR POR AULA (Para ver el historial de un aula)
+    @GetMapping("/aula/{aulaId}")
+    public ResponseEntity<List<IncidenciasDTO>> getByAula(@PathVariable Long aulaId) {
+        List<IncidenciasEntity> entidades = incidenciasService.findByAulaId(aulaId);
 
-        if (optionalIncidencia.isPresent()) {
-            IncidenciasEntity incidenciaExistente = optionalIncidencia.get();
+        List<IncidenciasDTO> dtos = entidades.stream()
+                .map(IncidenciasDTO::fromEntity)
+                .collect(Collectors.toList());
 
-            incidenciaExistente.setTitulo(incidenciaDetails.getTitulo());
-            incidenciaExistente.setDescripcion(incidenciaDetails.getDescripcion());
-            incidenciaExistente.setEstado(incidenciaDetails.getEstado());
-            incidenciaExistente.setUsuario(incidenciaDetails.getUsuario());
-            incidenciaExistente.setAula(incidenciaDetails.getAula());
+        return ResponseEntity.ok(dtos);
+    }
 
-            IncidenciasEntity actualizada = incidenciasService.save(incidenciaExistente);
-            return ResponseEntity.ok(actualizada);
-        } else {
-            return ResponseEntity.notFound().build();
+    // 4. CAMBIAR ESTADO (El flujo: Abierto -> En curso -> Resuelto)
+    // Usamos PatchMapping porque solo modificamos un campo (el estado)
+    //TODO NO DETECTA QUE EL ADMIN SEA UN ADMIN, NO SE PUEDE OBTENER LOS DATOS
+    @PatchMapping("/{id}/estado")
+    @PreAuthorize("hasAnyRole('TECNICO', 'ADMIN')")
+    public ResponseEntity<IncidenciasDTO> updateEstado(
+            @PathVariable Long id,
+            @RequestBody IncidenciasEntity.EstadoIncidencia nuevoEstado) {
+        // Buscamos la entidad
+        IncidenciasEntity incidencia = incidenciasService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+
+        // Modificamos el estado
+        incidencia.setEstado(nuevoEstado);
+
+        // Guardamos (el service devuelve la entidad guardada)
+        IncidenciasEntity guardada = incidenciasService.save(incidencia);
+
+        // Convertimos a DTO y devolvemos
+        return ResponseEntity.ok(IncidenciasDTO.fromEntity(guardada));
+    }
+
+    // 5. CREAR INCIDENCIA (Página de Averías)
+    @PostMapping("/reportar")
+    public ResponseEntity<IncidenciasDTO> reportar(@RequestBody IncidenciasDTO dto, Principal principal) {
+        // 1. Buscamos al usuario real que está logueado
+        String username = principal.getName();
+        UsuariosEntity usuario = usuariosService.findByNombreUsuario(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // 2. Mapeamos a la entidad
+        IncidenciasEntity incidencia = new IncidenciasEntity();
+        incidencia.setTitulo(dto.getTitulo());
+        incidencia.setDescripcion(dto.getDescripcion());
+
+        // ASIGNAMOS EL USUARIO AUTENTICADO
+        incidencia.setUsuario(usuario);
+
+
+        // Al guardar, el Service pondrá estado 'abierta' y fecha_reporte
+        IncidenciasEntity incidenciaGuardada = incidenciasService.save(incidencia);
+        return  ResponseEntity.ok(IncidenciasDTO.fromEntity(incidenciaGuardada));
+    }
+
+
+    @GetMapping("/filtrar")
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ResponseEntity<List<IncidenciasDTO>> filtrar(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String nombreAula
+    ) {
+        // Convertir Strings a enums
+        IncidenciasEntity.EstadoIncidencia estadoEnum = null;
+        if (estado != null) {
+            try {
+                estadoEnum = IncidenciasEntity.EstadoIncidencia.valueOf(estado.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Estado no válido: " + estado);
+            }
         }
-    }
 
-    // Eliminar una incidencia
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIncidencia(@PathVariable Long id) {
-        Optional<IncidenciasEntity> optionalIncidencia = incidenciasService.findById(id);
-
-        if (optionalIncidencia.isPresent()) {
-            incidenciasService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
+        IncidenciasEntity.CategoriaIncidencia categoriaEnum = null;
+        if (categoria != null) {
+            try {
+                categoriaEnum = IncidenciasEntity.CategoriaIncidencia.valueOf(categoria.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Categoría no válida: " + categoria);
+            }
         }
-    }
-}
+
+        List<IncidenciasEntity> entidades = incidenciasService.filtrar(estadoEnum, categoriaEnum, nombreAula);
+
+        List<IncidenciasDTO> dtos = entidades.stream()
+                .map(IncidenciasDTO::fromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }}

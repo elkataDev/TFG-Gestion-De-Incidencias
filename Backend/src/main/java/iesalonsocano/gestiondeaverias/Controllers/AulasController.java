@@ -1,75 +1,72 @@
-package iesalonsocano.gestiondeaverias.controller;
+package iesalonsocano.gestiondeaverias.Controllers;
 
+import iesalonsocano.gestiondeaverias.DTO.AulasDTO;
 import iesalonsocano.gestiondeaverias.entity.AulasEntity;
-import iesalonsocano.gestiondeaverias.service.AulasService;
+import iesalonsocano.gestiondeaverias.Services.AulasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/aulas")
+@RequestMapping("api/aulas")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AulasController {
 
     @Autowired
     private AulasService aulasService;
 
-    // Obtener todas las aulas
+    // Obtener todas las aulas: Accesible para cualquier usuario autenticado
     @GetMapping
-    public List<AulasEntity> getAllAulas() {
-        return aulasService.findAll();
+    public ResponseEntity<List<AulasDTO>> getAllAulas() {
+        List<AulasDTO> dtos = aulasService.findAll().stream()
+                .map(AulasDTO::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
-    // Obtener un aula por su ID
+    // Obtener un aula por ID: Accesible para cualquier usuario autenticado
     @GetMapping("/{id}")
-    public ResponseEntity<AulasEntity> getAulaById(@PathVariable Long id) {
-        Optional<AulasEntity> optionalAula = aulasService.findById(id);
-
-        if (optionalAula.isPresent()) {
-            AulasEntity aula = optionalAula.get();
-            return ResponseEntity.ok(aula);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<AulasDTO> getAulaById(@PathVariable Long id) {
+        return aulasService.findById(id)
+                .map(aula -> ResponseEntity.ok(AulasDTO.fromEntity(aula)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear una nueva aula
+    // Crear aula: Solo Administrador o Técnico
     @PostMapping
-    public ResponseEntity<AulasEntity> createAula(@Valid @RequestBody AulasEntity aula) {
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
+    public ResponseEntity<AulasDTO> createAula(@Valid @RequestBody AulasEntity aula) {
         AulasEntity nuevaAula = aulasService.save(aula);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaAula);
+        return ResponseEntity.status(HttpStatus.CREATED).body(AulasDTO.fromEntity(nuevaAula));
     }
 
-    // Actualizar un aula existente
+    // Actualizar aula: Solo Administrador o Técnico
     @PutMapping("/{id}")
-    public ResponseEntity<AulasEntity> updateAula(@PathVariable Long id, @Valid @RequestBody AulasEntity aulaDetails) {
-        Optional<AulasEntity> optionalAula = aulasService.findById(id);
-
-        if (optionalAula.isPresent()) {
-            AulasEntity aulaExistente = optionalAula.get();
-            aulaExistente.setNombre(aulaDetails.getNombre());
-
-            AulasEntity aulaActualizada = aulasService.save(aulaExistente);
-            return ResponseEntity.ok(aulaActualizada);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
+    public ResponseEntity<AulasDTO> updateAula(@PathVariable Long id, @Valid @RequestBody AulasEntity aulaDetails) {
+        return aulasService.findById(id)
+                .map(aulaExistente -> {
+                    aulaExistente.setNombre(aulaDetails.getNombre());
+                    AulasEntity actualizada = aulasService.save(aulaExistente);
+                    return ResponseEntity.ok(AulasDTO.fromEntity(actualizada));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Eliminar un aula
+    // Eliminar aula: Solo Administrador o Técnico
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<Void> deleteAula(@PathVariable Long id) {
-        Optional<AulasEntity> optionalAula = aulasService.findById(id);
-
-        if (optionalAula.isPresent()) {
+        if (aulasService.findById(id).isPresent()) {
             aulasService.deleteById(id);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
     }
 }

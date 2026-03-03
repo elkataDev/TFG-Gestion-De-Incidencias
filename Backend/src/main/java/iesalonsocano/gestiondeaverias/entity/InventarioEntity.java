@@ -1,5 +1,6 @@
 package  iesalonsocano.gestiondeaverias.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,7 +33,7 @@ public class InventarioEntity {
 
     @Size(max = 50, message = "El código de inventario no puede tener más de 50 caracteres")
     @Column(name = "codigo_QR", unique = true, length = 50)
-    private String codigo_QR;
+    private String codigoQR;
 
     @Column(name = "estado", length = 50)
     private estadoInventario estado;
@@ -40,9 +41,15 @@ public class InventarioEntity {
     @Column(name = "fecha_ingreso", nullable = false, updatable = false)
     private LocalDateTime fechaIngreso;
 
+    @NotNull(message = "La categoría es obligatoria")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 30)
+    private CategoriaInventario categoria;
+
     // Relación con Aula
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "aula_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AulasEntity aula;
 
     @PrePersist
@@ -54,6 +61,16 @@ public class InventarioEntity {
         DISPONIBLE,
         EN_USO,
         DANADO
+    }
+    public enum CategoriaInventario {
+        COMPUTADORA,
+        IMPRESORA,
+        PROYECTOR,
+        MONITOR,
+        RED,
+        SERVIDOR,
+        PERIFERICO,
+        SEGURIDAD
     }
 }
  /*nombre, cantidad, codigoInventario: datos principales de cada ítem del inventario.
