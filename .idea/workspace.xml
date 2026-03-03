@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b1981b41-4e0f-460e-ad0e-04b24e592929" name="Changes" comment="creación de la carpeta test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/test/test.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/test/test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +71,27 @@
       <option name="presentableId" value="Default" />
       <updated>1761384113689</updated>
     </task>
+    <task id="LOCAL-00001" summary="creación de la carpeta test">
+      <option name="closed" value="true" />
+      <created>1772531691460</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1772531691461</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="creación de la carpeta test" />
