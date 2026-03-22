@@ -13,6 +13,30 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador REST para la gestión de usuarios del sistema.
+ * <p>
+ * Proporciona endpoints para administrar usuarios (profesores, técnicos, administradores)
+ * con operaciones CRUD completas.
+ * </p>
+ *
+ * <p>
+ * Seguridad:
+ * <ul>
+ *   <li>Todos los endpoints requieren rol ADMIN o TECNICO</li>
+ *   <li>Las contraseñas se encriptan automáticamente con BCrypt</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Base URL: {@code /api/usuarios}
+ * </p>
+ *
+ * @author IES Alonso Cano
+ * @version 1.0.0
+ * @see UsuariosService
+ * @see UsuariosDTO
+ */
 @RestController
 @RequestMapping("api/usuarios")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -21,7 +45,14 @@ public class UsuariosController {
     @Autowired
     private UsuariosService usuariosService;
 
-    // Obtener todos los usuarios: Solo Administrador o Técnico TIC
+    /**
+     * Obtiene la lista de todos los usuarios del sistema.
+     * <p>
+     * Acceso: Solo ADMIN o TECNICO
+     * </p>
+     *
+     * @return ResponseEntity con lista de UsuariosDTO (sin contraseñas)
+     */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<List<UsuariosDTO>> getAllUsuarios() {
@@ -31,7 +62,15 @@ public class UsuariosController {
         return ResponseEntity.ok(dtos);
     }
 
-    // Obtener un usuario por ID: Solo Administrador o Técnico TIC
+    /**
+     * Obtiene un usuario específico por su ID.
+     * <p>
+     * Acceso: Solo ADMIN o TECNICO
+     * </p>
+     *
+     * @param id identificador del usuario
+     * @return ResponseEntity con UsuariosDTO si existe, o 404 Not Found
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<UsuariosDTO> getUsuarioById(@PathVariable Long id) {
@@ -40,7 +79,18 @@ public class UsuariosController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear un nuevo usuario: Solo Administrador o Técnico TIC
+    /**
+     * Crea un nuevo usuario en el sistema.
+     * <p>
+     * La contraseña se cifra automáticamente con BCrypt.
+     * </p>
+     * <p>
+     * Acceso: Solo ADMIN o TECNICO
+     * </p>
+     *
+     * @param usuario entidad con los datos del usuario a crear
+     * @return ResponseEntity con UsuariosDTO creado y código HTTP 201 Created
+     */
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<UsuariosDTO> createUsuario(@Valid @RequestBody UsuariosEntity usuario) {
@@ -49,7 +99,20 @@ public class UsuariosController {
         return ResponseEntity.status(HttpStatus.CREATED).body(UsuariosDTO.fromEntity(nuevo));
     }
 
-    // Actualizar usuario: Solo Administrador o Técnico TIC
+    /**
+     * Actualiza los datos de un usuario existente.
+     * <p>
+     * Si se proporciona una nueva contraseña, se cifra automáticamente.
+     * Si el campo password está vacío, se mantiene la contraseña actual.
+     * </p>
+     * <p>
+     * Acceso: Solo ADMIN o TECNICO
+     * </p>
+     *
+     * @param id identificador del usuario a actualizar
+     * @param details entidad con los nuevos datos del usuario
+     * @return ResponseEntity con UsuariosDTO actualizado o 404 Not Found
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<UsuariosDTO> updateUsuario(@PathVariable Long id, @Valid @RequestBody UsuariosEntity details) {
@@ -72,7 +135,15 @@ public class UsuariosController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Eliminar usuario: Solo Administrador o Técnico TIC
+    /**
+     * Elimina un usuario del sistema.
+     * <p>
+     * Acceso: Solo ADMIN o TECNICO
+     * </p>
+     *
+     * @param id identificador del usuario a eliminar
+     * @return ResponseEntity vacío con código 204 No Content o 404 Not Found
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {

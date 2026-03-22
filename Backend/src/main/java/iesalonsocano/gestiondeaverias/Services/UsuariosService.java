@@ -35,20 +35,28 @@ public interface UsuariosService {
     void deleteById(Long id);
 
     /**
-     * Busca usuario por nombre de usuario.
-     * Finds user by username.
+     * Busca un usuario por su nombre de usuario.
+     * <p>
+     * Usado principalmente para autenticación.
+     * </p>
+     *
+     * @param nombreUsuario nombre de usuario
+     * @return Optional con el usuario si existe
      */
     Optional<UsuariosEntity> findByNombreUsuario(String nombreUsuario);
 
     /**
-     * Busca usuario por email.
-     * Finds user by email.
+     * Busca un usuario por su email.
+     *
+     * @param email correo electrónico
+     * @return Optional con el usuario si existe
      */
     Optional<UsuariosEntity> findByEmail(String email);
 
     /**
-     * Busca todos los usuarios activos.
-     * Finds all active users.
+     * Busca todos los usuarios activos del sistema.
+     *
+     * @return lista de usuarios con activo = true
      */
     List<UsuariosEntity> findByActivoTrue();
 }

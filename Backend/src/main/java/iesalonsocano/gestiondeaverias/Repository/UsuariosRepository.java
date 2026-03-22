@@ -7,30 +7,59 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.List;
 
+/**
+ * Repositorio JPA para la gestión de persistencia de usuarios.
+ * <p>
+ * Proporciona métodos de consulta para buscar usuarios por nombre de usuario,
+ * email o estado de activación.
+ * </p>
+ *
+ * @author IES Alonso Cano
+ * @version 1.0.0
+ * @see UsuariosEntity
+ */
 @Repository
 public interface UsuariosRepository extends JpaRepository<UsuariosEntity, Long> {
 
-    // ---------------------------------------------
-    // Find user by username
-    // Buscar usuario por nombre de usuario
-    // ---------------------------------------------
+    /**
+     * Busca un usuario por su nombre de usuario.
+     * <p>
+     * Utilizado principalmente para autenticación y login.
+     * </p>
+     *
+     * @param nombreUsuario nombre de usuario a buscar
+     * @return Optional con el usuario si existe, vacío si no se encuentra
+     */
     Optional<UsuariosEntity> findByNombreUsuario(String nombreUsuario);
 
-    // ---------------------------------------------
-    // Find user by email
-    // Buscar usuario por correo electrónico
-    // ---------------------------------------------
+    /**
+     * Busca un usuario por su correo electrónico.
+     * <p>
+     * Útil para validar unicidad o recuperación de contraseña.
+     * </p>
+     *
+     * @param email correo electrónico del usuario
+     * @return Optional con el usuario si existe, vacío si no se encuentra
+     */
     Optional<UsuariosEntity> findByEmail(String email);
 
-    // ---------------------------------------------
-    // Find all active users
-    // Buscar todos los usuarios activos
-    // ---------------------------------------------
+    /**
+     * Busca todos los usuarios activos en el sistema.
+     * <p>
+     * Los usuarios activos son aquellos que pueden acceder al sistema.
+     * </p>
+     *
+     * @return lista de usuarios con activo = true
+     */
     List<UsuariosEntity> findByActivoTrue();
 
-    // ---------------------------------------------
-    // Find all inactive users
-    // Buscar todos los usuarios inactivos
-    // ---------------------------------------------
+    /**
+     * Busca todos los usuarios inactivos.
+     * <p>
+     * Útil para auditoría o gestión de cuentas deshabilitadas.
+     * </p>
+     *
+     * @return lista de usuarios con activo = false
+     */
     List<UsuariosEntity> findByActivoFalse();
 }

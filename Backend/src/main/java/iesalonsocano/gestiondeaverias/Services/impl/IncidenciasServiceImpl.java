@@ -70,6 +70,17 @@ public class IncidenciasServiceImpl implements IncidenciasService {
         return incidenciasRepository.findByAulaId(aulaId);
     }
 
+    /**
+     * Actualiza el estado de una incidencia.
+     * <p>
+     * Si el nuevo estado es RESUELTO, establece automáticamente la fecha de cierre.
+     * </p>
+     *
+     * @param id identificador de la incidencia
+     * @param nuevoEstado nuevo estado a establecer
+     * @return incidencia actualizada
+     * @throws RuntimeException si la incidencia no existe
+     */
 
 
     // Lógica de Flujo de Estados

@@ -36,7 +36,12 @@ public interface AulasService {
 
     /**
      * Busca un aula por su nombre.
-     * Finds a classroom by its name.
+     * <p>
+     * Útil para validar unicidad y búsquedas por nombre.
+     * </p>
+     *
+     * @param nombre nombre del aula a buscar
+     * @return Optional con el aula si existe
      */
     Optional<AulasEntity> findByNombre(String nombre);
 }
