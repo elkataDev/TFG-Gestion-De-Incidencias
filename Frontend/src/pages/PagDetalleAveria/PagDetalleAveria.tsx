@@ -5,6 +5,8 @@ import BotonSecundario from '@/components/common/BotonSecundario/BotonSecundario
 import TextArea from '@/components/common/TextArea/TextArea';
 import { EstadoBadge } from '@/components/common/EstadoBadge/EstadoBadge';
 import SelectAutoWidth from '@/components/common/Select/Select';
+import { apiJson } from '@/services/api/apiService';
+import API_BASE_URL from '@/services/api/apiConfig';
 import './PagDetalleAveria.css';
 
 interface Incidencia {
@@ -46,17 +48,15 @@ export default function PagDetalleAveria() {
   const [loading, setLoading] = useState(true);
 
   const fetchIncidencia = async () => {
-    const token = localStorage.getItem('token');
-    const headers = { Authorization: `Bearer ${token}` };
     try {
       const [resInc, resCom, resHist] = await Promise.all([
-        fetch(`http://localhost:5555/api/incidencias/${id}`, { headers }),
-        fetch(`http://localhost:5555/api/incidencias/${id}/comentarios`, { headers }),
-        fetch(`http://localhost:5555/api/incidencias/${id}/historial`, { headers })
+        apiJson(`/incidencias/${id}`),
+        apiJson(`/incidencias/${id}/comentarios`),
+        apiJson(`/incidencias/${id}/historial`)
       ]);
-      setIncidencia(await resInc.json());
-      setComentarios(await resCom.json());
-      setHistorial(await resHist.json());
+      setIncidencia(resInc);
+      setComentarios(resCom);
+      setHistorial(resHist);
     } catch (err) {
       console.error('Error fetching details', err);
     } finally {
@@ -65,23 +65,20 @@ export default function PagDetalleAveria() {
   };
 
   useEffect(() => {
-    fetchIncidencia();
+    if (id) {
+      void fetchIncidencia();
+    }
   }, [id]);
 
   const handleAddComment = async () => {
     if (!nuevoComentario.trim()) return;
-    const token = localStorage.getItem('token');
     try {
-      await fetch(`http://localhost:5555/api/incidencias/${id}/comentarios`, {
+      await apiJson(`/incidencias/${id}/comentarios`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
         body: JSON.stringify({ texto: nuevoComentario })
       });
       setNuevoComentario('');
-      fetchIncidencia(); // refresh
+      void fetchIncidencia(); // refresh
     } catch (err) {
       console.error('Error posting comment', err);
     }
@@ -89,17 +86,12 @@ export default function PagDetalleAveria() {
 
   const handleUpdateEstado = async () => {
     if (!nuevoEstado) return;
-    const token = localStorage.getItem('token');
     try {
-      await fetch(`http://localhost:5555/api/incidencias/${id}/estado`, {
+      await apiJson(`/incidencias/${id}/estado`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
         body: JSON.stringify({ estado: nuevoEstado })
       });
-      fetchIncidencia(); // refresh
+      void fetchIncidencia(); // refresh
     } catch (err) {
       console.error('Error updating state', err);
     }
@@ -130,7 +122,7 @@ export default function PagDetalleAveria() {
           {incidencia.adjuntoUrl && (
             <p>
               <strong>Archivo Adjunto:</strong>{' '}
-              <a href={`http://localhost:5555/api/incidencias/archivos/${incidencia.adjuntoUrl}`} target="_blank" rel="noopener noreferrer">
+              <a href={`${API_BASE_URL}/incidencias/archivos/${incidencia.adjuntoUrl}`} target="_blank" rel="noopener noreferrer">
                 Descargar Archivo
               </a>
             </p>

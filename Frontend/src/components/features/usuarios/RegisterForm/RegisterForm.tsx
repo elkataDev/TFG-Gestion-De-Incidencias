@@ -3,6 +3,7 @@ import { Input } from '@/components/common/Input/Input';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '@/services/api/apiService';
 
 export const RegisterForm = () => {
   const navigate = useNavigate();
@@ -25,9 +26,8 @@ export const RegisterForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5555/api/auth/registro', {
+      const response = await apiFetch('/auth/registro', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nombreUsuario: form.username, // 🔴 IMPORTANTE
           email: form.email,
@@ -38,19 +38,13 @@ export const RegisterForm = () => {
       const text = await response.text();
       console.log('Respuesta cruda:', text, 'Status:', response.status);
 
-      if (!response.ok) {
-        alert(text || 'Error en el registro');
-        setLoading(false);
-        return;
-      }
-
       alert('Registro correcto, ahora puedes iniciar sesión');
       setLoading(false);
 
       void navigate('/login');
     } catch (error) {
       console.error('Error al conectar con la API', error);
-      alert('Error de conexión con el servidor');
+      alert(error instanceof Error ? error.message : 'Error de conexión con el servidor');
       setLoading(false);
     }
   };

@@ -41,7 +41,7 @@ export default function PagActivos() {
       <Selects />
       <div className="table-container">
         <BasicTable
-          endpoint="http://localhost:5555/api/inventario"
+          endpoint="/inventario"
           filasPorPagina={5}
           extraColumns={['acciones']}
           renderCustomCell={(key, value, row) => {

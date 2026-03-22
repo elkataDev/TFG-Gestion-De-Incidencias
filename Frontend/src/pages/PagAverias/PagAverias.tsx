@@ -4,6 +4,7 @@ import SelectAutoWidth from '@/components/common/Select/Select';
 import { EstadoBadge } from '@/components/common/EstadoBadge/EstadoBadge';
 import BotonSecundario from '@/components/common/BotonSecundario/BotonSecundario';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '@/services/api/apiConfig';
 import './PagAverias.css';
 
 function Selects() {
@@ -36,7 +37,7 @@ export default function PagAverias() {
       <Selects />
       <div className="table-container">
         <BasicTable
-          endpoint="http://localhost:5555/api/incidencias"
+          endpoint={`${API_BASE_URL}/incidencias`}
           filasPorPagina={5}
           extraColumns={['acciones']}
           renderCustomCell={(key, value, row) => {

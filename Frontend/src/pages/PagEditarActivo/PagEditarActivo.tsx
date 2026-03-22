@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
+import { apiFetch } from '@/services/api/apiService';
 import './PagEditarActivo.css';
 
 /* ===================== TIPOS ===================== */
@@ -39,17 +40,9 @@ export default function EditarActivo() {
   useEffect(() => {
     if (!id) return;
 
-    const token = localStorage.getItem('token');
-
-    console.log('🔐 Token:', token);
     console.log('📡 Cargando activo con id:', id);
 
-    fetch(`http://localhost:5555/api/inventario/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-    })
+    apiFetch(`/inventario/${id}`)
       .then(async (res) => {
         console.log('➡️ Status:', res.status, 'OK:', res.ok);
 
@@ -78,9 +71,9 @@ export default function EditarActivo() {
 
         setLoading(false);
       })
-      .catch((err) => {
+      .catch((err: unknown) => {
         console.error('❌ Error al cargar el activo:', err);
-        alert('Error al cargar el activo');
+        alert(err instanceof Error ? err.message : 'Error al cargar el activo');
         setLoading(false);
       });
   }, [id]);
@@ -101,34 +94,21 @@ export default function EditarActivo() {
     console.log('🚀 Enviando datos al backend:', activo);
 
     try {
-      const token = localStorage.getItem('token');
-
-      const response = await fetch(`http://localhost:5555/api/inventario/${id}`, {
+      const response = await apiFetch(`/inventario/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
         body: JSON.stringify(activo),
       });
 
       console.log('⬅️ Status guardar:', response.status, 'OK:', response.ok);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ Error al guardar:', errorText);
-        alert('Error al guardar activo');
-        return;
-      }
 
       const data = await response.json();
       console.log('✅ Activo actualizado:', data);
 
       alert('Activo actualizado correctamente');
       void navigate('/activos');
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('❌ Error de conexión:', err);
-      alert('Error de conexión');
+      alert(err instanceof Error ? err.message : 'Error de conexión');
     }
   };
 

@@ -4,6 +4,7 @@ import TextArea from '@/components/common/TextArea/TextArea';
 import SelectAutoWidth from '@/components/common/Select/Select';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import { Input } from '@/components/common/Input/Input';
+import { apiFetch } from '@/services/api/apiService';
 import './PagNuevaAveria.css';
 
 interface FormDataType {
@@ -64,25 +65,16 @@ export default function PagNuevaAveria() {
         data.append('file', file);
       }
 
-      const response = await fetch('http://localhost:5555/api/incidencias/reportar', {
+      await apiFetch('/incidencias/reportar', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
         body: data,
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        setErrorMsg(`Error al crear avería: ${errorText}`);
-        return;
-      }
 
       setSuccessMsg('Avería creada correctamente');
       // No redirigimos automáticamente, solo mostramos mensaje
     } catch (error) {
       console.error('Error de conexión:', error);
-      setErrorMsg('Error de conexión con la API');
+      setErrorMsg(error instanceof Error ? error.message : 'Error de conexión con la API');
     }
   };
 

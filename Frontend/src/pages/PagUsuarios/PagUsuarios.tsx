@@ -33,7 +33,7 @@ export default function PagUsuarios() {
       <Selects />
       <div className="table-container">
         <BasicTable
-          endpoint="http://localhost:5555/api/usuarios"
+          endpoint="/usuarios"
           filasPorPagina={5}
           renderCustomCell={(key, value, _row) => {
             if (key === 'estado' || key === 'rol') return <EstadoBadge estado={String(value)} />;

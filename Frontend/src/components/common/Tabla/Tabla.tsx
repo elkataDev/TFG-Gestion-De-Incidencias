@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Paginacion from '../Paginacion/Paginacion';
+import { apiFetch } from '@/services/api/apiService';
 import './Tabla.css';
 
 interface TablaGenericaProps<T extends Record<string, unknown>> {
@@ -51,23 +52,8 @@ export default function TablaGenerica<T extends Record<string, unknown>>({
     setLoading(true);
     setError(null);
 
-    const token = localStorage.getItem('token');
-    console.log('Token usado:', token);
-
-    fetch(endpoint, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-    })
+    apiFetch(endpoint)
       .then(async (res) => {
-        if (res.status === 403) {
-          throw new Error('No autorizado (403). Comprueba tus permisos.');
-        }
-        if (!res.ok) {
-          throw new Error(`Error HTTP: ${res.status}`);
-        }
-
         const text = await res.text();
         if (!text) return [];
 

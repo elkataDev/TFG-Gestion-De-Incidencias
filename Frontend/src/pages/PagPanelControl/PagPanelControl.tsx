@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ControlPanel from '@/./components/layout/ControlPanel/ControlPanel';
 import CP_Card from '@/./components/layout/ControlPanel/CP_Card';
+import { apiJson } from '@/services/api/apiService';
 
 interface Incidencia {
   id: number;
@@ -13,21 +14,13 @@ export default function PagPanelControl() {
 
   useEffect(() => {
     const fetchIncidencias = async () => {
-      const token = localStorage.getItem('token');
       try {
-        const url = role === 'ADMIN' || role === 'TECNICO' 
-          ? 'http://localhost:5555/api/incidencias' 
-          : 'http://localhost:5555/api/incidencias/mis-incidencias';
+        const endpoint = role === 'ADMIN' || role === 'TECNICO' 
+          ? '/incidencias' 
+          : '/incidencias/mis-incidencias';
         
-        const res = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setIncidencias(data);
-        }
+        const data = await apiJson(endpoint);
+        setIncidencias(data);
       } catch (e) {
         console.error('Error fetching incidencias', e);
       }

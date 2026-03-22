@@ -3,6 +3,7 @@ import { Input } from '@/components/common/Input/Input';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import { Box, Typography, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { apiJson } from '@/services/api/apiService';
 
 interface LoginResponse {
   token?: string; // El JWT
@@ -25,15 +26,12 @@ export const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5555/api/auth/login', {
+      const data: LoginResponse = await apiJson('/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
 
-      const data: LoginResponse = await response.json();
-
-      if (!response.ok || !data.token) {
+      if (!data.token) {
         alert(data.message ?? 'Credenciales incorrectas');
         setLoading(false);
         return;
@@ -48,7 +46,7 @@ export const LoginForm = () => {
       void navigate('/'); // Redirigir al dashboard
     } catch (error) {
       console.error('Error al conectar con la API', error);
-      alert('Error de conexión con el servidor');
+      alert(error instanceof Error ? error.message : 'Error de conexión con el servidor');
       setLoading(false);
     }
   };
