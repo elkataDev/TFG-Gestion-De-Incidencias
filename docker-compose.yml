@@ -1,0 +1,57 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: incidencias_db
+    environment:
+      MYSQL_DATABASE: incidencias
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: incidencias_backend
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/incidencias?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin_password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "5555:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: incidencias_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  db_data:

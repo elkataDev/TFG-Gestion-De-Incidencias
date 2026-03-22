@@ -4,12 +4,6 @@ import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-interface RegisterResponse {
-  token?: string; // JWT tras registro automático
-  role?: string; // rol asignado
-  message?: string; // mensaje de error si lo hay
-}
-
 export const RegisterForm = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '' });

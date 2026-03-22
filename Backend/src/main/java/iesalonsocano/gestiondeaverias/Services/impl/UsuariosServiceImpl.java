@@ -3,10 +3,6 @@ package iesalonsocano.gestiondeaverias.Services.impl;
 import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import iesalonsocano.gestiondeaverias.Repository.UsuariosRepository;
 import iesalonsocano.gestiondeaverias.Services.UsuariosService;
-
-import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
-import iesalonsocano.gestiondeaverias.Repository.UsuariosRepository;
-import iesalonsocano.gestiondeaverias.Services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,9 +12,13 @@ import java.util.Optional;
 
 /**
  * Implementación de UsuariosService.
- * ATENCIÓN: Esta versión NO hashea contraseñas. Es para desarrollo/pruebas.
- * Implementation of UsuariosService.
- * ATTENTION!: This version DOES NOT hash passwords. It is for development/testing only.
+ * <p>
+ * Se encarga de la gestión de usuarios, incluyendo el cifrado de contraseñas
+ * antes de la persistencia.
+ * </p>
+ *
+ * @author IES Alonso Cano
+ * @version 1.0.0
  */
 @Service
 public class UsuariosServiceImpl implements UsuariosService {
@@ -26,6 +26,7 @@ public class UsuariosServiceImpl implements UsuariosService {
     private final UsuariosRepository usuariosRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     public UsuariosServiceImpl(
             UsuariosRepository usuariosRepository,
             PasswordEncoder passwordEncoder
@@ -33,8 +34,6 @@ public class UsuariosServiceImpl implements UsuariosService {
         this.usuariosRepository = usuariosRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
-
 
     @Override
     public List<UsuariosEntity> findAll() {
@@ -48,27 +47,24 @@ public class UsuariosServiceImpl implements UsuariosService {
 
     @Override
     public UsuariosEntity save(UsuariosEntity usuario) {
+        // Encriptar contraseña antes de guardar
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
-
-        usuario.setPassword(
-                passwordEncoder.encode(usuario.getPassword())
-        );
-
-
-        usuario.setRol("USER");
-        usuario.setActivo(true);
+        // Valores por defecto si no vienen informados
+        if (usuario.getRol() == null) {
+            usuario.setRol("USER");
+        }
+        if (usuario.getActivo() == null) {
+            usuario.setActivo(true);
+        }
 
         return usuariosRepository.save(usuario);
     }
 
     @Override
     public void deleteById(Long id) {
-        // Elimina el usuario. / Deletes the user.
         usuariosRepository.deleteById(id);
     }
-
-    // --- Métodos de búsqueda del repositorio ---
-    // --- Repository search methods ---
 
     @Override
     public Optional<UsuariosEntity> findByNombreUsuario(String nombreUsuario) {

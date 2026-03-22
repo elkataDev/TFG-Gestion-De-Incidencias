@@ -45,7 +45,12 @@ public class IncidenciasDTO {
      */
     private String categoria; // <-- Enum como String
     private String nombreAula; // <-- nombre del aula
-    private String nombreUsuario; // <-- nombre del usuario
+    
+    /**
+     * Nombre de usuario del que reportó la incidencia (para mostrar en UI).
+     */
+    private String nombreUsuario;
+    
     private LocalDateTime fechaReporte;
 
     /**
@@ -64,9 +69,9 @@ public class IncidenciasDTO {
     private Long usuarioId;
 
     /**
-     * Nombre de usuario del que reportó la incidencia (para mostrar en UI).
+     * URL del archivo adjunto asociado.
      */
-    private String nombreUsuario;
+    private String adjuntoUrl;
 
     /**
      * Convierte una entidad IncidenciasEntity a su correspondiente DTO.
@@ -93,6 +98,7 @@ public class IncidenciasDTO {
                 .nombreUsuario(entity.getUsuario() != null ? entity.getUsuario().getNombreUsuario() : "Desconocido")
                 .fechaReporte(entity.getFechaReporte())
                 .fechaCierre(entity.getFechaCierre())
+                .adjuntoUrl(entity.getAdjuntoUrl())
                 .build();
     }
 }

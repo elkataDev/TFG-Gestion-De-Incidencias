@@ -101,7 +101,15 @@ public class DataLoader {
                         usuariosRepository.save(usuario);
                         System.out.println("👤 Usuario creado: " + usuario.getNombreUsuario());
                     } else {
-                        System.out.println("ℹ️ Usuario " + usuario.getNombreUsuario() + " ya existe. Saltando.");
+                        // Si ya existe, actualizamos para asegurar que la contraseña esté codificada
+                        // y que coincida con lo que hay en el JSON (útil para desarrollo)
+                        UsuariosEntity usuarioExistente = existe.get();
+                        usuarioExistente.setPassword(passwordEncoder.encode(usuario.getPassword()));
+                        usuarioExistente.setRol(usuario.getRol());
+                        usuarioExistente.setEmail(usuario.getEmail());
+                        usuarioExistente.setActivo(usuario.getActivo());
+                        usuariosRepository.save(usuarioExistente);
+                        System.out.println("ℹ️ Usuario " + usuario.getNombreUsuario() + " actualizado desde JSON.");
                     }
                 }
             } catch (Exception e) {

@@ -2,6 +2,8 @@ import BasicTable from '@/components/common/Tabla/Tabla';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import SelectAutoWidth from '@/components/common/Select/Select';
 import { EstadoBadge } from '@/components/common/EstadoBadge/EstadoBadge';
+import BotonSecundario from '@/components/common/BotonSecundario/BotonSecundario';
+import { useNavigate } from 'react-router-dom';
 import './PagAverias.css';
 
 function Selects() {
@@ -24,19 +26,22 @@ function Selects() {
 }
 
 export default function PagAverias() {
+  const navigate = useNavigate();
   return (
     <div className="pag-averias-container">
       <div className="header-container">
         <h1>Listado de Tickets de Averias</h1>
-        <BotonPrimario startIcon="" text="+ Nuevo Ticket"></BotonPrimario>
+        <BotonPrimario startIcon="" text="+ Nuevo Ticket" onClick={() => navigate('/nuevaAveria')} />
       </div>
       <Selects />
       <div className="table-container">
         <BasicTable
           endpoint="http://localhost:5555/api/incidencias"
           filasPorPagina={5}
-          renderCustomCell={(key, value, _row) => {
+          extraColumns={['acciones']}
+          renderCustomCell={(key, value, row) => {
             if (key === 'estado') return <EstadoBadge estado={String(value)} />;
+            if (key === 'acciones') return <BotonSecundario text="Ver Detalle" onClick={() => navigate(`/averias/${row.id}`)} />;
             return value as React.ReactNode;
           }}
         />

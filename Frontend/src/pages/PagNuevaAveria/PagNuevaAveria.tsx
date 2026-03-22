@@ -3,30 +3,42 @@ import { useNavigate } from 'react-router-dom';
 import TextArea from '@/components/common/TextArea/TextArea';
 import SelectAutoWidth from '@/components/common/Select/Select';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
+import { Input } from '@/components/common/Input/Input';
 import './PagNuevaAveria.css';
 
-interface FormData {
+interface FormDataType {
+  titulo: string;
   descripcion: string;
-  tipoActivo: string;
-  ubicacion: string;
+  categoria: string;
+  aulaId: string;
 }
 
 export default function PagNuevaAveria() {
   const navigate = useNavigate();
 
   // Estado del formulario
-  const [form, setForm] = useState<FormData>({
+  const [form, setForm] = useState<FormDataType>({
+    titulo: '',
     descripcion: '',
-    tipoActivo: '',
-    ubicacion: '',
+    categoria: '',
+    aulaId: '',
   });
+  
+  // Archivo adjunto
+  const [file, setFile] = useState<File | null>(null);
 
   // Estado para mostrar errores
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  const handleChange = (field: keyof FormData, value: string) => {
+  const handleChange = (field: keyof FormDataType, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0] || null);
+    }
   };
 
   const handleSubmit = async () => {
@@ -40,13 +52,24 @@ export default function PagNuevaAveria() {
     }
 
     try {
-      const response = await fetch('https://tu-api.com/averias', {
+      const data = new FormData();
+      data.append('incidencia', new Blob([JSON.stringify({
+        titulo: form.titulo,
+        descripcion: form.descripcion,
+        categoria: form.categoria || 'HARDWARE',
+        aulaId: form.aulaId ? Number(form.aulaId) : null
+      })], { type: 'application/json' }));
+
+      if (file) {
+        data.append('file', file);
+      }
+
+      const response = await fetch('http://localhost:5555/api/incidencias/reportar', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(form),
+        body: data,
       });
 
       if (!response.ok) {
@@ -69,31 +92,47 @@ export default function PagNuevaAveria() {
         <h1>Reportar Nueva Averia</h1>
         <p>Complete el siguiente formulario para reportar un problema técnico</p>
 
+        <span style={{ marginBottom: '1rem', display: 'block' }}>
+          <h3>Título de la incidencia</h3>
+          <Input
+            name="titulo"
+            label="Ej: Proyector no enciende"
+            type="text"
+            value={form.titulo}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('titulo', e.target.value)}
+          />
+        </span>
+
         <TextArea
           placeHolder="Describa la averia en detalle..."
-          minRows={10}
+          minRows={6}
           value={form.descripcion}
           onChange={(e) => handleChange('descripcion', e.target.value)}
         />
 
         <span className="select-container">
-          <h3>Tipo de Archivo</h3>
+          <h3>Categoría</h3>
           <SelectAutoWidth
-            inputText="Seleccionar Tipo de Activo"
-            options={[{ label: 'Activo1' }, { label: 'Activo2' }]}
-            value={form.tipoActivo}
-            onChange={(value: string) => handleChange('tipoActivo', value)}
+            inputText="Seleccionar Categoría"
+            options={[{ label: 'HARDWARE' }, { label: 'SOFTWARE' }, { label: 'RED' }]}
+            value={form.categoria}
+            onChange={(value: string) => handleChange('categoria', value)}
           />
         </span>
 
         <span className="select-container">
-          <h3>Ubicacion</h3>
+          <h3>Aula (Opcional)</h3>
           <SelectAutoWidth
-            inputText="Seleccionar Ubicación"
-            options={[{ label: 'Ubicacion1' }, { label: 'Ubicacion2' }]}
-            value={form.ubicacion}
-            onChange={(value: string) => handleChange('ubicacion', value)}
+            inputText="Seleccionar Aula"
+            options={[{ label: '1' }, { label: '2' }, { label: '3' }]}
+            value={form.aulaId}
+            onChange={(value: string) => handleChange('aulaId', value)}
           />
+        </span>
+
+        <span className="file-upload-container" style={{ margin: '1rem 0', display: 'block' }}>
+          <h3>Archivo Adjunto (Opcional)</h3>
+          <input type="file" onChange={handleFileChange} />
         </span>
 
         {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}

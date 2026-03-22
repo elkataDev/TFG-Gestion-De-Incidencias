@@ -1,0 +1,86 @@
+.pag-detalle {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.detalle-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.detalle-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .detalle-content {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.incidencia-info, .historial-info, .comentarios-section {
+  background: var(--color-bg-card);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-border);
+}
+
+.incidencia-info p {
+  margin: 0.5rem 0;
+  color: var(--color-text);
+}
+
+.estado-updater {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.historial-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.historial-info li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.historial-info li:last-child {
+  border-bottom: none;
+}
+
+.comentarios-list {
+  margin-bottom: 1.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.comentario-item {
+  background: var(--color-bg-page);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--color-border);
+}
+
+.comentario-meta {
+  font-size: 0.85rem;
+  color: var(--color-text-sec);
+  margin-bottom: 0.5rem;
+}
+
+.nuevo-comentario {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-end;
+}

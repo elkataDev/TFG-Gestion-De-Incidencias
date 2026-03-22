@@ -12,6 +12,7 @@ import PagNuevaAveria from './pages/PagNuevaAveria/PagNuevaAveria';
 import PagUsuarios from './pages/PagUsuarios/PagUsuarios';
 import PagActivos from './pages/PagActivos/PagActivos';
 import PagNuevoActivo from './pages/PagNuevoActivo/PagNuevoActivo';
+import PagDetalleAveria from './pages/PagDetalleAveria/PagDetalleAveria';
 import EditarActivo from './pages/PagEditarActivo/PagEditarActivo';
 import { LoginPage } from './pages/Login/LoginPage';
 import { RegisterForm } from './components/features/usuarios/RegisterForm/RegisterForm';
@@ -50,6 +51,16 @@ function App() {
           element={
             <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
               <PagAverias />
+            </PrivateRoute>
+          }
+        />
+        
+        {/* Detalle Avería */}
+        <Route
+          path="averias/:id"
+          element={
+            <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
+              <PagDetalleAveria />
             </PrivateRoute>
           }
         />

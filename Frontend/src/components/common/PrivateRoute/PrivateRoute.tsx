@@ -1,7 +1,8 @@
 import { Navigate } from 'react-router-dom';
+import React from 'react';
 
 interface Props {
-  children: JSX.Element;
+  children: React.ReactNode;
   allowedRoles?: string[];
 }
 

@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/incidencias")
-@CrossOrigin(origins = "http://localhost:5173") // Permitir React (Vite)
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost"}) // Permitir React (Vite)
 public class IncidenciaController {
 
     @Autowired
@@ -58,6 +58,12 @@ public class IncidenciaController {
     private UsuariosService usuariosService;
     @Autowired
     private AulasService aulasService;
+    @Autowired
+    private iesalonsocano.gestiondeaverias.Services.StorageService storageService;
+    @Autowired
+    private iesalonsocano.gestiondeaverias.Services.ComentarioService comentarioService;
+    @Autowired
+    private iesalonsocano.gestiondeaverias.Services.HistorialEstadoService historialEstadoService;
 
     /**
      * Obtiene todas las incidencias o filtra por estado.
@@ -127,6 +133,27 @@ public class IncidenciaController {
         return ResponseEntity.ok(dtos);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<IncidenciasDTO> getIncidenciaById(@PathVariable Long id) {
+        IncidenciasEntity incidencia = incidenciasService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+        return ResponseEntity.ok(IncidenciasDTO.fromEntity(incidencia));
+    }
+
+    @GetMapping("/mis-incidencias")
+    public ResponseEntity<List<IncidenciasDTO>> getMisIncidencias(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).build();
+        }
+        UsuariosEntity usuario = usuariosService.findByNombreUsuario(principal.getName())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        List<IncidenciasEntity> entidades = incidenciasService.findByUsuarioId(usuario.getId());
+        List<IncidenciasDTO> dtos = entidades.stream()
+                .map(IncidenciasDTO::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
+    }
+
     /**
      * Cambia el estado de una incidencia.
      * <p>
@@ -149,7 +176,8 @@ public class IncidenciaController {
     public ResponseEntity<?> updateEstado(
             // Usa ? para poder devolver errores de texto si falla
             @PathVariable Long id,
-            @RequestBody Map<String, String> requestBody) { // 1. Recibimos un JSON genérico
+            @RequestBody Map<String, String> requestBody,
+            Principal principal) { // 1. Recibimos un JSON genérico
 
         // 2. Extraemos el valor del campo "estado"
         String nuevoEstadoStr = requestBody.get("estado");
@@ -167,6 +195,8 @@ public class IncidenciaController {
             IncidenciasEntity incidencia = incidenciasService.findById(id)
                     .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
 
+            IncidenciasEntity.EstadoIncidencia estadoAnterior = incidencia.getEstado();
+
             incidencia.setEstado(nuevoEstado);
 
             // Actualizamos fecha de cierre si corresponde
@@ -176,6 +206,14 @@ public class IncidenciaController {
             }
 
             IncidenciasEntity guardada = incidenciasService.save(incidencia);
+
+            if (estadoAnterior != nuevoEstado) {
+                UsuariosEntity usuarioLogueado = null;
+                if (principal != null) {
+                    usuarioLogueado = usuariosService.findByNombreUsuario(principal.getName()).orElse(null);
+                }
+                historialEstadoService.registrarCambio(guardada, estadoAnterior, nuevoEstado, usuarioLogueado);
+            }
 
             return ResponseEntity.ok(IncidenciasDTO.fromEntity(guardada));
 
@@ -201,8 +239,11 @@ public class IncidenciaController {
      * @return ResponseEntity con IncidenciasDTO de la incidencia creada
      * @throws RuntimeException si el usuario autenticado no existe o el aula no se encuentra
      */
-    @PostMapping("/reportar")
-    public ResponseEntity<IncidenciasDTO> reportar(@RequestBody IncidenciasDTO dto, Principal principal) {
+    @PostMapping(value = "/reportar", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<IncidenciasDTO> reportar(
+            @RequestPart("incidencia") IncidenciasDTO dto,
+            @RequestPart(value = "file", required = false) org.springframework.web.multipart.MultipartFile file,
+            Principal principal) {
         // 1. Buscamos al usuario real que está logueado
         String username = principal.getName();
         UsuariosEntity usuario = usuariosService.findByNombreUsuario(username)
@@ -212,19 +253,40 @@ public class IncidenciaController {
         IncidenciasEntity incidencia = new IncidenciasEntity();
         incidencia.setTitulo(dto.getTitulo());
         incidencia.setDescripcion(dto.getDescripcion());
+        
+        if (dto.getCategoria() != null) {
+            try {
+                incidencia.setCategoria(IncidenciasEntity.CategoriaIncidencia.valueOf(dto.getCategoria().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                // Ignore or handle invalid category
+            }
+        }
 
         // ASIGNAMOS EL USUARIO AUTENTICADO
         incidencia.setUsuario(usuario);
 
+        // File upload
+        if (file != null && !file.isEmpty()) {
+            String filename = storageService.store(file);
+            incidencia.setAdjuntoUrl(filename);
+        }
 
         // Al guardar, el Service pondrá estado 'abierta' y fecha_reporte
         IncidenciasEntity incidenciaGuardada = incidenciasService.save(incidencia);
         return  ResponseEntity.ok(IncidenciasDTO.fromEntity(incidenciaGuardada));
     }
 
+    @GetMapping("/archivos/{filename:.+}")
+    public ResponseEntity<org.springframework.core.io.Resource> serveFile(@PathVariable String filename) {
+        org.springframework.core.io.Resource file = storageService.loadAsResource(filename);
+        return ResponseEntity.ok()
+                .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
+    }
+
 
     @GetMapping("/filtrar")
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = {"http://localhost:5173", "http://localhost"})
     public ResponseEntity<List<IncidenciasDTO>> filtrar(
             @RequestParam(required = false) String estado,
             @RequestParam(required = false) String categoria,
@@ -256,4 +318,48 @@ public class IncidenciaController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(dtos);
-    }}
+    }
+
+    @GetMapping("/{id}/comentarios")
+    public ResponseEntity<List<iesalonsocano.gestiondeaverias.DTO.ComentarioDTO>> getComentarios(@PathVariable Long id) {
+        List<iesalonsocano.gestiondeaverias.entity.ComentarioEntity> comentarios = comentarioService.findByIncidenciaId(id);
+        List<iesalonsocano.gestiondeaverias.DTO.ComentarioDTO> dtos = comentarios.stream()
+                .map(iesalonsocano.gestiondeaverias.DTO.ComentarioDTO::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
+    }
+
+    @PostMapping("/{id}/comentarios")
+    public ResponseEntity<iesalonsocano.gestiondeaverias.DTO.ComentarioDTO> addComentario(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> requestBody,
+            Principal principal) {
+        String texto = requestBody.get("texto");
+        if (texto == null || texto.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        IncidenciasEntity incidencia = incidenciasService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+
+        UsuariosEntity usuario = usuariosService.findByNombreUsuario(principal.getName())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        iesalonsocano.gestiondeaverias.entity.ComentarioEntity comentario = new iesalonsocano.gestiondeaverias.entity.ComentarioEntity();
+        comentario.setTexto(texto);
+        comentario.setIncidencia(incidencia);
+        comentario.setUsuario(usuario);
+
+        iesalonsocano.gestiondeaverias.entity.ComentarioEntity saved = comentarioService.save(comentario);
+        return ResponseEntity.ok(iesalonsocano.gestiondeaverias.DTO.ComentarioDTO.fromEntity(saved));
+    }
+
+    @GetMapping("/{id}/historial")
+    public ResponseEntity<List<iesalonsocano.gestiondeaverias.DTO.HistorialEstadoDTO>> getHistorial(@PathVariable Long id) {
+        List<iesalonsocano.gestiondeaverias.entity.HistorialEstadoEntity> historial = historialEstadoService.findByIncidenciaId(id);
+        List<iesalonsocano.gestiondeaverias.DTO.HistorialEstadoDTO> dtos = historial.stream()
+                .map(iesalonsocano.gestiondeaverias.DTO.HistorialEstadoDTO::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
+    }
+}

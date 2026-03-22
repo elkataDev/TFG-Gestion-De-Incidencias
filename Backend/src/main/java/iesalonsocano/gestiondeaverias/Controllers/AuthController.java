@@ -42,7 +42,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost"})
 public class AuthController {
 
     @Autowired
@@ -69,31 +69,39 @@ public class AuthController {
      * @throws BadCredentialsException si las credenciales son incorrectas
      */
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        // 1. Crear el "sobre" con la información cruda
-        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(),
-                loginRequest.getPassword()
-        );
-        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            // 1. Crear el "sobre" con la información cruda
+            Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
+                    loginRequest.getUsername(),
+                    loginRequest.getPassword()
+            );
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-        // 3. Guardar la sesión en memoria (si pasó el paso 2)
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        // 2. Generar el Token
-        String token = tokenProvider.generateToken(authentication);
+            // 3. Guardar la sesión en memoria (si pasó el paso 2)
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            // 2. Generar el Token
+            String token = tokenProvider.generateToken(authentication);
 
-        // 3. RECUPERAR USUARIO DE LA BASE DE DATOS
-        // Usamos el servicio que acabamos de implementar.
-        // Si la autenticación pasó, el usuario EXISTE seguro, pero usamos orElseThrow por seguridad.
-        UsuariosEntity usuarioDb = usuariosService.findByNombreUsuario(loginRequest.getUsername())
-                .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado en base de datos tras autenticación."));
+            // 3. RECUPERAR USUARIO DE LA BASE DE DATOS
+            // Usamos el servicio que acabamos de implementar.
+            // Si la autenticación pasó, el usuario EXISTE seguro, pero usamos orElseThrow por seguridad.
+            UsuariosEntity usuarioDb = usuariosService.findByNombreUsuario(loginRequest.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Error: Usuario no encontrado en base de datos tras autenticación."));
 
-        // 4. Obtener el rol real de la entidad
-        // IMPORTANTE: Asegúrate de que tu UsuariosEntity tenga el metodo getRol() o getRole()
-        String role = usuarioDb.getRol(); // O usuarioDb.getRole().toString() si es un Enum
+            // 4. Obtener el rol real de la entidad
+            // IMPORTANTE: Asegúrate de que tu UsuariosEntity tenga el metodo getRol() o getRole()
+            String role = usuarioDb.getRol(); // O usuarioDb.getRole().toString() si es un Enum
 
-        // 5. Devolver respuesta
-        return ResponseEntity.ok(new LoginResponse(token, usuarioDb.getNombreUsuario(), role));
+            // 5. Devolver respuesta
+            return ResponseEntity.ok(new LoginResponse(token, usuarioDb.getNombreUsuario(), role));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Usuario o contraseña incorrectos"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Error durante la autenticación: " + e.getMessage()));
+        }
     }
 
     /**

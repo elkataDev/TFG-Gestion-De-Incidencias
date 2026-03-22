@@ -121,6 +121,12 @@ public class IncidenciasEntity {
     private AulasEntity aula;
 
     /**
+     * URL o identificador del archivo adjunto (opcional).
+     */
+    @Column(name = "adjunto_url")
+    private String adjuntoUrl;
+
+    /**
      * Método de callback JPA ejecutado antes de persistir una nueva incidencia.
      * <p>
      * Establece automáticamente:
@@ -178,6 +184,7 @@ public class IncidenciasEntity {
         EN_PROGRESO,
         /** Incidencia completamente resuelta */
         RESUELTO,
-
+        /** Incidencia cerrada permanentemente */
+        CERRADO
     }
 }
