@@ -88,14 +88,33 @@ public class IncidenciasDTO {
             return null;
         }
 
+        // Mapeo seguro para evitar LazyInitializationException
+        String nombreAula = "Desconocido";
+        try {
+            if (entity.getAula() != null) {
+                nombreAula = entity.getAula().getNombre();
+            }
+        } catch (Exception e) {
+            nombreAula = "Cargando...";
+        }
+
+        String nombreUsuario = "Desconocido";
+        try {
+            if (entity.getUsuario() != null) {
+                nombreUsuario = entity.getUsuario().getNombreUsuario();
+            }
+        } catch (Exception e) {
+            nombreUsuario = "Cargando...";
+        }
+
         return IncidenciasDTO.builder()
                 .id(entity.getId())
                 .titulo(entity.getTitulo())
                 .descripcion(entity.getDescripcion())
                 .estado(entity.getEstado() != null ? entity.getEstado().name() : null)
                 .categoria(entity.getCategoria() != null ? entity.getCategoria().name() : null)
-                .nombreAula(entity.getAula() != null ? entity.getAula().getNombre() : "Desconocido")
-                .nombreUsuario(entity.getUsuario() != null ? entity.getUsuario().getNombreUsuario() : "Desconocido")
+                .nombreAula(nombreAula)
+                .nombreUsuario(nombreUsuario)
                 .fechaReporte(entity.getFechaReporte())
                 .fechaCierre(entity.getFechaCierre())
                 .adjuntoUrl(entity.getAdjuntoUrl())

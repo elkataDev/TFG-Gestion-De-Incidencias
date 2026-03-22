@@ -62,18 +62,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String token = obtenerTokenDeSolicitud(request);
+        try {
+            String token = obtenerTokenDeSolicitud(request);
 
-        if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
-            String username = tokenProvider.getUsernameFromJWT(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (StringUtils.hasText(token)) {
+                System.out.println("DEBUG: Token recibido para URI: " + request.getRequestURI());
+                if (tokenProvider.validateToken(token)) {
+                    String username = tokenProvider.getUsernameFromJWT(token);
+                    System.out.println("DEBUG: Token válido para usuario: " + username);
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    if (userDetails != null) {
+                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        System.out.println("DEBUG: Autenticación establecida en SecurityContext para: " + username);
+                    }
+                } else {
+                    System.err.println("DEBUG: La validación del token falló.");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("No se pudo establecer la autenticación del usuario: " + e.getMessage());
+            e.printStackTrace();
         }
+        
         filterChain.doFilter(request, response);
     }
 

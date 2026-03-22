@@ -40,10 +40,8 @@ export const LoginForm = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.role ?? 'USER');
 
-      alert('Login correcto');
       setLoading(false);
-
-      void navigate('/'); // Redirigir al dashboard
+      window.location.href = '/'; // Forzar recarga total para limpiar estados antiguos
     } catch (error) {
       console.error('Error al conectar con la API', error);
       alert(error instanceof Error ? error.message : 'Error de conexión con el servidor');

@@ -18,6 +18,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * Configuración principal de Spring Security.
  * <p>
@@ -39,12 +43,13 @@ import java.util.List;
  * </p>
  *
  * @author IES Alonso Cano
- * @version 1.0.0
+ * @version 1.1.0
  * @see JwtAuthenticationFilter
  * @see JwtTokenProvider
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity // Habilitar @PreAuthorize
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -79,16 +84,20 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // habilitamos CORS
                 .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(unauthorizedHandler())
+                )
                 .authorizeHttpRequests(auth -> auth
+                        // Permitir todas las peticiones de preflight (OPTIONS)
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         // Rutas públicas
-                        .requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api/auth/login", "/api/auth/registro", "/api/incidencias/filtrar").permitAll()
-
-                        /*
-                        // Rutas protegidas de ejemplo
-                        .requestMatchers(HttpMethod.POST, "/api/aulas/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/aulas/**").hasRole("ADMIN")
-                        */
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/api/incidencias/filtrar").permitAll()
+                        .requestMatchers("/error").permitAll() // Permitir ver errores del servidor
                         // El resto requiere autenticación
                         .anyRequest().authenticated()
                 )
@@ -98,13 +107,21 @@ public class SecurityConfig {
     }
 
     /**
+     * Manejador de errores de autenticación (401 Unauthorized).
+     */
+    @Bean
+    public AuthenticationEntryPoint unauthorizedHandler() {
+        return (request, response, authException) -> {
+            // Log para depuración
+            System.err.println("Acceso no autorizado a: " + request.getRequestURI());
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{ \"message\": \"Error: No autorizado. Debes iniciar sesión.\" }");
+        };
+    }
+
+    /**
      * Bean que proporciona el codificador de contraseñas BCrypt.
-     * <p>
-     * BCrypt es un algoritmo de hashing adaptativo diseñado para cifrar contraseñas.
-     * Incluye un salt automático y es resistente a ataques de fuerza bruta.
-     * </p>
-     *
-     * @return instancia de BCryptPasswordEncoder
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -113,13 +130,6 @@ public class SecurityConfig {
 
     /**
      * Bean que proporciona el AuthenticationManager de Spring Security.
-     * <p>
-     * Gestiona el proceso de autenticación, validando credenciales de usuario.
-     * </p>
-     *
-     * @param config configuración de autenticación
-     * @return AuthenticationManager configurado
-     * @throws Exception si ocurre un error al obtener el manager
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -128,25 +138,24 @@ public class SecurityConfig {
 
     /**
      * Configura CORS (Cross-Origin Resource Sharing) para permitir peticiones desde el frontend.
-     * <p>
-     * Permite:
-     * <ul>
-     *   <li>Origen: http://localhost:5173 (frontend React/Vite)</li>
-     *   <li>Métodos: GET, POST, PUT, DELETE, OPTIONS</li>
-     *   <li>Todas las cabeceras</li>
-     *   <li>Credenciales (cookies, headers de autenticación)</li>
-     * </ul>
-     * </p>
-     *
-     * @return CorsConfigurationSource configurada
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost", "http://localhost:5173")); // frontend (Docker y desarrollo)
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true); // si usas cookies o auth
+        // Incluimos localhost y 127.0.0.1 con todos los puertos habituales de desarrollo
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost",
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "http://127.0.0.1",
+                "http://127.0.0.1:5173",
+                "http://127.0.0.1:3000"
+        ));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*")); // Permitir todos los headers
+        configuration.setExposedHeaders(List.of("Authorization"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

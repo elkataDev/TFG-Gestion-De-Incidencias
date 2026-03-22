@@ -49,7 +49,6 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/incidencias")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost"}) // Permitir React (Vite)
 public class IncidenciaController {
 
     @Autowired

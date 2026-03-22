@@ -18,10 +18,17 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
     headers,
   });
 
-  if (response.status === 401 || response.status === 403) {
-    // Manejo de expiración de token o falta de permisos
-    // Podrías redirigir al login si es un 401
-    // window.location.href = '/login';
+  if (response.status === 401) {
+    console.warn(`Petición no autorizada (401) a: ${url}. Redirigiendo a login...`);
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/login';
+  }
+
+  if (response.status === 403) {
+    // Forbidden: el usuario está logueado pero no tiene permisos para este recurso
+    // Podríamos redirigir a una página de "Sin autorización"
+    // window.location.href = '/unauthorized';
   }
 
   if (!response.ok) {
