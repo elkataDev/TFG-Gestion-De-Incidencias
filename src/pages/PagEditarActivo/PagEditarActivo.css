@@ -1,0 +1,107 @@
+/* Contenedor general */
+.form-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px 32px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Título */
+.form-container h1 {
+  margin-bottom: 24px;
+  text-align: center;
+  font-size: 1.6rem;
+  color: #333;
+}
+
+/* Formulario */
+.form-activo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Labels */
+.form-activo label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+  gap: 6px;
+}
+
+/* Inputs, textarea y select */
+.form-activo input,
+.form-activo textarea,
+.form-activo select {
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Focus */
+.form-activo input:focus,
+.form-activo textarea:focus,
+.form-activo select:focus {
+  outline: none;
+  border-color: #4f46e5; /* azul suave */
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+}
+
+/* Textarea */
+.form-activo textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Botones */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  gap: 12px;
+}
+
+/* Botón cancelar */
+.form-actions button[type='button'] {
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.form-actions button[type='button']:hover {
+  background-color: #eaeaea;
+  border-color: #bdbdbd;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .form-container {
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions button,
+  .form-actions > * {
+    width: 100%;
+  }
+}

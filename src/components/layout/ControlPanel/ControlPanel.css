@@ -1,0 +1,102 @@
+/* ControlPanel.css */
+
+body {
+  color: var(--color-text-primary);
+}
+
+.breakdown-gen-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-card);
+}
+
+.breakdown-gen-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-card);
+  padding: var(--padding-card);
+  border-radius: var(--border-radius-card);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: var(--color-text-secondary);
+  height: 15vh;
+}
+
+.breakdown-gen-card-title {
+  font-size: var(--font-size-card-title);
+  margin-bottom: 15px;
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.breakdown-number {
+  font-size: var(--font-size-number);
+  margin-bottom: 10px;
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.progress-text {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  margin-top: 10px;
+}
+
+.breakdown-gen-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.breakdown-subtext {
+  margin-top: 5px;
+  align-items: end;
+}
+
+.breakdown-gen-card:nth-child(4) {
+  grid-column: span 3;
+  height: 38vh;
+}
+
+.control-panel-title {
+  font-size: var(--font-size-title);
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  background-color: #2b2f37;
+  border-radius: 4px;
+  height: 20px;
+  margin-top: 8px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--color-progress-fill);
+  border-radius: 4px;
+  text-align: right;
+  padding-right: 5px;
+  color: var(--color-text-primary);
+  font-weight: bold;
+}
+
+.breakdown-subtext.hidden {
+  display: none;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.control-panel-footer {
+  margin-top: 30px;
+  border-top: 2px solid var(--color-border);
+  padding-top: 15px;
+}
