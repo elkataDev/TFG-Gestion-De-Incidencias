@@ -50,7 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return User.builder()
                 .username(usuario.getNombreUsuario())
                 .password(usuario.getPassword())
-                .roles(usuario.getRol()) // Asigna el rol (ADMIN, USER)
+                .roles(String.valueOf(usuario.getRol())) // Asigna el rol (ADMIN, USER)
                 .build();
     }
 }

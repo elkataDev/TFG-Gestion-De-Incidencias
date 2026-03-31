@@ -3,8 +3,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
+import './Select.css';
 
 type SelectProps = {
+  disabled?: boolean;
   inputText: string;
   options: { label: string }[];
   value?: string;
@@ -12,7 +14,7 @@ type SelectProps = {
 };
 
 export default function SelectAutoWidth(props: SelectProps) {
-  const [selected, setSelected] = React.useState(props.value || '');
+  const [selected, setSelected] = React.useState(props.value ?? '');
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelected(event.target.value);
@@ -25,15 +27,10 @@ export default function SelectAutoWidth(props: SelectProps) {
   }, [props.value]);
 
   return (
-    <FormControl className="select" sx={{ minWidth: 150 }}>
+    <FormControl className="select-blanco">
       <InputLabel id="select-autowidth-label">{props.inputText}</InputLabel>
-      <Select
-        labelId="select-autowidth-label"
-        id="select-autowidth"
-        value={selected}
-        onChange={handleChange}
-        autoWidth
-      >
+
+      <Select labelId="select-autowidth-label" value={selected} onChange={handleChange} autoWidth>
         <MenuItem value="">
           <em>Ninguna</em>
         </MenuItem>

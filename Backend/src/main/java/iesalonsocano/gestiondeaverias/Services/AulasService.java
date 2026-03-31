@@ -44,4 +44,7 @@ public interface AulasService {
      * @return Optional con el aula si existe
      */
     Optional<AulasEntity> findByNombre(String nombre);
+
+
+
 }

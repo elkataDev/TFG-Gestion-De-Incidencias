@@ -52,7 +52,7 @@ public class UsuariosServiceImpl implements UsuariosService {
 
         // Valores por defecto si no vienen informados
         if (usuario.getRol() == null) {
-            usuario.setRol("USER");
+            usuario.setRol(UsuariosEntity.RolUsuario.USUARIO);
         }
         if (usuario.getActivo() == null) {
             usuario.setActivo(true);
@@ -60,7 +60,6 @@ public class UsuariosServiceImpl implements UsuariosService {
 
         return usuariosRepository.save(usuario);
     }
-
     @Override
     public void deleteById(Long id) {
         usuariosRepository.deleteById(id);

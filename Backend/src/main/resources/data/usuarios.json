@@ -10,14 +10,21 @@
     "nombreUsuario": "profesor",
     "email": "profesor@centro.com",
     "password": "user123",
-    "rol": "USER",
+    "rol": "USUARIO",
     "activo": true
   },
   {
     "nombreUsuario": "conserje",
     "email": "conserje@centro.com",
     "password": "user123",
-    "rol": "USER",
+    "rol": "USUARIO",
+    "activo": true
+  },
+  {
+    "nombreUsuario": "tecnico",
+    "email": "tecnico@centro.com",
+    "password": "tecnico",
+    "rol": "TECNICO",
     "activo": true
   },
   {

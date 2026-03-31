@@ -50,7 +50,7 @@
   background-color: #2563eb; /* azul */
 }
 
-.estado-en-progreso {
+.estado-en_progreso {
   background-color: #f59e0b; /* naranja */
 }
 
@@ -62,12 +62,20 @@
   background-color: #6b7280; /* gris */
 }
 
-.estado-activo {
+.estado-disponible {
   background-color: #22c55e;
+}
+
+.estado-en_uso {
+  background-color: #2563eb;
 }
 
 .estado-inactivo {
   background-color: gray;
+}
+
+.estado-danado {
+  background-color: red;
 }
 
 .estado-admin {
