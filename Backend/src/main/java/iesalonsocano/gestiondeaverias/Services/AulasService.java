@@ -39,4 +39,7 @@ public interface AulasService {
      * Finds a classroom by its name.
      */
     Optional<AulasEntity> findByNombre(String nombre);
+
+
+
 }

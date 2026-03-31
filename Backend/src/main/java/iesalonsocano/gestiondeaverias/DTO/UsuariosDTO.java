@@ -22,7 +22,7 @@ public class UsuariosDTO {
                 .id(entity.getId())
                 .nombreUsuario(entity.getNombreUsuario())
                 .email(entity.getEmail())
-                .rol(entity.getRol() != null ? entity.getRol() : null)
+                .rol(entity.getRol() != null ? entity.getRol().name() : null)
                 .activo(entity.getActivo())
                 .fechaCreacion(entity.getFechaCreacion())
                 .build();

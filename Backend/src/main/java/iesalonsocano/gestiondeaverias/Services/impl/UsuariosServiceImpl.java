@@ -49,18 +49,18 @@ public class UsuariosServiceImpl implements UsuariosService {
     @Override
     public UsuariosEntity save(UsuariosEntity usuario) {
 
-
         usuario.setPassword(
                 passwordEncoder.encode(usuario.getPassword())
         );
 
+        if (usuario.getRol() == null) {
+            usuario.setRol(UsuariosEntity.RolUsuario.USUARIO);
+        }
 
-        usuario.setRol("USER");
         usuario.setActivo(true);
 
         return usuariosRepository.save(usuario);
     }
-
     @Override
     public void deleteById(Long id) {
         // Elimina el usuario. / Deletes the user.

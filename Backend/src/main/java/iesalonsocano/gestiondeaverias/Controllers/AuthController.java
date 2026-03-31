@@ -51,7 +51,7 @@ public class AuthController {
 
         // 4. Obtener el rol real de la entidad
         // IMPORTANTE: Asegúrate de que tu UsuariosEntity tenga el metodo getRol() o getRole()
-        String role = usuarioDb.getRol(); // O usuarioDb.getRole().toString() si es un Enum
+        String role = String.valueOf(usuarioDb.getRol()); // O usuarioDb.getRole().toString() si es un Enum
 
         // 5. Devolver respuesta
         return ResponseEntity.ok(new LoginResponse(token, usuarioDb.getNombreUsuario(), role));

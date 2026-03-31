@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,10 +35,10 @@ public class UsuariosEntity {
     @Column(nullable = false)
     private String password;
 
-    // --- CAMPO ROL ---
+    @Enumerated(EnumType.STRING)
     @Column(name = "rol", nullable = false)
     @Builder.Default
-    private String rol = "USER";
+    private RolUsuario rol = RolUsuario.USUARIO;
 
     @Column(name = "activo", nullable = false)
     @Builder.Default
@@ -49,16 +50,14 @@ public class UsuariosEntity {
     @PrePersist
     protected void onCreate() {
         fechaCreacion = LocalDateTime.now();
+        if (rol == null) {
+            rol = RolUsuario.USUARIO;
+        }
+    }
+
+    public enum RolUsuario {
+        USUARIO,
+        TECNICO,
+        ADMIN
     }
 }
-
-
-/*@Entity y @Table: declaran que esta clase es una tabla de base de datos llamada usuarios.
-
-Validaciones (@NotBlank, @Email, etc.): aseguran datos válidos antes de guardar.
-
-@Builder (de Lombok): permite crear objetos fácilmente con un patrón builder.
-
-Fechas automáticas: @PrePersist llenan los campos de auditoría automáticamente.
-
-activo: bandera para desactivar usuarios sin borrarlos (buena práctica).*/
