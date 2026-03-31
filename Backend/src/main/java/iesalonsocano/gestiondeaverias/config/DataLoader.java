@@ -129,20 +129,30 @@ public class DataLoader {
                     TypeReference<List<InventarioEntity>> typeRefInv = new TypeReference<>() {};
                     List<InventarioEntity> inventarioList = mapper.readValue(inputStream, typeRefInv);
 
+                    // Paso 1: recopilar y persistir todas las aulas únicas PRIMERO
                     Map<String, AulasEntity> aulasCache = new HashMap<>();
                     for (InventarioEntity item : inventarioList) {
                         if (item.getAula() != null) {
                             String nombreAula = item.getAula().getNombre();
-                            AulasEntity aula = aulasCache.get(nombreAula);
-                            if (aula == null) {
-                                // Revisa si existe en DB
-                                Optional<AulasEntity> aulaDB = aulasRepository.findByNombre(nombreAula);
-                                aula = aulaDB.orElse(item.getAula());
+                            if (!aulasCache.containsKey(nombreAula)) {
+                                AulasEntity aula = aulasRepository.findByNombre(nombreAula)
+                                        .orElseGet(() -> {
+                                            AulasEntity nueva = new AulasEntity();
+                                            nueva.setNombre(nombreAula);
+                                            return aulasRepository.save(nueva);
+                                        });
                                 aulasCache.put(nombreAula, aula);
                             }
-                            item.setAula(aula);
                         }
                     }
+
+                    // Paso 2: asignar las aulas ya persistidas a cada item
+                    for (InventarioEntity item : inventarioList) {
+                        if (item.getAula() != null) {
+                            item.setAula(aulasCache.get(item.getAula().getNombre()));
+                        }
+                    }
+
                     inventarioRepository.saveAll(inventarioList);
                     System.out.println("✅ Inventario cargado correctamente.");
                 } catch (Exception e) {
@@ -164,14 +174,18 @@ public class DataLoader {
                         // Mapear usuario
                         if (inc.getUsuario() != null) {
                             String nombreUsuario = inc.getUsuario().getNombreUsuario();
-                            Optional<UsuariosEntity> usuarioDB = usuariosRepository.findByNombreUsuario(nombreUsuario);
-                            usuarioDB.ifPresent(inc::setUsuario);
+                            usuariosRepository.findByNombreUsuario(nombreUsuario).ifPresent(inc::setUsuario);
                         }
-                        // Mapear aula
+                        // Mapear aula (ya deberían existir del paso de inventario)
                         if (inc.getAula() != null) {
                             String nombreAula = inc.getAula().getNombre();
-                            Optional<AulasEntity> aulaDB = aulasRepository.findByNombre(nombreAula);
-                            aulaDB.ifPresent(inc::setAula);
+                            AulasEntity aula = aulasRepository.findByNombre(nombreAula)
+                                    .orElseGet(() -> {
+                                        AulasEntity nueva = new AulasEntity();
+                                        nueva.setNombre(nombreAula);
+                                        return aulasRepository.save(nueva);
+                                    });
+                            inc.setAula(aula);
                         }
                     }
 

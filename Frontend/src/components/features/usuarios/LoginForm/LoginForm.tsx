@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Input } from '@/components/common/Input/Input';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
-import { Box, Typography, Link } from '@mui/material';
+import { Box, Typography, Link, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { apiJson } from '@/services/api/apiService';
 
@@ -16,6 +16,7 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: '', password: '' });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,6 +26,7 @@ export const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const data: LoginResponse = await apiJson('/auth/login', {
@@ -33,7 +35,7 @@ export const LoginForm = () => {
       });
 
       if (!data.token) {
-        alert(data.message ?? 'Credenciales incorrectas');
+        setError(data.message ?? 'Credenciales incorrectas');
         setLoading(false);
         return;
       }
@@ -44,9 +46,9 @@ export const LoginForm = () => {
 
       setLoading(false);
       window.location.href = '/'; // Forzar recarga total para limpiar estados antiguos
-    } catch (error) {
-      console.error('Error al conectar con la API', error);
-      alert(error instanceof Error ? error.message : 'Error de conexión con el servidor');
+    } catch (err) {
+      console.error('Error al conectar con la API', err);
+      setError(err instanceof Error ? err.message : 'Error de conexión con el servidor');
       setLoading(false);
     }
   };
@@ -85,6 +87,8 @@ export const LoginForm = () => {
         onChange={handleChange}
         required
       />
+      {error && <Alert severity="error" sx={{ width: '100%' }}>{error}</Alert>}
+
       <BotonPrimario text={loading ? 'Cargando...' : 'Login'} type="submit" />
 
       {/* Enlace a registro */}

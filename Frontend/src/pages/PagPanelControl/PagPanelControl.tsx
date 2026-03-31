@@ -64,7 +64,7 @@ export default function PagPanelControl() {
           <CP_Card titulo="Total de averías" numb={total} />
 
           <CP_Card
-            titulo={role === 'USUARIO' ? 'Mis Estadísticas' : 'Estado de averias'}
+            titulo={role === 'USUARIO' ? 'Mis Estadísticas' : 'Estado de averías'}
             numb={total}
             progress={[
               { label: 'Pendientes', percent: total ? Math.round((pendientes / total) * 100) : 0 },

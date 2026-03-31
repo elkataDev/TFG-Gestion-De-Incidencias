@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Input } from '@/components/common/Input/Input';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
-import { Box } from '@mui/material';
+import { Box, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '@/services/api/apiService';
 
@@ -9,6 +9,8 @@ export const RegisterForm = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '' });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -17,9 +19,15 @@ export const RegisterForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
     if (form.password !== form.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+      setError('Las contraseñas no coinciden');
+      return;
+    }
+
+    if (form.password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres');
       return;
     }
 
@@ -29,7 +37,7 @@ export const RegisterForm = () => {
       const response = await apiFetch('/auth/registro', {
         method: 'POST',
         body: JSON.stringify({
-          nombreUsuario: form.username, // 🔴 IMPORTANTE
+          nombreUsuario: form.username,
           email: form.email,
           password: form.password,
         }),
@@ -37,13 +45,13 @@ export const RegisterForm = () => {
 
       await response.text();
 
-      alert('Registro correcto, ahora puedes iniciar sesión');
+      setSuccessMsg('Registro correcto, ahora puedes iniciar sesión');
       setLoading(false);
 
-      void navigate('/login');
-    } catch (error) {
-      console.error('Error al conectar con la API', error);
-      alert(error instanceof Error ? error.message : 'Error de conexión con el servidor');
+      setTimeout(() => void navigate('/login'), 1500);
+    } catch (err) {
+      console.error('Error al conectar con la API', err);
+      setError(err instanceof Error ? err.message : 'Error de conexión con el servidor');
       setLoading(false);
     }
   };
@@ -98,6 +106,9 @@ export const RegisterForm = () => {
         onChange={handleChange}
         required
       />
+      {error && <Alert severity="error" sx={{ width: '100%' }}>{error}</Alert>}
+      {successMsg && <Alert severity="success" sx={{ width: '100%' }}>{successMsg}</Alert>}
+
       <BotonPrimario text={loading ? 'Cargando...' : 'Registrarse'} type="submit" />
     </Box>
   );

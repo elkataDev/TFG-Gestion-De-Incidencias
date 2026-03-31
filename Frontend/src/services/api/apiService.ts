@@ -19,11 +19,14 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
   });
 
   if (response.status === 401) {
-    console.warn(`Petición no autorizada (401) a: ${url}. Redirigiendo a login...`);
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    window.location.href = '/login';
-    throw new Error('Session expired');
+    const isOnLogin = window.location.pathname === '/login';
+    if (!isOnLogin) {
+      console.warn(`Petición no autorizada (401) a: ${url}. Redirigiendo a login...`);
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      window.location.href = '/login';
+    }
+    throw new Error('Credenciales incorrectas');
   }
 
   if (response.status === 403) {

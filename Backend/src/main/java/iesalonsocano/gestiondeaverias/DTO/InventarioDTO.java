@@ -2,6 +2,7 @@ package iesalonsocano.gestiondeaverias.DTO;
 
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
 import lombok.*;
+import org.hibernate.Hibernate;
 import java.time.LocalDateTime;
 
 /**
@@ -68,6 +69,14 @@ public class InventarioDTO {
      */
     public static InventarioDTO fromEntity(InventarioEntity entity) {
         if (entity == null) return null;
+
+        Long aulaId = null;
+        String aulaName = "Sin asignar";
+        if (entity.getAula() != null && Hibernate.isInitialized(entity.getAula())) {
+            aulaId = entity.getAula().getId();
+            aulaName = entity.getAula().getNombre();
+        }
+
         return InventarioDTO.builder()
                 .id(entity.getId())
                 .nombre(entity.getNombre())
@@ -75,8 +84,8 @@ public class InventarioDTO {
                 .codigoQR(entity.getCodigoQR())
                 .estado(entity.getEstado() != null ? entity.getEstado().name() : null)
                 .fechaIngreso(entity.getFechaIngreso())
-                .aulaId(entity.getAula() != null ? entity.getAula().getId() : null)
-                .nombreAula(entity.getAula() != null ? entity.getAula().getNombre() : "Sin asignar")
+                .aulaId(aulaId)
+                .nombreAula(aulaName)
                 .build();
     }
 }

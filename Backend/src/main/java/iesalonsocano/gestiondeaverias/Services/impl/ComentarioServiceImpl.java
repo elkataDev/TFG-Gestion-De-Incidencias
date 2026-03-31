@@ -21,6 +21,7 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     public List<ComentarioEntity> findByIncidenciaId(Long incidenciaId) {
-        return comentarioRepository.findByIncidenciaIdOrderByFechaAsc(incidenciaId);
+        // Usa JOIN FETCH para evitar LazyInitializationException
+        return comentarioRepository.findByIncidenciaIdWithUsuario(incidenciaId);
     }
 }

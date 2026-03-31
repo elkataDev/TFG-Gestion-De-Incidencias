@@ -42,6 +42,8 @@ export default function PagNuevoActivo() {
   const navigate = useNavigate();
   const [form, setForm] = useState<NuevoActivoForm>(INITIAL_FORM);
   const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   /* ===================== HANDLERS ===================== */
 
@@ -68,11 +70,11 @@ export default function PagNuevoActivo() {
         body: JSON.stringify(payload),
       });
 
-      alert('Activo creado correctamente');
-      void navigate('/inventario');
+      setSuccessMsg('Activo creado correctamente');
+      setTimeout(() => void navigate('/inventario'), 1500);
     } catch (err: unknown) {
       console.error('Error al crear activo:', err);
-      alert(err instanceof Error ? err.message : 'Error al crear el activo');
+      setErrorMsg(err instanceof Error ? err.message : 'Error al crear el activo');
     } finally {
       setLoading(false);
     }
@@ -166,6 +168,9 @@ export default function PagNuevoActivo() {
             placeholder="ID del aula (dejar vacío si está en almacén)"
           />
         </label>
+
+        {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
+        {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
 
         {/* Botones */}
         <div className="form-actions">

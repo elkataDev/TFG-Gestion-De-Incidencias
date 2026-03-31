@@ -3,9 +3,11 @@ package iesalonsocano.gestiondeaverias.Repository;
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity.EstadoInventario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repositorio JPA para la gestión de persistencia del inventario.
@@ -28,6 +30,24 @@ public interface InventarioRepository extends JpaRepository<InventarioEntity, Lo
      * @return lista de artículos con el estado especificado
      */
     List<InventarioEntity> findByEstado(EstadoInventario estado);
+
+    /**
+     * Obtiene todos los artículos con su aula precargada (JOIN FETCH).
+     * Evita LazyInitializationException al acceder a la relación aula.
+     *
+     * @return lista de artículos con el aula cargada
+     */
+    @Query("SELECT i FROM InventarioEntity i LEFT JOIN FETCH i.aula")
+    List<InventarioEntity> findAllWithAula();
+
+    /**
+     * Obtiene un artículo por ID con su aula precargada (JOIN FETCH).
+     *
+     * @param id identificador del artículo
+     * @return artículo con el aula cargada
+     */
+    @Query("SELECT i FROM InventarioEntity i LEFT JOIN FETCH i.aula WHERE i.id = :id")
+    Optional<InventarioEntity> findByIdWithAula(Long id);
 
     /**
      * Busca todos los artículos ubicados en un aula específica.

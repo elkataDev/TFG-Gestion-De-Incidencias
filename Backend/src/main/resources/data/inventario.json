@@ -117,7 +117,7 @@
     "codigoQR": "QR-DIR-001",
     "estado": "EN_USO",
     "categoria": "COMPUTADORA",
-    "aula": { "nombre": "Direccion" }
+    "aula": { "nombre": "Dirección" }
   },
   {
     "nombre": "PC Sala Profesores",
@@ -141,7 +141,7 @@
     "codigoQR": "QR-CON-001",
     "estado": "EN_USO",
     "categoria": "COMPUTADORA",
-    "aula": { "nombre": "Conserjeria" }
+    "aula": { "nombre": "Conserjería" }
   },
   {
     "nombre": "PC Aula 006",
@@ -157,7 +157,7 @@
     "codigoQR": "QR-ACTOS-001",
     "estado": "DISPONIBLE",
     "categoria": "PROYECTOR",
-    "aula": { "nombre": "Salon de actos" }
+    "aula": { "nombre": "Salón de actos" }
   },
   {
     "nombre": "PC Biblioteca",

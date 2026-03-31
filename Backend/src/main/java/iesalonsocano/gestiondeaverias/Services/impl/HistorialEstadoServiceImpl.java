@@ -33,6 +33,7 @@ public class HistorialEstadoServiceImpl implements HistorialEstadoService {
 
     @Override
     public List<HistorialEstadoEntity> findByIncidenciaId(Long incidenciaId) {
-        return repository.findByIncidenciaIdOrderByFechaCambioAsc(incidenciaId);
+        // Usa JOIN FETCH para evitar LazyInitializationException
+        return repository.findByIncidenciaIdWithUsuario(incidenciaId);
     }
 }

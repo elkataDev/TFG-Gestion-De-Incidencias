@@ -40,7 +40,7 @@
     "descripcion": "El switch de Conserjería no conecta los equipos correctamente.",
     "estado": "ABIERTO",
     "categoria": "RED",
-    "aula": { "nombre": "Conserjeria" },
+    "aula": { "nombre": "Conserjería" },
     "usuario": { "nombreUsuario": "conserje" },
     "fechaReporte": "2025-10-25T00:00:00"
   },
@@ -49,7 +49,7 @@
     "descripcion": "No se puede actualizar el software educativo en los PCs de dirección.",
     "estado": "EN_PROGRESO",
     "categoria": "SOFTWARE",
-    "aula": { "nombre": "Direccion" },
+    "aula": { "nombre": "Dirección" },
     "usuario": { "nombreUsuario": "admin" },
     "fechaReporte": "2025-10-24T00:00:00"
   },
@@ -85,7 +85,7 @@
     "descripcion": "El teclado y ratón del salón de actos no responden a los comandos.",
     "estado": "RESUELTO",
     "categoria": "HARDWARE",
-    "aula": { "nombre": "Salon de actos" },
+    "aula": { "nombre": "Salón de actos" },
     "usuario": { "nombreUsuario": "conserje" },
     "fechaReporte": "2025-10-20T00:00:00"
   },

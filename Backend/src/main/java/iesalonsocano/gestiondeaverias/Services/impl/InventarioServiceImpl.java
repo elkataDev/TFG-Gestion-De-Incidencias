@@ -21,14 +21,14 @@ public class InventarioServiceImpl implements InventarioService {
 
     @Override
     public List<InventarioEntity> findAll() {
-        // Devuelve todos los artículos. / Returns all items.
-        return inventarioRepository.findAll();
+        // Usa JOIN FETCH para evitar LazyInitializationException
+        return inventarioRepository.findAllWithAula();
     }
 
     @Override
     public Optional<InventarioEntity> findById(Long id) {
-        // Busca un artículo por ID. / Finds an item by ID.
-        return inventarioRepository.findById(id);
+        // Usa JOIN FETCH para evitar LazyInitializationException
+        return inventarioRepository.findByIdWithAula(id);
     }
 
     @Override

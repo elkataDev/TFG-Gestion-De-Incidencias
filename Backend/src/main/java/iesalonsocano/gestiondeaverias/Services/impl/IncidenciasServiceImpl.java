@@ -22,14 +22,14 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
     @Override
     public List<IncidenciasEntity> findAll() {
-        // Retorna todas las incidencias. / Returns all incidents.
-        return incidenciasRepository.findAll();
+        // Usa JOIN FETCH para evitar LazyInitializationException
+        return incidenciasRepository.findAllWithRelations();
     }
 
     @Override
     public Optional<IncidenciasEntity> findById(Long id) {
-        // Busca una incidencia por su identificador. / Finds an incident by its identifier.
-        return incidenciasRepository.findById(id);
+        // Usa JOIN FETCH para evitar LazyInitializationException
+        return incidenciasRepository.findByIdWithRelations(id);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
     @Override
     public List<IncidenciasEntity> findByUsuarioId(Long usuarioId) {
-        // Busca incidencias filtrando por el usuario. / Finds incidents filtered by user.
-        return incidenciasRepository.findByUsuarioId(usuarioId);
+        // Usa JOIN FETCH para evitar LazyInitializationException
+        return incidenciasRepository.findByUsuarioIdWithRelations(usuarioId);
     }
 
     @Override

@@ -29,6 +29,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin_password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - JWT_SECRET=clave_secreta_tfg_2026_ies_alonso_cano_docker_compose_dev_only
     ports:
       - "5555:8080"
     depends_on:

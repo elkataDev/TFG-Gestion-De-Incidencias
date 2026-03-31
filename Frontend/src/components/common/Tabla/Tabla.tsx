@@ -10,6 +10,28 @@ import Paginacion from '../Paginacion/Paginacion';
 import { apiFetch } from '@/services/api/apiService';
 import './Tabla.css';
 
+const HEADER_LABELS: Record<string, string> = {
+  id: 'ID',
+  nombre: 'Nombre',
+  nombreUsuario: 'Usuario',
+  email: 'Email',
+  rol: 'Rol',
+  activo: 'Estado',
+  titulo: 'Titulo',
+  descripcion: 'Descripcion',
+  estado: 'Estado',
+  categoria: 'Categoria',
+  nombreAula: 'Aula',
+  fechaReporte: 'Fecha Reporte',
+  fechaCierre: 'Fecha Cierre',
+  fechaCreacion: 'Fecha Creacion',
+  fechaIngreso: 'Fecha Ingreso',
+  codigoQR: 'Codigo QR',
+  acciones: 'Acciones',
+};
+
+const HIDDEN_COLUMNS = ['aulaId', 'usuarioId', 'adjuntoUrl'];
+
 interface TablaGenericaProps<T extends Record<string, unknown>> {
   endpoint?: string;
   data?: T[];
@@ -80,7 +102,9 @@ export default function TablaGenerica<T extends Record<string, unknown>>({
     if (data) setRows(data.map(flattenObject));
   }, [data]);
 
-  const columnas: string[] = rows.length > 0 ? [...Object.keys(rows[0]!), ...extraColumns] : [];
+  const columnas: string[] = rows.length > 0
+    ? [...Object.keys(rows[0]!).filter((col) => !HIDDEN_COLUMNS.includes(col)), ...extraColumns]
+    : [];
   const filasVisibles = rows.slice(
     paginaActual * filasPorPagina,
     (paginaActual + 1) * filasPorPagina
@@ -97,7 +121,7 @@ export default function TablaGenerica<T extends Record<string, unknown>>({
           <TableRow>
             {columnas.map((col) => (
               <TableCell key={col} align="center">
-                {col.toUpperCase()}
+                {HEADER_LABELS[col] ?? col}
               </TableCell>
             ))}
           </TableRow>
@@ -123,9 +147,15 @@ export default function TablaGenerica<T extends Record<string, unknown>>({
                   <TableCell key={key} align="center">
                     {renderCustomCell
                       ? renderCustomCell(key, row[key], row)
-                      : typeof row[key] === 'string' || typeof row[key] === 'number'
-                        ? row[key]
-                        : JSON.stringify(row[key] ?? '')}
+                      : typeof row[key] === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(row[key] as string)
+                        ? new Date(row[key] as string).toLocaleDateString('es-ES', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          })
+                        : typeof row[key] === 'string' || typeof row[key] === 'number'
+                          ? row[key]
+                          : JSON.stringify(row[key] ?? '')}
                   </TableCell>
                 ))}
               </TableRow>

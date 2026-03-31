@@ -16,6 +16,8 @@ interface SelectProps {
 export default function SelectAutoWidth(props: SelectProps) {
   const [selected, setSelected] = React.useState(props.value ?? '');
 
+  const labelId = `select-label-${props.inputText.replace(/\s+/g, '-').toLowerCase()}`;
+
   const handleChange = (event: SelectChangeEvent) => {
     setSelected(event.target.value);
     if (props.onChange) props.onChange(event.target.value);
@@ -28,9 +30,9 @@ export default function SelectAutoWidth(props: SelectProps) {
 
   return (
     <FormControl className="select-blanco">
-      <InputLabel id="select-autowidth-label">{props.inputText}</InputLabel>
+      <InputLabel id={labelId}>{props.inputText}</InputLabel>
 
-      <Select labelId="select-autowidth-label" value={selected} onChange={handleChange} autoWidth>
+      <Select labelId={labelId} value={selected} onChange={handleChange} autoWidth>
         <MenuItem value="">
           <em>Ninguna</em>
         </MenuItem>

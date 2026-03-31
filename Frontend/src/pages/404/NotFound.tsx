@@ -13,7 +13,7 @@ export default function NotFound() {
       <h1 className="h1-404">404</h1>
       <h2 className="h2-404">Página no encontrada</h2>
       <p className="p-404">
-        Lo sentimos, la pagina que buscas no existe o ha sido movida. Por favor verifica la URL o
+        Lo sentimos, la página que buscas no existe o ha sido movida. Por favor verifica la URL o
         regresa al panel principal
       </p>
       <BotonPrimario

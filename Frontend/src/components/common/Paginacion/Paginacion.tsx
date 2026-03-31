@@ -18,7 +18,7 @@ const Paginacion: React.FC<PaginacionProps> = ({
 
   return (
     <div className="botones-paginacion">
-      <BotonPrimario text="Primera Pagina" onClick={() => onPageChange?.(0)} size="small" />
+      <BotonPrimario text="Primera Página" onClick={() => onPageChange?.(0)} size="small" />
 
       <BotonPrimario
         text="Anterior"
@@ -26,6 +26,16 @@ const Paginacion: React.FC<PaginacionProps> = ({
         onClick={() => onPageChange?.(paginaActual - 1)}
         size="small"
       />
+
+      <span className="page-indicator" style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        padding: '0 12px',
+        fontWeight: 500,
+        color: 'var(--color-text-secondary, #666)'
+      }}>
+        Página {paginaActual + 1} de {paginasTotales}
+      </span>
 
       <BotonPrimario
         text="Siguiente"
@@ -35,7 +45,7 @@ const Paginacion: React.FC<PaginacionProps> = ({
       />
 
       <BotonPrimario
-        text="Ultima Pagina"
+        text="Última Página"
         onClick={() => onPageChange?.(paginasTotales - 1)}
         size="small"
       />

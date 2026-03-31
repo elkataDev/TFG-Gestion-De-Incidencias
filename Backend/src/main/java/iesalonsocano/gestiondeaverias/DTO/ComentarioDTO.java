@@ -2,6 +2,7 @@ package iesalonsocano.gestiondeaverias.DTO;
 
 import iesalonsocano.gestiondeaverias.entity.ComentarioEntity;
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
 
@@ -15,12 +16,20 @@ public class ComentarioDTO {
 
     public static ComentarioDTO fromEntity(ComentarioEntity entity) {
         if (entity == null) return null;
+
+        Long usuarioId = null;
+        String nombreUsuario = "Desconocido";
+        if (entity.getUsuario() != null && Hibernate.isInitialized(entity.getUsuario())) {
+            usuarioId = entity.getUsuario().getId();
+            nombreUsuario = entity.getUsuario().getNombreUsuario();
+        }
+
         return ComentarioDTO.builder()
                 .id(entity.getId())
                 .texto(entity.getTexto())
                 .fecha(entity.getFecha())
-                .usuarioId(entity.getUsuario() != null ? entity.getUsuario().getId() : null)
-                .nombreUsuario(entity.getUsuario() != null ? entity.getUsuario().getNombreUsuario() : "Desconocido")
+                .usuarioId(usuarioId)
+                .nombreUsuario(nombreUsuario)
                 .build();
     }
 }

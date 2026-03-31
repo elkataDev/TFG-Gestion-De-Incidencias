@@ -17,7 +17,7 @@ export default function ControlPanel(props: ControlPanelProps) {
       <h1 className="control-panel-title">{props.titulo}</h1>
       <div className="breakdown-gen-container">{props.children}</div>
       <div className="control-panel-footer">
-        <h2>Acciones Rapidas</h2>
+        <h2>Acciones Rápidas</h2>
         <span className="button-container">
           {role === 'ADMIN' && (
             <BotonPrimario

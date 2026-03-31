@@ -181,7 +181,8 @@ export default function PagDetalleAveria() {
             {comentarios.map((c) => (
               <div key={c.id} className="comentario-item">
                 <p className="comentario-meta">
-                  <strong>{c.nombreUsuario}</strong> - {new Date(c.fecha).toLocaleString()}
+                  <strong>{c.nombreUsuario || 'Usuario'}</strong> -{' '}
+                  {c.fecha ? new Date(c.fecha).toLocaleString() : 'Sin fecha'}
                 </p>
                 <p>{c.texto}</p>
               </div>

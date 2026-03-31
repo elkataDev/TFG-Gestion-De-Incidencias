@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import { apiFetch } from '@/services/api/apiService';
+import Alert from '@mui/material/Alert';
 import './PagEditarActivo.css';
 
 /* ===================== TIPOS ===================== */
@@ -35,6 +36,8 @@ export default function EditarActivo() {
 
   const [activo, setActivo] = useState<Activo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   /* ===================== CARGAR ACTIVO ===================== */
   useEffect(() => {
@@ -52,7 +55,7 @@ export default function EditarActivo() {
             nombre: data.nombre,
             descripcion: data.descripcion,
             codigoQR: data.codigoQR,
-            categoria: data.categoria, // 👈 MAYÚSCULAS
+            categoria: data.categoria,
             estado: data.estado,
             fechaIngreso: data.fechaIngreso.slice(0, 10),
             aulaId: data.aulaId,
@@ -60,13 +63,13 @@ export default function EditarActivo() {
 
           setActivo(activoData);
         } catch {
-          alert('Error: la respuesta del servidor no es válida');
+          setErrorMsg('Error: la respuesta del servidor no es válida');
         }
 
         setLoading(false);
       })
       .catch((err: unknown) => {
-        alert(err instanceof Error ? err.message : 'Error al cargar el activo');
+        setErrorMsg(err instanceof Error ? err.message : 'Error al cargar el activo');
         setLoading(false);
       });
   }, [id]);
@@ -84,15 +87,19 @@ export default function EditarActivo() {
     if (!activo) return;
 
     try {
+      setErrorMsg(null);
+      setSuccessMsg(null);
+
       await apiFetch(`/inventario/${id}`, {
         method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(activo),
       });
 
-      alert('Activo actualizado correctamente');
-      void navigate('/activos');
+      setSuccessMsg('Activo actualizado correctamente');
+      setTimeout(() => void navigate('/activos'), 1500);
     } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : 'Error de conexión');
+      setErrorMsg(err instanceof Error ? err.message : 'Error de conexión');
     }
   };
 
@@ -104,6 +111,9 @@ export default function EditarActivo() {
   return (
     <div className="form-container">
       <h1>Editar Activo</h1>
+
+      {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
+      {successMsg && <Alert severity="success" sx={{ mb: 2 }}>{successMsg}</Alert>}
 
       <form onSubmit={(e) => void handleSubmit(e)} className="form-activo">
         {/* Nombre */}

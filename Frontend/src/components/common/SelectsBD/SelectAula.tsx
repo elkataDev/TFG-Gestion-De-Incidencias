@@ -36,7 +36,7 @@ export const SelectAulas = ({ value, onChange, returnField = 'id' }: SelectAulas
     <SelectAutoWidth
       inputText="Aula"
       options={aulas.map((aula) => ({
-        label: `${String(aula.id)} - ${aula.nombre}`,
+        label: aula.nombre,
       }))}
       value={
         value
@@ -45,13 +45,13 @@ export const SelectAulas = ({ value, onChange, returnField = 'id' }: SelectAulas
                 returnField === 'name'
                   ? aulas.find((a) => a.nombre === value)
                   : aulas.find((a) => String(a.id) === value);
-              return match ? `${String(match.id)} - ${match.nombre}` : value;
+              return match?.nombre ?? value;
             })()
           : ''
       }
       onChange={(val) => {
-        const parts = val?.split(' - ');
-        const result = returnField === 'name' ? parts?.[1] : parts?.[0];
+        const match = aulas.find((a) => a.nombre === val);
+        const result = returnField === 'name' ? match?.nombre : match ? String(match.id) : undefined;
         onChange(result);
       }}
       disabled={loading}

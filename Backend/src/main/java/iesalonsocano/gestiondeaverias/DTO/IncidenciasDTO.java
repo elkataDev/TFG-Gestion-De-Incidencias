@@ -2,6 +2,7 @@ package iesalonsocano.gestiondeaverias.DTO;
 
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
 import lombok.*;
+import org.hibernate.Hibernate;
 import java.time.LocalDateTime;
 
 /**
@@ -88,23 +89,19 @@ public class IncidenciasDTO {
             return null;
         }
 
-        // Mapeo seguro para evitar LazyInitializationException
-        String nombreAula = "Desconocido";
-        try {
-            if (entity.getAula() != null) {
-                nombreAula = entity.getAula().getNombre();
-            }
-        } catch (Exception e) {
-            nombreAula = "Cargando...";
+        // Mapeo seguro con verificación de inicialización Hibernate
+        Long aulaId = null;
+        String nombreAula = "Sin asignar";
+        if (entity.getAula() != null && Hibernate.isInitialized(entity.getAula())) {
+            aulaId = entity.getAula().getId();
+            nombreAula = entity.getAula().getNombre();
         }
 
+        Long usuarioId = null;
         String nombreUsuario = "Desconocido";
-        try {
-            if (entity.getUsuario() != null) {
-                nombreUsuario = entity.getUsuario().getNombreUsuario();
-            }
-        } catch (Exception e) {
-            nombreUsuario = "Cargando...";
+        if (entity.getUsuario() != null && Hibernate.isInitialized(entity.getUsuario())) {
+            usuarioId = entity.getUsuario().getId();
+            nombreUsuario = entity.getUsuario().getNombreUsuario();
         }
 
         return IncidenciasDTO.builder()
@@ -115,8 +112,8 @@ public class IncidenciasDTO {
                 .categoria(entity.getCategoria() != null ? entity.getCategoria().name() : null)
                 .nombreAula(nombreAula)
                 .nombreUsuario(nombreUsuario)
-                .aulaId(entity.getAula() != null ? entity.getAula().getId() : null)
-                .usuarioId(entity.getUsuario() != null ? entity.getUsuario().getId() : null)
+                .aulaId(aulaId)
+                .usuarioId(usuarioId)
                 .fechaReporte(entity.getFechaReporte())
                 .fechaCierre(entity.getFechaCierre())
                 .adjuntoUrl(entity.getAdjuntoUrl())

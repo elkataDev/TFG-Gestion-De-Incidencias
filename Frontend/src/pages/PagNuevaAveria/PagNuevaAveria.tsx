@@ -47,6 +47,16 @@ export default function PagNuevaAveria() {
     setErrorMsg(null);
     setSuccessMsg(null);
 
+    if (!form.titulo.trim()) {
+      setErrorMsg('El título es obligatorio');
+      return;
+    }
+
+    if (!form.categoria) {
+      setErrorMsg('Selecciona una categoría');
+      return;
+    }
+
     const token = localStorage.getItem('token');
     if (!token) {
       setErrorMsg('No autorizado, por favor haz login.');
@@ -90,7 +100,7 @@ export default function PagNuevaAveria() {
   return (
     <div className="pag-nueva-averia">
       <div className="report-container">
-        <h1>Reportar Nueva Averia</h1>
+        <h1>Reportar Nueva Avería</h1>
         <p>Complete el siguiente formulario para reportar un problema técnico</p>
 
         <span style={{ marginBottom: '1rem', display: 'block' }}>

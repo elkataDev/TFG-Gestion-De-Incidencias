@@ -27,11 +27,20 @@ export default function PagAverias() {
     setNombreAula(val);
   };
 
-  // --- Construye endpoint dinámico según filtros ---
-  const endpoint = new URL(`${API_BASE_URL}/incidencias/filtrar`);
-  if (estado) endpoint.searchParams.append('estado', estado);
-  if (categoria) endpoint.searchParams.append('categoria', categoria);
-  if (nombreAula) endpoint.searchParams.append('nombreAula', nombreAula);
+  // --- Construye endpoint dinámico según rol y filtros ---
+  const role = localStorage.getItem('role') ?? 'USUARIO';
+  const baseEndpoint =
+    role === 'ADMIN' || role === 'TECNICO'
+      ? `${API_BASE_URL}/incidencias/filtrar`
+      : `${API_BASE_URL}/incidencias/mis-incidencias`;
+
+  const endpoint = new URL(baseEndpoint);
+  if ((role === 'ADMIN' || role === 'TECNICO') && estado)
+    endpoint.searchParams.append('estado', estado);
+  if ((role === 'ADMIN' || role === 'TECNICO') && categoria)
+    endpoint.searchParams.append('categoria', categoria);
+  if ((role === 'ADMIN' || role === 'TECNICO') && nombreAula)
+    endpoint.searchParams.append('nombreAula', nombreAula);
 
   // --- Refresca la tabla cada vez que cambia un filtro ---
   useEffect(() => {
