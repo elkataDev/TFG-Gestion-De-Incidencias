@@ -34,14 +34,7 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
     @Override
     public IncidenciasEntity save(IncidenciasEntity incidencia) {
-        // 1. En tu entidad el campo es 'id', por eso usamos getId()
-        if (incidencia.getId() == null) {
-            // 2. Usamos uno de los estados de tu Enum (EN_ESPERA es tu valor por defecto)
-            incidencia.setEstado(IncidenciasEntity.EstadoIncidencia.EN_PROGRESO);
-
-            // 3. En tu entidad el campo es 'fechaReporte' (CamelCase), no 'fecha_reporte'
-            incidencia.setFechaReporte(LocalDateTime.now());
-        }
+        // Estado inicial y fechaReporte are handled by @PrePersist in the entity
         return incidenciasRepository.save(incidencia);
     }
 

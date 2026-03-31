@@ -52,11 +52,11 @@ export default function PagDetalleAveria() {
       const [resInc, resCom, resHist] = await Promise.all([
         apiJson(`/incidencias/${id}`),
         apiJson(`/incidencias/${id}/comentarios`),
-        apiJson(`/incidencias/${id}/historial`)
+        apiJson(`/incidencias/${id}/historial`),
       ]);
-      setIncidencia(resInc);
-      setComentarios(resCom);
-      setHistorial(resHist);
+      setIncidencia(resInc as Incidencia);
+      setComentarios(resCom as Comentario[]);
+      setHistorial(resHist as Historial[]);
     } catch (err) {
       console.error('Error fetching details', err);
     } finally {
@@ -75,7 +75,7 @@ export default function PagDetalleAveria() {
     try {
       await apiJson(`/incidencias/${id}/comentarios`, {
         method: 'POST',
-        body: JSON.stringify({ texto: nuevoComentario })
+        body: JSON.stringify({ texto: nuevoComentario }),
       });
       setNuevoComentario('');
       void fetchIncidencia(); // refresh
@@ -89,7 +89,7 @@ export default function PagDetalleAveria() {
     try {
       await apiJson(`/incidencias/${id}/estado`, {
         method: 'PATCH',
-        body: JSON.stringify({ estado: nuevoEstado })
+        body: JSON.stringify({ estado: nuevoEstado }),
       });
       void fetchIncidencia(); // refresh
     } catch (err) {
@@ -103,26 +103,42 @@ export default function PagDetalleAveria() {
   return (
     <div className="pag-detalle">
       <div className="detalle-header">
-        <BotonSecundario text="Volver" onClick={() => navigate('/averias')} />
+        <BotonSecundario text="Volver" onClick={() => void navigate('/averias')} />
         <h1>Detalle de Avería #{incidencia.id}</h1>
       </div>
 
       <div className="detalle-content">
         <div className="incidencia-info">
           <h2>Información</h2>
-          <p><strong>Título:</strong> {incidencia.titulo}</p>
-          <p><strong>Descripción:</strong> {incidencia.descripcion}</p>
-          <p><strong>Categoría:</strong> {incidencia.categoria}</p>
+          <p>
+            <strong>Título:</strong> {incidencia.titulo}
+          </p>
+          <p>
+            <strong>Descripción:</strong> {incidencia.descripcion}
+          </p>
+          <p>
+            <strong>Categoría:</strong> {incidencia.categoria}
+          </p>
           <p>
             <strong>Estado:</strong> <EstadoBadge estado={incidencia.estado} />
           </p>
-          <p><strong>Reportado por:</strong> {incidencia.nombreUsuario}</p>
-          <p><strong>Aula:</strong> {incidencia.nombreAula}</p>
-          <p><strong>Fecha Reporte:</strong> {new Date(incidencia.fechaReporte).toLocaleString()}</p>
+          <p>
+            <strong>Reportado por:</strong> {incidencia.nombreUsuario}
+          </p>
+          <p>
+            <strong>Aula:</strong> {incidencia.nombreAula}
+          </p>
+          <p>
+            <strong>Fecha Reporte:</strong> {new Date(incidencia.fechaReporte).toLocaleString()}
+          </p>
           {incidencia.adjuntoUrl && (
             <p>
               <strong>Archivo Adjunto:</strong>{' '}
-              <a href={`${API_BASE_URL}/incidencias/archivos/${incidencia.adjuntoUrl}`} target="_blank" rel="noopener noreferrer">
+              <a
+                href={`${API_BASE_URL}/incidencias/archivos/${incidencia.adjuntoUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Descargar Archivo
               </a>
             </p>
@@ -137,7 +153,7 @@ export default function PagDetalleAveria() {
                 value={nuevoEstado}
                 onChange={setNuevoEstado}
               />
-              <BotonPrimario text="Actualizar" onClick={handleUpdateEstado} />
+              <BotonPrimario text="Actualizar" onClick={() => void handleUpdateEstado()} />
             </div>
           </div>
         </div>
@@ -150,8 +166,9 @@ export default function PagDetalleAveria() {
             <ul>
               {historial.map((h) => (
                 <li key={h.id}>
-                  <strong>{new Date(h.fechaCambio).toLocaleString()}:</strong> {h.nombreUsuario} cambió estado 
-                  de <EstadoBadge estado={h.estadoAnterior} /> a <EstadoBadge estado={h.estadoNuevo} />
+                  <strong>{new Date(h.fechaCambio).toLocaleString()}:</strong> {h.nombreUsuario}{' '}
+                  cambió estado de <EstadoBadge estado={h.estadoAnterior} /> a{' '}
+                  <EstadoBadge estado={h.estadoNuevo} />
                 </li>
               ))}
             </ul>
@@ -177,7 +194,7 @@ export default function PagDetalleAveria() {
               onChange={(e) => setNuevoComentario(e.target.value)}
               minRows={3}
             />
-            <BotonPrimario text="Añadir Comentario" onClick={handleAddComment} />
+            <BotonPrimario text="Añadir Comentario" onClick={() => void handleAddComment()} />
           </div>
         </div>
       </div>

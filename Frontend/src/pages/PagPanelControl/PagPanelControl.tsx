@@ -8,47 +8,63 @@ interface Incidencia {
   estado: string;
 }
 
+interface Activo {
+  id: number;
+  estado: string;
+}
+
 export default function PagPanelControl() {
   const [incidencias, setIncidencias] = useState<Incidencia[]>([]);
-  const role = localStorage.getItem('role') || 'USER';
+  const [activos, setActivos] = useState<Activo[]>([]);
+  const role = localStorage.getItem('role') ?? 'USUARIO';
 
   useEffect(() => {
-    const fetchIncidencias = async () => {
+    const fetchData = async () => {
       try {
-        const endpoint = role === 'ADMIN' || role === 'TECNICO' 
-          ? '/incidencias' 
-          : '/incidencias/mis-incidencias';
-        
-        const data = await apiJson(endpoint);
-        setIncidencias(data);
+        const endpointInc =
+          role === 'ADMIN' || role === 'TECNICO' ? '/incidencias' : '/incidencias/mis-incidencias';
+
+        const dataInc = await apiJson(endpointInc);
+        setIncidencias(dataInc as Incidencia[]);
+
+        if (role === 'ADMIN' || role === 'TECNICO') {
+          const dataAct = await apiJson('/inventario');
+          setActivos(dataAct as Activo[]);
+        }
       } catch (e) {
-        console.error('Error fetching incidencias', e);
+        console.error('Error fetching data', e);
       }
     };
-    void fetchIncidencias();
+    void fetchData();
   }, [role]);
 
   const total = incidencias.length;
-  const pendientes = incidencias.filter(i => i.estado === 'ABIERTO').length;
-  const enProceso = incidencias.filter(i => i.estado === 'EN_PROGRESO').length;
-  const resueltas = incidencias.filter(i => i.estado === 'RESUELTO').length;
+  const pendientes = incidencias.filter((i) => i.estado === 'ABIERTO').length;
+  const enProceso = incidencias.filter((i) => i.estado === 'EN_PROGRESO').length;
+  const resueltas = incidencias.filter((i) => i.estado === 'RESUELTO').length;
+
+  const totalActivos = activos.length;
+  const activosDisponibles = activos.filter((a) => a.estado === 'DISPONIBLE').length;
+  const activosDanados = activos.filter((a) => a.estado === 'DANADO').length;
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
       <div style={{ flex: 1, padding: '20px' }}>
-        <ControlPanel titulo={role === 'USER' ? 'Mi Panel de Averías' : 'Panel de Control General'}>
-          {role !== 'USER' && (
+        <ControlPanel
+          titulo={role === 'USUARIO' ? 'Mi Panel de Averías' : 'Panel de Control General'}
+        >
+          {role !== 'USUARIO' && (
             <>
-              <CP_Card titulo="Total de activos" numb={1250} />
-              <CP_Card titulo="Activos disponibles" numb={980} />
-              <CP_Card titulo="Activos en reparacion" numb={270} />
+              <CP_Card titulo="Total de activos" numb={totalActivos} />
+              <CP_Card titulo="Activos disponibles" numb={activosDisponibles} />
+              <CP_Card titulo="Activos dañados" numb={activosDanados} />
             </>
           )}
-          
+
           <CP_Card titulo="Total de averías" numb={total} />
-          
+
           <CP_Card
-            titulo={role === 'USER' ? 'Mis Estadísticas' : 'Estado de averias'}
+            titulo={role === 'USUARIO' ? 'Mis Estadísticas' : 'Estado de averias'}
             numb={total}
             progress={[
               { label: 'Pendientes', percent: total ? Math.round((pendientes / total) * 100) : 0 },

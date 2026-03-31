@@ -3,13 +3,14 @@ import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import BotonSecundario from '@/components/common/BotonSecundario/BotonSecundario';
 import { useNavigate } from 'react-router-dom';
 
-type ControlPanelProps = {
+interface ControlPanelProps {
   titulo: string;
   children: React.ReactNode;
-};
+}
 
 export default function ControlPanel(props: ControlPanelProps) {
   const navigate = useNavigate();
+  const role = localStorage.getItem('role') ?? '';
 
   return (
     <>
@@ -18,13 +19,20 @@ export default function ControlPanel(props: ControlPanelProps) {
       <div className="control-panel-footer">
         <h2>Acciones Rapidas</h2>
         <span className="button-container">
-          <BotonPrimario text="Nuevo Activo"></BotonPrimario>
+          {role === 'ADMIN' && (
+            <BotonPrimario
+              text="Nuevo Activo"
+              onClick={() => {
+                void navigate('/nuevoActivo');
+              }}
+            />
+          )}
           <BotonSecundario
             onClick={() => {
-              void navigate('nuevaAveria');
+              void navigate('/nuevaAveria');
             }}
             text="Nueva Averia"
-          ></BotonSecundario>
+          />
         </span>
       </div>
     </>

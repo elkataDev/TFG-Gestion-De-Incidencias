@@ -16,16 +16,16 @@ type Categoria =
   | 'PERIFERICO'
   | 'SEGURIDAD';
 
-type Activo = {
+interface Activo {
   id: number;
   nombre: string;
   descripcion: string;
   codigoQR: string;
   categoria: Categoria;
-  estado: 0 | 1; // 0 = DISPONIBLE, 1 = OCUPADO
+  estado: string;
   fechaIngreso: string;
   aulaId: number;
-};
+}
 
 /* ===================== COMPONENTE ===================== */
 
@@ -40,17 +40,12 @@ export default function EditarActivo() {
   useEffect(() => {
     if (!id) return;
 
-    console.log('📡 Cargando activo con id:', id);
-
     apiFetch(`/inventario/${id}`)
       .then(async (res) => {
-        console.log('➡️ Status:', res.status, 'OK:', res.ok);
-
         const text = await res.text();
 
         try {
           const data = JSON.parse(text);
-          console.log('📦 Datos recibidos:', data);
 
           const activoData: Activo = {
             id: data.id,
@@ -58,21 +53,19 @@ export default function EditarActivo() {
             descripcion: data.descripcion,
             codigoQR: data.codigoQR,
             categoria: data.categoria, // 👈 MAYÚSCULAS
-            estado: data.estado === 'DISPONIBLE' ? 0 : 1,
+            estado: data.estado,
             fechaIngreso: data.fechaIngreso.slice(0, 10),
             aulaId: data.aulaId,
           };
 
           setActivo(activoData);
-        } catch (err) {
-          console.error('❌ Respuesta no es JSON:', text, err);
+        } catch {
           alert('Error: la respuesta del servidor no es válida');
         }
 
         setLoading(false);
       })
       .catch((err: unknown) => {
-        console.error('❌ Error al cargar el activo:', err);
         alert(err instanceof Error ? err.message : 'Error al cargar el activo');
         setLoading(false);
       });
@@ -80,8 +73,7 @@ export default function EditarActivo() {
 
   /* ===================== HANDLERS ===================== */
 
-  const handleChange = (field: keyof Activo, value: any) => {
-    console.log('✏️ Campo modificado:', field, value);
+  const handleChange = (field: keyof Activo, value: string | number) => {
     if (!activo) return;
 
     setActivo({ ...activo, [field]: value });
@@ -91,23 +83,15 @@ export default function EditarActivo() {
     e.preventDefault();
     if (!activo) return;
 
-    console.log('🚀 Enviando datos al backend:', activo);
-
     try {
-      const response = await apiFetch(`/inventario/${id}`, {
+      await apiFetch(`/inventario/${id}`, {
         method: 'PUT',
         body: JSON.stringify(activo),
       });
 
-      console.log('⬅️ Status guardar:', response.status, 'OK:', response.ok);
-
-      const data = await response.json();
-      console.log('✅ Activo actualizado:', data);
-
       alert('Activo actualizado correctamente');
       void navigate('/activos');
     } catch (err: unknown) {
-      console.error('❌ Error de conexión:', err);
       alert(err instanceof Error ? err.message : 'Error de conexión');
     }
   };
@@ -179,11 +163,12 @@ export default function EditarActivo() {
           Estado
           <select
             value={activo.estado}
-            onChange={(e) => handleChange('estado', Number(e.target.value) as 0 | 1)}
+            onChange={(e) => handleChange('estado', e.target.value)}
             required
           >
-            <option value={0}>DISPONIBLE</option>
-            <option value={1}>OCUPADO</option>
+            <option value="DISPONIBLE">DISPONIBLE</option>
+            <option value="EN_USO">EN_USO</option>
+            <option value="DANADO">DANADO</option>
           </select>
         </label>
 
@@ -194,7 +179,6 @@ export default function EditarActivo() {
             type="number"
             value={activo.aulaId}
             onChange={(e) => handleChange('aulaId', Number(e.target.value))}
-            required
           />
         </label>
 

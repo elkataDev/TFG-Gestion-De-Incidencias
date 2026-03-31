@@ -5,13 +5,13 @@ import FormControl from '@mui/material/FormControl';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import './Select.css';
 
-type SelectProps = {
+interface SelectProps {
   disabled?: boolean;
   inputText: string;
   options: { label: string }[];
   value?: string;
   onChange?: (value: string) => void;
-};
+}
 
 export default function SelectAutoWidth(props: SelectProps) {
   const [selected, setSelected] = React.useState(props.value ?? '');

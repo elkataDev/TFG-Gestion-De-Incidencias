@@ -114,6 +114,10 @@ public class AuthController {
     @PostMapping("/registro")
     public ResponseEntity<?> registrar(@RequestBody UsuariosEntity usuario) {
 
+        // Force role and active status to prevent privilege escalation
+        usuario.setRol(UsuariosEntity.RolUsuario.USUARIO);
+        usuario.setActivo(true);
+
         UsuariosEntity guardado = usuariosService.save(usuario);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(

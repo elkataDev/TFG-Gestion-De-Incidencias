@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
  *
  * @author IES Alonso Cano
  * @version 1.0.0
- * @see estadoInventario
+ * @see EstadoInventario
  * @see CategoriaInventario
  */
 @Entity
@@ -69,10 +69,11 @@ public class InventarioEntity {
 
     /**
      * Estado actual del artículo.
-     * @see estadoInventario
+     * @see EstadoInventario
      */
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", length = 50)
-    private estadoInventario estado;
+    private EstadoInventario estado;
 
     /**
      * Fecha y hora de ingreso del artículo al inventario.
@@ -99,7 +100,7 @@ public class InventarioEntity {
      * Puede ser null si el artículo está en almacén.
      * </p>
      */
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aula_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AulasEntity aula;
@@ -118,7 +119,7 @@ public class InventarioEntity {
     /**
      * Enumeración que define los estados posibles de un artículo del inventario.
      */
-    public enum estadoInventario {
+    public enum EstadoInventario {
         /** Artículo disponible para uso */
         DISPONIBLE,
         /** Artículo actualmente en uso */

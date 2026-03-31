@@ -10,11 +10,11 @@ export default function Unauthorized() {
   return (
     <div className="NotAuthorized-Container">
       <img src={Icon} alt="Algo" />
-      <h1>404</h1>
+      <h1>403</h1>
       <h2>SIN ACCESO A LA PAGINA</h2>
       <p>
-        Lo sentimos, la pagina que buscas no existe o ha sido movida. Por favor verifica la URL o
-        regresa al panel principal
+        Lo sentimos, no tienes permisos para acceder a esta página. Por favor contacta con un
+        administrador o regresa al panel principal
       </p>
       <BotonPrimario
         startIcon={<HomeIcon />}

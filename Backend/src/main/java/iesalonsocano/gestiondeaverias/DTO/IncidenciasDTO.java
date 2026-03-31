@@ -115,6 +115,8 @@ public class IncidenciasDTO {
                 .categoria(entity.getCategoria() != null ? entity.getCategoria().name() : null)
                 .nombreAula(nombreAula)
                 .nombreUsuario(nombreUsuario)
+                .aulaId(entity.getAula() != null ? entity.getAula().getId() : null)
+                .usuarioId(entity.getUsuario() != null ? entity.getUsuario().getId() : null)
                 .fechaReporte(entity.getFechaReporte())
                 .fechaCierre(entity.getFechaCierre())
                 .adjuntoUrl(entity.getAdjuntoUrl())

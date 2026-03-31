@@ -40,7 +40,7 @@ public interface InventarioService {
      * @param estado estado del artículo
      * @return lista de artículos con el estado especificado
      */
-    List<InventarioEntity> findByEstado(InventarioEntity.estadoInventario estado);
+    List<InventarioEntity> findByEstado(InventarioEntity.EstadoInventario estado);
 
     /**
      * Busca todos los artículos ubicados en un aula.

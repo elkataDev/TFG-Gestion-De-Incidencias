@@ -1,32 +1,55 @@
-# 📋 Tareas Pendientes (Análisis de Estado del Proyecto)
+# Tareas Pendientes — TFG Gestión de Incidencias
 
-Tras revisar la especificación del `README.md` y comparar con el código fuente actual (Backend y Frontend), se han detectado las siguientes características pendientes de implementación para completar los requisitos del sistema:
+## Corregido (31/03/2026)
 
-## ⚙️ Backend (Spring Boot)
+### Backend
+- [x] Double BCrypt encoding al actualizar usuario — `UsuariosServiceImpl.java`
+- [x] Estado inicial de incidencias cambiado de EN_PROGRESO a ABIERTO — `IncidenciasEntity.java`, `IncidenciasServiceImpl.java`
+- [x] CascadeType.ALL eliminado de inventario→aulas — `InventarioEntity.java`
+- [x] aulaId se asigna correctamente al reportar incidencia — `IncidenciaController.java`
+- [x] IncidenciasDTO.fromEntity() ahora mapea aulaId y usuarioId
+- [x] Mensaje de error de estados corregido con valores reales del enum
+- [x] Usuario "tecnico" duplicado eliminado de DataLoader
+- [x] JWT secret movido a application.properties con @Value
+- [x] JwtService.java (dead code) eliminado
+- [x] Usuarios inactivos rechazados en login — `UserDetailsServiceImpl.java`
+- [x] Endpoint /api/incidencias/filtrar protegido (requiere autenticación)
+- [x] System.out.println de debug eliminados — `JwtAuthenticationFilter.java`, `JwtTokenProvider.java`, `SecurityConfig.java`
+- [x] show-sql desactivado en application.properties
 
-1. **Gestión de Archivos Adjuntos**
-   - *Problema:* `IncidenciasEntity` no contiene un campo para almacenar referencias a archivos y no existen servicios de Storage.
-   - *Acción:* Modificar entidades para soportar adjuntos, configurar `MultipartFile` en los controladores, y crear un servicio para guardar los ficheros localmente o en la nube.
+### Frontend
+- [x] Logout ahora borra token, username y role de localStorage
+- [x] SelectAula usa apiService en vez de URL hardcodeada
+- [x] PagInventario implementada (tabla + botones + badges)
+- [x] PagNuevoActivo implementada (formulario de creación)
+- [x] SideBarUser muestra el nombre real del usuario logueado
+- [x] SideBarNav filtra enlaces según rol del usuario
+- [x] Rutas /nuevaAveria, /nuevoActivo, /editarActivo dentro del MainLayout
+- [x] PagNuevaAveria usa SelectAulas dinámico + redirect tras éxito
+- [x] PagPanelControl con estadísticas de activos reales (fetch /inventario)
+- [x] Botón "Nuevo Activo" en ControlPanel con navegación
+- [x] PagUsuarios — título corregido a "Gestión de Usuarios" + filtros de rol
+- [x] PagActivos — título corregido a "Gestión de Activos" + filtros reales
+- [x] Página 403 muestra "403" en vez de "404"
+- [x] console.log de debug eliminados de PagEditarActivo
+- [x] Fallback de apiConfig.ts corregido al puerto 5555
+- [x] ESLint: de 99 problemas a 0 errores / 30 warnings
+- [x] TypeScript compila sin errores
+- [x] LoginForm guarda username en localStorage
 
-2. **Comentarios e Historial de Incidencias**
-   - *Problema:* No hay soporte para añadir comentarios a los tickets ni para registrar automáticamente un log de cambios de estado.
-   - *Acción:* 
-     - Crear `ComentarioEntity` y `HistorialEstadoEntity` (o similar).
-     - Desarrollar sus respectivos repositorios, servicios y endpoints REST.
+## Pendiente (mejoras opcionales para futuras iteraciones)
 
-## 💻 Frontend (React)
+### Backend
+- [ ] Añadir @RestControllerAdvice para manejo global de errores
+- [ ] Configurar límite de tamaño de uploads (spring.servlet.multipart.max-file-size)
+- [ ] Añadir volumen Docker para persistir uploads
+- [ ] Endpoint de eliminación de comentarios
+- [ ] Proteger /api/auth/registro (solo ADMIN debería crear usuarios)
+- [ ] Considerar cambiar ddl-auto=update a validate para producción
 
-1. **Subida de Archivos en Formularios**
-   - *Problema:* La vista/componente para crear incidencias (`PagNuevaAveria`) necesita soportar la selección y subida de ficheros adjuntos.
-   - *Acción:* Actualizar el formulario y la petición a la API.
-
-2. **Vista de Detalle de Incidencia Extendida**
-   - *Problema:* Falta la visualización de los hilos de comentarios y el historial de transiciones del ticket en la UI.
-   - *Acción:* Desarrollar una vista detallada (o modal ampliado) para cada avería donde los usuarios puedan interactuar con los comentarios.
-
-3. **Dashboards Personalizados por Rol**
-   - *Problema:* El diseño requiere vistas diferenciadas (Panel general vs Panel de Solicitante con sus propias métricas).
-   - *Acción:* Añadir lógica condicional en `PagPanelControl` o crear componentes de Dashboard específicos, mostrando gráficos/métricas según `role` (ADMIN/TECNICO vs SOLICITANTE).
-
-## 🛠 Entorno y Buenas Prácticas
-- **Engram / Memoria del Proyecto:** Guardar decisiones arquitectónicas respecto a cómo se implementarán los adjuntos y comentarios usando el protocolo de memoria establecido.
+### Frontend
+- [ ] Reemplazar alert() por MUI Snackbar para feedback al usuario
+- [ ] Añadir AuthContext en vez de leer localStorage directamente
+- [ ] Dockerfile de producción (multi-stage build con nginx)
+- [ ] Crear .env.production y .env.example
+- [ ] Tests unitarios y de integración

@@ -42,7 +42,11 @@ export default function PagAverias() {
     <div className="pag-averias-container">
       <div className="header-container">
         <h1>Listado de Tickets de Averías</h1>
-        <BotonPrimario startIcon="" text="+ Nuevo Ticket" onClick={() => navigate('/nuevaAveria')} />
+        <BotonPrimario
+          startIcon=""
+          text="+ Nuevo Ticket"
+          onClick={() => void navigate('/nuevaAveria')}
+        />
       </div>
 
       {/* SELECTS */}
@@ -61,7 +65,7 @@ export default function PagAverias() {
           onChange={handleChangeCategoria}
         />
 
-        <SelectAulas value={nombreAula} onChange={handleChangeAula} />
+        <SelectAulas value={nombreAula} onChange={handleChangeAula} returnField="name" />
       </span>
 
       {/* TABLA */}
@@ -73,7 +77,13 @@ export default function PagAverias() {
           extraColumns={['acciones']}
           renderCustomCell={(key, value, row) => {
             if (key === 'estado') return <EstadoBadge estado={String(value)} />;
-            if (key === 'acciones') return <BotonSecundario text="Ver Detalle" onClick={() => navigate(`/averias/${row.id}`)} />;
+            if (key === 'acciones')
+              return (
+                <BotonSecundario
+                  text="Ver Detalle"
+                  onClick={() => void navigate(`/averias/${String(row.id)}`)}
+                />
+              );
             return value as React.ReactNode;
           }}
         />

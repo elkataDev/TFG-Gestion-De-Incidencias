@@ -139,7 +139,7 @@ public class IncidenciasEntity {
     @PrePersist
     protected void onCreate() {
         fechaReporte = LocalDateTime.now();
-        if (estado == null) estado = EstadoIncidencia.EN_PROGRESO;
+        if (estado == null) estado = EstadoIncidencia.ABIERTO;
     }
 
     /**

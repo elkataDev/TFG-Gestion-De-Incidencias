@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 
 /**
@@ -40,6 +43,8 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
     @Autowired
     private JwtTokenProvider tokenProvider;
 
@@ -65,28 +70,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String token = obtenerTokenDeSolicitud(request);
 
-            if (StringUtils.hasText(token)) {
-                System.out.println("DEBUG: Token recibido para URI: " + request.getRequestURI());
-                if (tokenProvider.validateToken(token)) {
-                    String username = tokenProvider.getUsernameFromJWT(token);
-                    System.out.println("DEBUG: Token válido para usuario: " + username);
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+                String username = tokenProvider.getUsernameFromJWT(token);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                    if (userDetails != null) {
-                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                if (userDetails != null) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                        System.out.println("DEBUG: Autenticación establecida en SecurityContext para: " + username);
-                    }
-                } else {
-                    System.err.println("DEBUG: La validación del token falló.");
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
         } catch (Exception e) {
-            System.err.println("No se pudo establecer la autenticación del usuario: " + e.getMessage());
-            e.printStackTrace();
+            logger.debug("JWT authentication failed: {}", e.getMessage());
         }
         
         filterChain.doFilter(request, response);

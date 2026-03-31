@@ -1,12 +1,12 @@
 import BotonPrimario from '../BotonPrimario/BotonPrimario';
 import './Paginacion.css';
 
-type PaginacionProps = {
+interface PaginacionProps {
   total: number;
   filasPorPagina: number;
   paginaActual: number;
   onPageChange?: (page: number) => void;
-};
+}
 
 const Paginacion: React.FC<PaginacionProps> = ({
   total,

@@ -30,7 +30,7 @@
   font-weight: bold;
 }
 
-.user-email {
+.user-role {
   font-size: 0.9rem;
   color: var(--color-text-tertiary);
   margin-top: 4px;

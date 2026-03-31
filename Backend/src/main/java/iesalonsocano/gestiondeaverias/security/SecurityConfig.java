@@ -96,7 +96,7 @@ public class SecurityConfig {
                         // Rutas públicas
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers("/api/incidencias/filtrar").permitAll()
+                        // .requestMatchers("/api/incidencias/filtrar").permitAll() // Protegido: requiere autenticación
                         .requestMatchers("/error").permitAll() // Permitir ver errores del servidor
                         // El resto requiere autenticación
                         .anyRequest().authenticated()
@@ -113,7 +113,7 @@ public class SecurityConfig {
     public AuthenticationEntryPoint unauthorizedHandler() {
         return (request, response, authException) -> {
             // Log para depuración
-            System.err.println("Acceso no autorizado a: " + request.getRequestURI());
+            // Acceso no autorizado registrado
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{ \"message\": \"Error: No autorizado. Debes iniciar sesión.\" }");

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextArea from '@/components/common/TextArea/TextArea';
 import SelectAutoWidth from '@/components/common/Select/Select';
+import { SelectAulas } from '@/components/common/SelectsBD/SelectAula';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
 import { Input } from '@/components/common/Input/Input';
 import { apiFetch } from '@/services/api/apiService';
@@ -24,7 +25,7 @@ export default function PagNuevaAveria() {
     categoria: '',
     aulaId: '',
   });
-  
+
   // Archivo adjunto
   const [file, setFile] = useState<File | null>(null);
 
@@ -38,7 +39,7 @@ export default function PagNuevaAveria() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0] || null);
+      setFile(e.target.files[0] ?? null);
     }
   };
 
@@ -54,12 +55,20 @@ export default function PagNuevaAveria() {
 
     try {
       const data = new FormData();
-      data.append('incidencia', new Blob([JSON.stringify({
-        titulo: form.titulo,
-        descripcion: form.descripcion,
-        categoria: form.categoria || 'HARDWARE',
-        aulaId: form.aulaId ? Number(form.aulaId) : null
-      })], { type: 'application/json' }));
+      data.append(
+        'incidencia',
+        new Blob(
+          [
+            JSON.stringify({
+              titulo: form.titulo,
+              descripcion: form.descripcion,
+              categoria: form.categoria ? form.categoria : 'HARDWARE',
+              aulaId: form.aulaId ? Number(form.aulaId) : null,
+            }),
+          ],
+          { type: 'application/json' }
+        )
+      );
 
       if (file) {
         data.append('file', file);
@@ -71,9 +80,9 @@ export default function PagNuevaAveria() {
       });
 
       setSuccessMsg('Avería creada correctamente');
-      // No redirigimos automáticamente, solo mostramos mensaje
+      setTimeout(() => void navigate('/averias'), 1500);
     } catch (error) {
-      console.error('Error de conexión:', error);
+      // Error de conexión
       setErrorMsg(error instanceof Error ? error.message : 'Error de conexión con la API');
     }
   };
@@ -91,7 +100,9 @@ export default function PagNuevaAveria() {
             label="Ej: Proyector no enciende"
             type="text"
             value={form.titulo}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('titulo', e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange('titulo', e.target.value)
+            }
           />
         </span>
 
@@ -114,11 +125,9 @@ export default function PagNuevaAveria() {
 
         <span className="select-container">
           <h3>Aula (Opcional)</h3>
-          <SelectAutoWidth
-            inputText="Seleccionar Aula"
-            options={[{ label: '1' }, { label: '2' }, { label: '3' }]}
+          <SelectAulas
             value={form.aulaId}
-            onChange={(value: string) => handleChange('aulaId', value)}
+            onChange={(value) => handleChange('aulaId', value ?? '')}
           />
         </span>
 

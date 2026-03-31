@@ -30,7 +30,7 @@ function App() {
       <Route
         path="/"
         element={
-          <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
+          <PrivateRoute allowedRoles={['USUARIO', 'TECNICO', 'ADMIN']}>
             <MainLayout />
           </PrivateRoute>
         }
@@ -39,7 +39,7 @@ function App() {
         <Route
           index
           element={
-            <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USUARIO', 'TECNICO', 'ADMIN']}>
               <PagPanelControl />
             </PrivateRoute>
           }
@@ -49,17 +49,17 @@ function App() {
         <Route
           path="averias"
           element={
-            <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USUARIO', 'TECNICO', 'ADMIN']}>
               <PagAverias />
             </PrivateRoute>
           }
         />
-        
+
         {/* Detalle Avería */}
         <Route
           path="averias/:id"
           element={
-            <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
+            <PrivateRoute allowedRoles={['USUARIO', 'TECNICO', 'ADMIN']}>
               <PagDetalleAveria />
             </PrivateRoute>
           }
@@ -94,39 +94,37 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        {/* Crear avería */}
+        <Route
+          path="nuevaAveria"
+          element={
+            <PrivateRoute allowedRoles={['USUARIO', 'TECNICO', 'ADMIN']}>
+              <PagNuevaAveria />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Crear activo */}
+        <Route
+          path="nuevoActivo"
+          element={
+            <PrivateRoute allowedRoles={['ADMIN']}>
+              <PagNuevoActivo />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Editar activo */}
+        <Route
+          path="editarActivo/:id"
+          element={
+            <PrivateRoute allowedRoles={['ADMIN']}>
+              <EditarActivo />
+            </PrivateRoute>
+          }
+        />
       </Route>
-
-      {/* ================= RUTAS SIN LAYOUT ================= */}
-
-      {/* Crear avería */}
-      <Route
-        path="/nuevaAveria"
-        element={
-          <PrivateRoute allowedRoles={['USER', 'TECNICO', 'ADMIN']}>
-            <PagNuevaAveria />
-          </PrivateRoute>
-        }
-      />
-
-      {/* Crear activo */}
-      <Route
-        path="/nuevoActivo"
-        element={
-          <PrivateRoute allowedRoles={['ADMIN']}>
-            <PagNuevoActivo />
-          </PrivateRoute>
-        }
-      />
-
-      {/* Editar activo */}
-      <Route
-        path="/editarActivo/:id"
-        element={
-          <PrivateRoute allowedRoles={['ADMIN']}>
-            <EditarActivo />
-          </PrivateRoute>
-        }
-      />
     </Routes>
   );
 }

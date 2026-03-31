@@ -47,8 +47,10 @@ public class UsuariosServiceImpl implements UsuariosService {
 
     @Override
     public UsuariosEntity save(UsuariosEntity usuario) {
-        // Encriptar contraseña antes de guardar
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        // Encriptar contraseña solo si es texto plano (no está ya codificada con BCrypt)
+        if (!usuario.getPassword().startsWith("$2a$") && !usuario.getPassword().startsWith("$2b$")) {
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        }
 
         // Valores por defecto si no vienen informados
         if (usuario.getRol() == null) {

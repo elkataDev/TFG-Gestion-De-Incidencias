@@ -218,7 +218,7 @@ public class IncidenciaController {
 
         } catch (IllegalArgumentException e) {
             // 5. Capturamos si envían un estado inventado (ej: "TERMINADO")
-            return ResponseEntity.badRequest().body("Estado no válido. Valores permitidos: EN_CURSO, EN_ESPERA, RESUELTO, CERRADO, REABIERTO");
+            return ResponseEntity.badRequest().body("Estado no válido. Valores permitidos: ABIERTO, EN_PROGRESO, RESUELTO, CERRADO");
         }
     }
 
@@ -239,7 +239,7 @@ public class IncidenciaController {
      * @throws RuntimeException si el usuario autenticado no existe o el aula no se encuentra
      */
     @PostMapping(value = "/reportar", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<IncidenciasDTO> reportar(
+    public ResponseEntity<?> reportar(
             @RequestPart("incidencia") IncidenciasDTO dto,
             @RequestPart(value = "file", required = false) org.springframework.web.multipart.MultipartFile file,
             Principal principal) {
@@ -257,12 +257,19 @@ public class IncidenciaController {
             try {
                 incidencia.setCategoria(IncidenciasEntity.CategoriaIncidencia.valueOf(dto.getCategoria().toUpperCase()));
             } catch (IllegalArgumentException e) {
-                // Ignore or handle invalid category
+                return ResponseEntity.badRequest().body("Categoría no válida. Valores: HARDWARE, SOFTWARE, RED");
             }
         }
 
         // ASIGNAMOS EL USUARIO AUTENTICADO
         incidencia.setUsuario(usuario);
+
+        // ASIGNAMOS EL AULA SI VIENE EN EL DTO
+        if (dto.getAulaId() != null) {
+            AulasEntity aula = aulasService.findById(dto.getAulaId())
+                    .orElseThrow(() -> new RuntimeException("Aula no encontrada con id: " + dto.getAulaId()));
+            incidencia.setAula(aula);
+        }
 
         // File upload
         if (file != null && !file.isEmpty()) {
@@ -285,8 +292,7 @@ public class IncidenciaController {
 
 
     @GetMapping("/filtrar")
-    @CrossOrigin(origins = {"http://localhost:5173", "http://localhost"})
-    public ResponseEntity<List<IncidenciasDTO>> filtrar(
+    public ResponseEntity<?> filtrar(
             @RequestParam(required = false) String estado,
             @RequestParam(required = false) String categoria,
             @RequestParam(required = false) String nombreAula
@@ -297,7 +303,7 @@ public class IncidenciaController {
             try {
                 estadoEnum = IncidenciasEntity.EstadoIncidencia.valueOf(estado.toUpperCase());
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Estado no válido: " + estado);
+                return ResponseEntity.badRequest().body("Estado no válido: " + estado + ". Valores permitidos: ABIERTO, EN_PROGRESO, RESUELTO, CERRADO");
             }
         }
 
@@ -306,7 +312,7 @@ public class IncidenciaController {
             try {
                 categoriaEnum = IncidenciasEntity.CategoriaIncidencia.valueOf(categoria.toUpperCase());
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Categoría no válida: " + categoria);
+                return ResponseEntity.badRequest().body("Categoría no válida: " + categoria + ". Valores permitidos: HARDWARE, SOFTWARE, RED");
             }
         }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import SelectAutoWidth from '@/components/common/Select/Select';
+import { apiJson } from '@/services/api/apiService';
 
 interface Aula {
   id: number;
@@ -7,27 +8,19 @@ interface Aula {
 }
 
 interface SelectAulasProps {
-  value?: string; // <-- ahora string
-  onChange: (nombre?: string) => void; // <-- ahora string
+  value?: string;
+  onChange: (aulaValue?: string) => void;
+  returnField?: 'id' | 'name';
 }
 
-export const SelectAulas = ({ value, onChange }: SelectAulasProps) => {
+export const SelectAulas = ({ value, onChange, returnField = 'id' }: SelectAulasProps) => {
   const [aulas, setAulas] = useState<Aula[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAulas = async () => {
       try {
-        const response = await fetch('http://localhost:5555/api/aulas', {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-
-        if (!response.ok) throw new Error('Error al cargar aulas');
-
-        const data: Aula[] = await response.json();
+        const data = (await apiJson('/aulas')) as Aula[];
         setAulas(data);
       } catch (error) {
         console.error('Error al cargar aulas', error);
@@ -43,10 +36,24 @@ export const SelectAulas = ({ value, onChange }: SelectAulasProps) => {
     <SelectAutoWidth
       inputText="Aula"
       options={aulas.map((aula) => ({
-        label: aula.nombre, // solo label
+        label: `${String(aula.id)} - ${aula.nombre}`,
       }))}
-      value={value} // ahora es string
-      onChange={(val) => onChange(val)} // val ya es string | undefined
+      value={
+        value
+          ? (() => {
+              const match =
+                returnField === 'name'
+                  ? aulas.find((a) => a.nombre === value)
+                  : aulas.find((a) => String(a.id) === value);
+              return match ? `${String(match.id)} - ${match.nombre}` : value;
+            })()
+          : ''
+      }
+      onChange={(val) => {
+        const parts = val?.split(' - ');
+        const result = returnField === 'name' ? parts?.[1] : parts?.[0];
+        onChange(result);
+      }}
       disabled={loading}
     />
   );

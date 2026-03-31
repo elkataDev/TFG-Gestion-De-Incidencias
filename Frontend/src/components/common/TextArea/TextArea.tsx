@@ -1,11 +1,11 @@
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 
-type TextAreaProps = {
+interface TextAreaProps {
   minRows: number;
   placeHolder: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-};
+}
 
 export default function TextArea(props: TextAreaProps) {
   return (

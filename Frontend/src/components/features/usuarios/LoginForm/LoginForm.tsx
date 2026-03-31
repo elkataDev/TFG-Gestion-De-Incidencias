@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { apiJson } from '@/services/api/apiService';
 
 interface LoginResponse {
-  token?: string; // El JWT
-  role?: string; // El rol del usuario
-  message?: string; // Mensaje en caso de error
+  token?: string;
+  username?: string;
+  role?: string;
+  message?: string;
 }
 
 export const LoginForm = () => {
@@ -38,7 +39,8 @@ export const LoginForm = () => {
       }
 
       localStorage.setItem('token', data.token);
-      localStorage.setItem('role', data.role ?? 'USER');
+      localStorage.setItem('username', data.username ?? form.username);
+      localStorage.setItem('role', data.role ?? 'USUARIO');
 
       setLoading(false);
       window.location.href = '/'; // Forzar recarga total para limpiar estados antiguos

@@ -1,13 +1,13 @@
-type ProgressBar = {
+interface ProgressBar {
   label: string;
   percent: number;
-};
+}
 
-type CP_Card = {
+interface CP_Card {
   titulo: string;
   numb: number;
   progress?: ProgressBar[];
-};
+}
 
 export default function CP_Card(props: CP_Card) {
   const hasProgress = props.progress && props.progress.length > 0;

@@ -2,35 +2,28 @@
   {
     "nombreUsuario": "admin",
     "email": "admin@centro.com",
-    "password": "admin",
+    "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
     "rol": "ADMIN",
     "activo": true
   },
   {
     "nombreUsuario": "profesor",
     "email": "profesor@centro.com",
-    "password": "user123",
+    "password": "$2a$10$IqTJTjn39IU5F3PYmt/QCeEDnVg3O8IhLVEhMPJnKuSKjMzGBpGFy",
     "rol": "USUARIO",
     "activo": true
   },
   {
     "nombreUsuario": "conserje",
     "email": "conserje@centro.com",
-    "password": "user123",
+    "password": "$2a$10$IqTJTjn39IU5F3PYmt/QCeEDnVg3O8IhLVEhMPJnKuSKjMzGBpGFy",
     "rol": "USUARIO",
     "activo": true
   },
   {
     "nombreUsuario": "tecnico",
     "email": "tecnico@centro.com",
-    "password": "tecnico",
-    "rol": "TECNICO",
-    "activo": true
-  },
-  {
-    "nombreUsuario": "tecnico",
-    "email": "tecnico@centro.com",
-    "password": "tecnico",
+    "password": "$2a$10$3zHzb.5/SgMUxV45FPkKOeJVdOxgf.YfcH3p.qGfQ3FV0XN0VKRzK",
     "rol": "TECNICO",
     "activo": true
   }

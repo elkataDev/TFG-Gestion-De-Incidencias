@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import './SideBar.css';
 
-type SideProps = {
+interface SideProps {
   titulo: string;
   children: React.ReactNode;
-};
+}
 
 export default function SideBar(props: SideProps) {
   const [isOpen, setIsOpen] = useState<boolean>(true);

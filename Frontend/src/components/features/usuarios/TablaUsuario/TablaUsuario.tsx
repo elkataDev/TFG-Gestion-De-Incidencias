@@ -11,13 +11,13 @@ import './TablaUsuario.css';
 import { EstadoBadge } from '@/components/common/EstadoBadge/EstadoBadge';
 
 //Se debe modificar cuando se implemente la base de datos
-export type UsuarioData = {
+export interface UsuarioData {
   id: string;
   nombre: string;
   correo: string;
   rol: 'admin' | 'user' | 'tecnico';
   estado: 'activo' | 'inactivo';
-};
+}
 interface TablaUsuarioProps {
   usuarios: UsuarioData[];
 }

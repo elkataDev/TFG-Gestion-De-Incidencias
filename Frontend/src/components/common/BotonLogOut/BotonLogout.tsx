@@ -6,9 +6,10 @@ const LogoutButton = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('tokenExpiry');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
 
-    void navigate('/Login', { replace: true });
+    void navigate('/login', { replace: true });
   };
 
   return (

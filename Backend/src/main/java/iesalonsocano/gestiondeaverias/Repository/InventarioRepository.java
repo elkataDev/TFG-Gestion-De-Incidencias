@@ -1,7 +1,7 @@
 package iesalonsocano.gestiondeaverias.Repository;
 
 import iesalonsocano.gestiondeaverias.entity.InventarioEntity;
-import iesalonsocano.gestiondeaverias.entity.InventarioEntity.estadoInventario;
+import iesalonsocano.gestiondeaverias.entity.InventarioEntity.EstadoInventario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +27,7 @@ public interface InventarioRepository extends JpaRepository<InventarioEntity, Lo
      * @param estado estado del artículo (DISPONIBLE, EN_USO, DANADO)
      * @return lista de artículos con el estado especificado
      */
-    List<InventarioEntity> findByEstado(estadoInventario estado);
+    List<InventarioEntity> findByEstado(EstadoInventario estado);
 
     /**
      * Busca todos los artículos ubicados en un aula específica.

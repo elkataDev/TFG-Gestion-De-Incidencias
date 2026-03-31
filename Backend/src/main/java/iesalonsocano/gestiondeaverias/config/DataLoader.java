@@ -96,15 +96,20 @@ public class DataLoader {
 
                 for (UsuariosEntity usuario : usuariosList) {
                     Optional<UsuariosEntity> existe = usuariosRepository.findByNombreUsuario(usuario.getNombreUsuario());
+                    // Detect pre-hashed BCrypt passwords to avoid double-encoding
+                    String rawPassword = usuario.getPassword();
+                    String encodedPassword = (rawPassword.startsWith("$2a$") || rawPassword.startsWith("$2b$"))
+                            ? rawPassword
+                            : passwordEncoder.encode(rawPassword);
                     if (existe.isEmpty()) {
-                        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+                        usuario.setPassword(encodedPassword);
                         usuariosRepository.save(usuario);
                         System.out.println("👤 Usuario creado: " + usuario.getNombreUsuario());
                     } else {
                         // Si ya existe, actualizamos para asegurar que la contraseña esté codificada
                         // y que coincida con lo que hay en el JSON (útil para desarrollo)
                         UsuariosEntity usuarioExistente = existe.get();
-                        usuarioExistente.setPassword(passwordEncoder.encode(usuario.getPassword()));
+                        usuarioExistente.setPassword(encodedPassword);
                         usuarioExistente.setRol(usuario.getRol());
                         usuarioExistente.setEmail(usuario.getEmail());
                         usuarioExistente.setActivo(usuario.getActivo());

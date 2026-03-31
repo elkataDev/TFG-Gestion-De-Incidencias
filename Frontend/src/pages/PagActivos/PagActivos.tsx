@@ -4,41 +4,39 @@ import SelectAutoWidth from '@/components/common/Select/Select';
 import { EstadoBadge } from '@/components/common/EstadoBadge/EstadoBadge';
 import { useNavigate } from 'react-router-dom';
 
-function Selects() {
-  return (
-    <span className="selects-container">
-      <SelectAutoWidth
-        inputText="Estado"
-        options={[{ label: 'Opcion1' }, { label: 'Opcion2' }]}
-      ></SelectAutoWidth>
-      <SelectAutoWidth
-        inputText="Categoria"
-        options={[{ label: 'Opcion1' }, { label: 'Opcion2' }]}
-      ></SelectAutoWidth>
-      <SelectAutoWidth
-        inputText="Ubicacion"
-        options={[{ label: 'Opcion1' }, { label: 'Opcion2' }]}
-      ></SelectAutoWidth>
-    </span>
-  );
-}
-
 export default function PagActivos() {
   const navigate = useNavigate();
 
   return (
     <div className="pag-averias-container">
       <div className="header-container">
-        <h1>Listado de Tickets de Averias</h1>
+        <h1>Gestión de Activos</h1>
         <BotonPrimario
-          startIcon=""
           text="+ Nuevo Activo"
           onClick={() => {
             void navigate('/nuevoActivo');
           }}
-        ></BotonPrimario>
+        />
       </div>
-      <Selects />
+      <span className="selects-container">
+        <SelectAutoWidth
+          inputText="Estado"
+          options={[{ label: 'DISPONIBLE' }, { label: 'EN_USO' }, { label: 'DANADO' }]}
+        />
+        <SelectAutoWidth
+          inputText="Categoría"
+          options={[
+            { label: 'COMPUTADORA' },
+            { label: 'IMPRESORA' },
+            { label: 'PROYECTOR' },
+            { label: 'MONITOR' },
+            { label: 'RED' },
+            { label: 'SERVIDOR' },
+            { label: 'PERIFERICO' },
+            { label: 'SEGURIDAD' },
+          ]}
+        />
+      </span>
       <div className="table-container">
         <BasicTable
           endpoint="/inventario"

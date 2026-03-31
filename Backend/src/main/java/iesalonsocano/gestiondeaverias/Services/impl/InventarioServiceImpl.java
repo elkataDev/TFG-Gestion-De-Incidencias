@@ -44,7 +44,7 @@ public class InventarioServiceImpl implements InventarioService {
     }
 
     @Override
-    public List<InventarioEntity> findByEstado(InventarioEntity.estadoInventario estado) {
+    public List<InventarioEntity> findByEstado(InventarioEntity.EstadoInventario estado) {
         // Busca por estado. / Finds by status.
         return inventarioRepository.findByEstado(estado);
     }

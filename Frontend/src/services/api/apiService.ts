@@ -2,10 +2,10 @@ import API_BASE_URL, { getHeaders } from './apiConfig';
 
 export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
   const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
-  
+
   const headers = {
     ...getHeaders(),
-    ...(options.headers || {}),
+    ...(options.headers ?? {}),
   } as Record<string, string>;
 
   // Si enviamos FormData, el navegador debe establecer el Content-Type automáticamente con el boundary
@@ -23,17 +23,20 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     window.location.href = '/login';
+    throw new Error('Session expired');
   }
 
   if (response.status === 403) {
     // Forbidden: el usuario está logueado pero no tiene permisos para este recurso
-    // Podríamos redirigir a una página de "Sin autorización"
-    // window.location.href = '/unauthorized';
+    window.location.href = '/unauthorized';
+    throw new Error('Forbidden');
   }
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `Error HTTP: ${response.status}`);
+    const errorData: Record<string, unknown> = await response.json().catch(() => ({}));
+    const msg =
+      typeof errorData.message === 'string' ? errorData.message : `Error HTTP: ${response.status}`;
+    throw new Error(msg);
   }
 
   return response;

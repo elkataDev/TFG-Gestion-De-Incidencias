@@ -35,8 +35,7 @@ export const RegisterForm = () => {
         }),
       });
 
-      const text = await response.text();
-      console.log('Respuesta cruda:', text, 'Status:', response.status);
+      await response.text();
 
       alert('Registro correcto, ahora puedes iniciar sesión');
       setLoading(false);
