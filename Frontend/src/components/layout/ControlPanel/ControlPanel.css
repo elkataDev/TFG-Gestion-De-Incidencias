@@ -1,51 +1,56 @@
 /* ControlPanel.css */
 
-body {
+.control-panel-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%;
+  padding-bottom: 2rem;
+}
+
+.control-panel-title {
+  font-size: var(--font-size-title, 1.8rem);
+  margin-bottom: 0;
   color: var(--color-text-primary);
 }
 
-.breakdown-gen-container {
+.breakdown-primary-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--gap-card);
+  gap: var(--gap-card, 1.5rem);
+}
+
+.breakdown-secondary-container {
+  display: flex;
+  gap: var(--gap-card, 1.5rem);
+  width: 100%;
+}
+
+.breakdown-secondary-container > :first-child {
+  flex: 1;
+}
+
+.breakdown-secondary-container > :nth-child(2) {
+  flex: 3;
 }
 
 .breakdown-gen-card {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-bg-card);
-  padding: var(--padding-card);
-  border-radius: var(--border-radius-card);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  justify-content: flex-start;
+  background-color: var(--color-bg-card, #1e293b);
+  padding: var(--padding-card, 1.5rem);
+  border-radius: var(--border-radius-card, 0.5rem);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   color: var(--color-text-secondary);
-  height: 15vh;
+  min-height: 150px;
 }
 
 .breakdown-gen-card-title {
-  font-size: var(--font-size-card-title);
-  margin-bottom: 15px;
+  font-size: var(--font-size-card-title, 1.1rem);
+  margin-bottom: 1rem;
   color: var(--color-text-primary);
-  font-weight: var(--font-weight-bold);
-}
-
-.breakdown-number {
-  font-size: var(--font-size-number);
-  margin-bottom: 10px;
-  color: var(--color-text-primary);
-  font-weight: var(--font-weight-bold);
-}
-
-.progress-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--font-size-small);
-  color: var(--color-text-secondary);
-}
-
-.progress-text {
-  font-size: var(--font-size-small);
-  color: var(--color-text-secondary);
-  margin-top: 10px;
+  font-weight: var(--font-weight-bold, 600);
 }
 
 .breakdown-gen-header {
@@ -53,50 +58,84 @@ body {
   flex-direction: column;
 }
 
-.breakdown-subtext {
-  margin-top: 5px;
-  align-items: end;
+.breakdown-number-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.breakdown-gen-card:nth-child(4) {
-  grid-column: span 3;
-  height: 38vh;
-}
-
-.control-panel-title {
-  font-size: var(--font-size-title);
-  margin-bottom: 20px;
-}
-
-.progress-bar {
-  background-color: #2b2f37;
-  border-radius: 4px;
-  height: 20px;
-  margin-top: 8px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background-color: var(--color-progress-fill);
-  border-radius: 4px;
-  text-align: right;
-  padding-right: 5px;
+.breakdown-number {
+  font-size: var(--font-size-number, 2.5rem);
   color: var(--color-text-primary);
-  font-weight: bold;
+  font-weight: var(--font-weight-bold, bold);
+  line-height: 1;
+}
+
+.breakdown-subtext {
+  font-size: var(--font-size-small, 0.9rem);
+  color: var(--color-text-secondary);
 }
 
 .breakdown-subtext.hidden {
   display: none;
 }
 
-.button-container {
+.breakdown-progress {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-small, 0.875rem);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.progress-bar {
+  background-color: #2b2f37;
+  border-radius: 4px;
+  height: 12px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--color-progress-fill, #4f46e5);
+  border-radius: 4px;
 }
 
 .control-panel-footer {
-  margin-top: 30px;
-  border-top: 2px solid var(--color-border);
-  padding-top: 15px;
+  margin-top: 1rem;
+  background-color: var(--color-bg-card, #1e293b);
+  border-radius: var(--border-radius-card, 0.5rem);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.control-panel-footer h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--color-text-primary);
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }

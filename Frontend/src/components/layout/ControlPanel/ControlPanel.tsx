@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 interface ControlPanelProps {
   titulo: string;
-  children: React.ReactNode;
+  metricsActivos?: React.ReactNode;
+  metricsAverias?: React.ReactNode;
 }
 
 export default function ControlPanel(props: ControlPanelProps) {
@@ -13,12 +14,24 @@ export default function ControlPanel(props: ControlPanelProps) {
   const role = localStorage.getItem('role') ?? '';
 
   return (
-    <>
+    <div className="control-panel-wrapper">
       <h1 className="control-panel-title">{props.titulo}</h1>
-      <div className="breakdown-gen-container">{props.children}</div>
+      
+      {props.metricsActivos && (
+        <div className="breakdown-primary-container">
+          {props.metricsActivos}
+        </div>
+      )}
+
+      {props.metricsAverias && (
+        <div className="breakdown-secondary-container">
+          {props.metricsAverias}
+        </div>
+      )}
+
       <div className="control-panel-footer">
         <h2>Acciones Rápidas</h2>
-        <span className="button-container">
+        <div className="button-container">
           {role === 'ADMIN' && (
             <BotonPrimario
               text="Nuevo Activo"
@@ -33,8 +46,8 @@ export default function ControlPanel(props: ControlPanelProps) {
             }}
             text="Nueva Averia"
           />
-        </span>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

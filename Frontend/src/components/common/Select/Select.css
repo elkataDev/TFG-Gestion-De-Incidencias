@@ -1,37 +1,44 @@
 .select-blanco {
-  min-width: 150px;
+  /* Control padding / margin for premium feel if needed */
 }
 
 /* Label */
 .select-blanco .MuiInputLabel-root {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: var(--color-bg-card, #1e293b);
+  padding: 0 4px;
 }
 
 .select-blanco .MuiInputLabel-root.Mui-focused {
-  color: #ffffff;
+  color: #3b82f6;
+  background-color: var(--color-bg-card, #1e293b);
 }
 
 /* Select / Input */
 .select-blanco .MuiOutlinedInput-root {
   color: #ffffff;
+  border-radius: 8px;
+  background-color: rgba(255,255,255, 0.03);
 }
 
 .select-blanco .MuiOutlinedInput-root fieldset {
-  border-color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease-in-out;
 }
 
 .select-blanco .MuiOutlinedInput-root:hover fieldset {
-  border-color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255,255,255, 0.05);
 }
 
 .select-blanco .MuiOutlinedInput-root.Mui-focused fieldset {
-  border-color: #ffffff;
+  border-color: #3b82f6;
   border-width: 2px;
 }
 
 /* Icono desplegable */
 .select-blanco .MuiSelect-icon {
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* Texto del menú */
@@ -41,5 +48,5 @@
 
 /* Fondo del desplegable (opcional, modo oscuro) */
 .MuiPaper-root {
-  background-color: #1e1e1e;
+  background-color: #1e293b;
 }

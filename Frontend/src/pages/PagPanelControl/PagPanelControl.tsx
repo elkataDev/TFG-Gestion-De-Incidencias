@@ -45,34 +45,37 @@ export default function PagPanelControl() {
 
   const totalActivos = activos.length;
   const activosDisponibles = activos.filter((a) => a.estado === 'DISPONIBLE').length;
-  const activosDanados = activos.filter((a) => a.estado === 'DANADO').length;
+  const activosDanados = activos.filter((a) => a.estado === 'DAÑADO').length;
 
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
-      <div style={{ flex: 1, padding: '20px' }}>
+      <div style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
         <ControlPanel
           titulo={role === 'USUARIO' ? 'Mi Panel de Averías' : 'Panel de Control General'}
-        >
-          {role !== 'USUARIO' && (
+          metricsActivos={
+            role !== 'USUARIO' ? (
+              <>
+                <CP_Card titulo="Total de activos" numb={totalActivos} />
+                <CP_Card titulo="Activos disponibles" numb={activosDisponibles} />
+                <CP_Card titulo="Activos dañados" numb={activosDanados} />
+              </>
+            ) : undefined
+          }
+          metricsAverias={
             <>
-              <CP_Card titulo="Total de activos" numb={totalActivos} />
-              <CP_Card titulo="Activos disponibles" numb={activosDisponibles} />
-              <CP_Card titulo="Activos dañados" numb={activosDanados} />
+              <CP_Card titulo="Total de averías" numb={total} />
+              <CP_Card
+                titulo={role === 'USUARIO' ? 'Mis Estadísticas' : 'Estado de averías'}
+                numb={total}
+                progress={[
+                  { label: 'Pendientes', percent: total ? Math.round((pendientes / total) * 100) : 0 },
+                  { label: 'En proceso', percent: total ? Math.round((enProceso / total) * 100) : 0 },
+                  { label: 'Resueltas', percent: total ? Math.round((resueltas / total) * 100) : 0 },
+                ]}
+              />
             </>
-          )}
-
-          <CP_Card titulo="Total de averías" numb={total} />
-
-          <CP_Card
-            titulo={role === 'USUARIO' ? 'Mis Estadísticas' : 'Estado de averías'}
-            numb={total}
-            progress={[
-              { label: 'Pendientes', percent: total ? Math.round((pendientes / total) * 100) : 0 },
-              { label: 'En proceso', percent: total ? Math.round((enProceso / total) * 100) : 0 },
-              { label: 'Resueltas', percent: total ? Math.round((resueltas / total) * 100) : 0 },
-            ]}
-          />
-        </ControlPanel>
+          }
+        />
       </div>
     </div>
   );

@@ -29,10 +29,14 @@ export default function SelectAutoWidth(props: SelectProps) {
   }, [props.value]);
 
   return (
-    <FormControl className="select-blanco">
+    <FormControl className="select-blanco" sx={{ minWidth: 180 }}>
       <InputLabel id={labelId}>{props.inputText}</InputLabel>
-
-      <Select labelId={labelId} value={selected} onChange={handleChange} autoWidth>
+      <Select 
+        labelId={labelId} 
+        value={selected} 
+        onChange={handleChange} 
+        label={props.inputText}
+      >
         <MenuItem value="">
           <em>Ninguna</em>
         </MenuItem>

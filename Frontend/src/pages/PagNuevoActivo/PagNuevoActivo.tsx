@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BotonPrimario from '@/components/common/BotonPrimario/BotonPrimario';
+import BotonSecundario from '@/components/common/BotonSecundario/BotonSecundario';
+import { Input } from '@/components/common/Input/Input';
+import TextArea from '@/components/common/TextArea/TextArea';
+import SelectAutoWidth from '@/components/common/Select/Select';
+import { SelectAulas } from '@/components/common/SelectsBD/SelectAula';
 import { apiJson } from '@/services/api/apiService';
 import './PagNuevoActivo.css';
 
@@ -83,103 +88,98 @@ export default function PagNuevoActivo() {
   /* ===================== RENDER ===================== */
 
   return (
-    <div className="form-container">
-      <h1>Nuevo Activo</h1>
+    <div className="pag-nuevo-activo">
+      <div className="report-container">
+        <h1>Nuevo Activo</h1>
+        <p>Añada un nuevo activo al inventario del sistema</p>
 
-      <form onSubmit={(e) => void handleSubmit(e)} className="form-activo">
-        {/* Nombre */}
-        <label>
-          Nombre *
-          <input
-            type="text"
-            value={form.nombre}
-            onChange={(e) => handleChange('nombre', e.target.value)}
-            required
-            maxLength={100}
-            placeholder="Ej: PC-101"
-          />
-        </label>
+        <form onSubmit={(e) => void handleSubmit(e)}>
+          <span style={{ marginBottom: '1rem', display: 'block' }}>
+            <h3>Nombre *</h3>
+            <Input
+              name="nombre"
+              label="Ej: PC-101"
+              type="text"
+              value={form.nombre}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange('nombre', e.target.value)
+              }
+              required
+            />
+          </span>
 
-        {/* Descripción */}
-        <label>
-          Descripción
-          <textarea
+          <h3>Descripción</h3>
+          <TextArea
+            placeHolder="Descripción detallada del activo"
+            minRows={4}
             value={form.descripcion}
             onChange={(e) => handleChange('descripcion', e.target.value)}
-            rows={3}
-            maxLength={255}
-            placeholder="Descripción detallada del activo"
           />
-        </label>
 
-        {/* Código QR */}
-        <label>
-          Código QR
-          <input
-            type="text"
-            value={form.codigoQR}
-            onChange={(e) => handleChange('codigoQR', e.target.value)}
-            maxLength={50}
-            placeholder="Código QR único del activo"
-          />
-        </label>
+          <span style={{ marginBottom: '1rem', display: 'block' }}>
+            <h3>Código QR</h3>
+            <Input
+              name="codigoQR"
+              label="Código QR único del activo"
+              type="text"
+              value={form.codigoQR}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange('codigoQR', e.target.value)
+              }
+            />
+          </span>
 
-        {/* Categoría */}
-        <label>
-          Categoría *
-          <select
-            value={form.categoria}
-            onChange={(e) => handleChange('categoria', e.target.value as CategoriaInventario)}
-            required
-          >
-            <option value="COMPUTADORA">Computadora</option>
-            <option value="IMPRESORA">Impresora</option>
-            <option value="PROYECTOR">Proyector</option>
-            <option value="MONITOR">Monitor</option>
-            <option value="RED">Red</option>
-            <option value="SERVIDOR">Servidor</option>
-            <option value="PERIFERICO">Periférico</option>
-            <option value="SEGURIDAD">Seguridad</option>
-          </select>
-        </label>
+          <span className="select-container">
+            <h3>Categoría *</h3>
+            <SelectAutoWidth
+              inputText="Seleccionar Categoría"
+              options={[
+                { label: 'COMPUTADORA' },
+                { label: 'IMPRESORA' },
+                { label: 'PROYECTOR' },
+                { label: 'MONITOR' },
+                { label: 'RED' },
+                { label: 'SERVIDOR' },
+                { label: 'PERIFERICO' },
+                { label: 'SEGURIDAD' },
+              ]}
+              value={form.categoria}
+              onChange={(value: string) => handleChange('categoria', value as CategoriaInventario)}
+            />
+          </span>
 
-        {/* Estado */}
-        <label>
-          Estado *
-          <select
-            value={form.estado}
-            onChange={(e) => handleChange('estado', e.target.value as EstadoInventario)}
-            required
-          >
-            <option value="DISPONIBLE">Disponible</option>
-            <option value="EN_USO">En uso</option>
-            <option value="DANADO">Dañado</option>
-          </select>
-        </label>
+          <span className="select-container">
+            <h3>Estado *</h3>
+            <SelectAutoWidth
+              inputText="Seleccionar Estado"
+              options={[
+                { label: 'DISPONIBLE' },
+                { label: 'EN_USO' },
+                { label: 'DANADO' },
+              ]}
+              value={form.estado}
+              onChange={(value: string) => handleChange('estado', value as EstadoInventario)}
+            />
+          </span>
 
-        {/* Aula ID */}
-        <label>
-          Aula ID (opcional)
-          <input
-            type="number"
-            value={form.aulaId}
-            onChange={(e) => handleChange('aulaId', e.target.value)}
-            min={1}
-            placeholder="ID del aula (dejar vacío si está en almacén)"
-          />
-        </label>
+          <span className="select-container">
+            <h3>Aula (Opcional)</h3>
+            <SelectAulas
+              value={form.aulaId}
+              onChange={(value) => handleChange('aulaId', value ?? '')}
+            />
+          </span>
 
-        {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
-        {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
+          {successMsg && <p style={{ color: 'green', margin: '10px 0' }}>{successMsg}</p>}
+          {errorMsg && <p style={{ color: 'red', margin: '10px 0' }}>{errorMsg}</p>}
 
-        {/* Botones */}
-        <div className="form-actions">
-          <BotonPrimario text={loading ? 'Guardando...' : 'Crear Activo'} type="submit" />
-          <button type="button" onClick={() => void navigate(-1)} disabled={loading}>
-            Cancelar
-          </button>
-        </div>
-      </form>
+          <div className="button-container">
+            <BotonSecundario text="Cancelar" onClick={() => void navigate(-1)} />
+            <button type="submit" style={{ display: 'none' }} id="hidden-submit" />
+            <BotonPrimario text={loading ? 'Guardando...' : 'Crear Activo'} onClick={() => document.getElementById('hidden-submit')?.click()} />
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

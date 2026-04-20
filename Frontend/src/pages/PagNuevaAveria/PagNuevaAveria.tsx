@@ -143,7 +143,7 @@ export default function PagNuevaAveria() {
 
         <span className="file-upload-container" style={{ margin: '1rem 0', display: 'block' }}>
           <h3>Archivo Adjunto (Opcional)</h3>
-          <input type="file" onChange={handleFileChange} />
+          <input className="file-input" type="file" onChange={handleFileChange} />
         </span>
 
         {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
