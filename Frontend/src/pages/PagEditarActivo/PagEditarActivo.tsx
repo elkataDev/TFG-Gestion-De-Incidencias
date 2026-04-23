@@ -178,7 +178,7 @@ export default function EditarActivo() {
           >
             <option value="DISPONIBLE">DISPONIBLE</option>
             <option value="EN_USO">EN_USO</option>
-            <option value="DANADO">DANADO</option>
+            <option value="DAÑADO">DAÑADO</option>
           </select>
         </label>
 

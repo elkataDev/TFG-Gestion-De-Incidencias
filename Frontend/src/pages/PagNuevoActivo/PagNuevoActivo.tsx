@@ -11,7 +11,7 @@ import './PagNuevoActivo.css';
 
 /* ===================== TIPOS ===================== */
 
-type EstadoInventario = 'DISPONIBLE' | 'EN_USO' | 'DANADO';
+type EstadoInventario = 'DISPONIBLE' | 'EN_USO' | 'DAÑADO';
 
 type CategoriaInventario =
   | 'COMPUTADORA'
@@ -155,7 +155,7 @@ export default function PagNuevoActivo() {
               options={[
                 { label: 'DISPONIBLE' },
                 { label: 'EN_USO' },
-                { label: 'DANADO' },
+                { label: 'DAÑADO' },
               ]}
               value={form.estado}
               onChange={(value: string) => handleChange('estado', value as EstadoInventario)}

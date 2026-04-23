@@ -32,6 +32,8 @@ services:
       - JWT_SECRET=clave_secreta_tfg_2026_ies_alonso_cano_docker_compose_dev_only
     ports:
       - "5555:8080"
+    volumes:
+      - backend_uploads:/app/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -56,3 +58,4 @@ networks:
 
 volumes:
   db_data:
+  backend_uploads:

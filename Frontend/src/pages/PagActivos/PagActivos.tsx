@@ -55,7 +55,7 @@ export default function PagActivos() {
       <span className="selects-container">
         <SelectAutoWidth
           inputText="Estado"
-          options={[{ label: 'DISPONIBLE' }, { label: 'EN_USO' }, { label: 'DANADO' }]}
+          options={[{ label: 'DISPONIBLE' }, { label: 'EN_USO' }, { label: 'DAÑADO' }]}
           value={estadoFilter}
           onChange={(val) => setEstadoFilter(val)}
         />

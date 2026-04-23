@@ -144,7 +144,7 @@ public class UsuariosController {
      * @return ResponseEntity vacío con código 204 No Content o 404 Not Found
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
         if (usuariosService.findById(id).isPresent()) {
             usuariosService.deleteById(id);

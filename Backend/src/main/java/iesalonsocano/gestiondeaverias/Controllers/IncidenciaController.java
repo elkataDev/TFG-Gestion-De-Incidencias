@@ -283,11 +283,15 @@ public class IncidenciaController {
     }
 
     @GetMapping("/archivos/{filename:.+}")
-    public ResponseEntity<org.springframework.core.io.Resource> serveFile(@PathVariable String filename) {
-        org.springframework.core.io.Resource file = storageService.loadAsResource(filename);
-        return ResponseEntity.ok()
-                .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-                .body(file);
+    public ResponseEntity<?> serveFile(@PathVariable String filename) {
+        try {
+            org.springframework.core.io.Resource file = storageService.loadAsResource(filename);
+            return ResponseEntity.ok()
+                    .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                    .body(file);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body("Archivo no encontrado o ya no existe en el servidor.");
+        }
     }
 
 
@@ -366,5 +370,15 @@ public class IncidenciaController {
                 .map(iesalonsocano.gestiondeaverias.DTO.HistorialEstadoDTO::fromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('TECNICO', 'ADMIN')")
+    public ResponseEntity<Void> deleteIncidencia(@PathVariable Long id) {
+        if (incidenciasService.findById(id).isPresent()) {
+            incidenciasService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

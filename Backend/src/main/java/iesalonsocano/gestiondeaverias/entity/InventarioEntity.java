@@ -125,7 +125,7 @@ public class InventarioEntity {
         /** Artículo actualmente en uso */
         EN_USO,
         /** Artículo dañado, requiere reparación o reemplazo */
-        DANADO
+        DAÑADO
     }
 
     /**

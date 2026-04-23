@@ -95,6 +95,7 @@ public class SecurityConfig {
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         // Rutas públicas
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/incidencias/archivos/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         // .requestMatchers("/api/incidencias/filtrar").permitAll() // Protegido: requiere autenticación
                         .requestMatchers("/error").permitAll() // Permitir ver errores del servidor

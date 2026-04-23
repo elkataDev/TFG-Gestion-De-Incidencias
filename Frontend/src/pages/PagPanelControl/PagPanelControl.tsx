@@ -16,27 +16,23 @@ interface Activo {
 export default function PagPanelControl() {
   const [incidencias, setIncidencias] = useState<Incidencia[]>([]);
   const [activos, setActivos] = useState<Activo[]>([]);
-  const role = localStorage.getItem('role') ?? 'USUARIO';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const endpointInc =
-          role === 'ADMIN' || role === 'TECNICO' ? '/incidencias' : '/incidencias/mis-incidencias';
-
-        const dataInc = await apiJson(endpointInc);
+        // Siempre cargamos TODAS las incidencias del sistema para todos los roles
+        const dataInc = await apiJson('/incidencias');
         setIncidencias(dataInc as Incidencia[]);
 
-        if (role === 'ADMIN' || role === 'TECNICO') {
-          const dataAct = await apiJson('/inventario');
-          setActivos(dataAct as Activo[]);
-        }
+        // Inventario también para todos
+        const dataAct = await apiJson('/inventario');
+        setActivos(dataAct as Activo[]);
       } catch (e) {
         console.error('Error fetching data', e);
       }
     };
     void fetchData();
-  }, [role]);
+  }, []);
 
   const total = incidencias.length;
   const pendientes = incidencias.filter((i) => i.estado === 'ABIERTO').length;
@@ -51,21 +47,19 @@ export default function PagPanelControl() {
     <div style={{ display: 'flex', height: '100vh' }}>
       <div style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
         <ControlPanel
-          titulo={role === 'USUARIO' ? 'Mi Panel de Averías' : 'Panel de Control General'}
+          titulo="Panel de Control General"
           metricsActivos={
-            role !== 'USUARIO' ? (
-              <>
-                <CP_Card titulo="Total de activos" numb={totalActivos} />
-                <CP_Card titulo="Activos disponibles" numb={activosDisponibles} />
-                <CP_Card titulo="Activos dañados" numb={activosDanados} />
-              </>
-            ) : undefined
+            <>
+              <CP_Card titulo="Total de activos" numb={totalActivos} />
+              <CP_Card titulo="Activos disponibles" numb={activosDisponibles} />
+              <CP_Card titulo="Activos dañados" numb={activosDanados} />
+            </>
           }
           metricsAverias={
             <>
               <CP_Card titulo="Total de averías" numb={total} />
               <CP_Card
-                titulo={role === 'USUARIO' ? 'Mis Estadísticas' : 'Estado de averías'}
+                titulo="Estado de averías"
                 numb={total}
                 progress={[
                   { label: 'Pendientes', percent: total ? Math.round((pendientes / total) * 100) : 0 },

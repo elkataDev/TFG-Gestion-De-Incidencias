@@ -47,6 +47,9 @@ export default function PagDetalleAveria() {
   const [nuevoEstado, setNuevoEstado] = useState('');
   const [loading, setLoading] = useState(true);
 
+  const role = localStorage.getItem('role') ?? 'USUARIO';
+  const isAdminOrTech = role === 'ADMIN' || role === 'TECNICO';
+
   const fetchIncidencia = async () => {
     try {
       const [resInc, resCom, resHist] = await Promise.all([
@@ -144,18 +147,20 @@ export default function PagDetalleAveria() {
             </p>
           )}
 
-          <div className="estado-updater">
-            <h3>Actualizar Estado</h3>
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-              <SelectAutoWidth
-                inputText="Nuevo Estado"
-                options={[{ label: 'ABIERTO' }, { label: 'EN_PROGRESO' }, { label: 'RESUELTO' }]}
-                value={nuevoEstado}
-                onChange={setNuevoEstado}
-              />
-              <BotonPrimario text="Actualizar" onClick={() => void handleUpdateEstado()} />
+          {isAdminOrTech && (
+            <div className="estado-updater">
+              <h3>Actualizar Estado</h3>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <SelectAutoWidth
+                  inputText="Nuevo Estado"
+                  options={[{ label: 'ABIERTO' }, { label: 'EN_PROGRESO' }, { label: 'RESUELTO' }]}
+                  value={nuevoEstado}
+                  onChange={setNuevoEstado}
+                />
+                <BotonPrimario text="Actualizar" onClick={() => void handleUpdateEstado()} />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="historial-info">

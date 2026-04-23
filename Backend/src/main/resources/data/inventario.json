@@ -99,7 +99,7 @@
     "nombre": "Placas Base",
     "descripcion": "50 unidades para montaje.",
     "codigoQR": "QR-FPB1-003",
-    "estado": "DANADO",
+    "estado": "DAÑADO",
     "categoria": "PERIFERICO",
     "aula": { "nombre": "Aula FPB1" }
   },

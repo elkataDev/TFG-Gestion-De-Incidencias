@@ -42,7 +42,7 @@ public class InventarioDTO {
     private String codigoQR;
 
     /**
-     * Estado actual del artículo (DISPONIBLE, EN_USO, DANADO).
+     * Estado actual del artículo (DISPONIBLE, EN_USO, DAÑADO).
      */
     private String estado;
 

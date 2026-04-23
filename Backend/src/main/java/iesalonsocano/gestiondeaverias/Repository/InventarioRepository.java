@@ -26,7 +26,7 @@ public interface InventarioRepository extends JpaRepository<InventarioEntity, Lo
     /**
      * Busca artículos del inventario por su estado.
      *
-     * @param estado estado del artículo (DISPONIBLE, EN_USO, DANADO)
+     * @param estado estado del artículo (DISPONIBLE, EN_USO, DAÑADO)
      * @return lista de artículos con el estado especificado
      */
     List<InventarioEntity> findByEstado(EstadoInventario estado);
