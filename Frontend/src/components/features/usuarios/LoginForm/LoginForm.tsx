@@ -56,6 +56,7 @@ export const LoginForm = () => {
   return (
     <Box
       component="form"
+      className="auth-form-card"
       onSubmit={(e) => void handleSubmit(e)}
       sx={{
         width: '100%',
@@ -64,12 +65,13 @@ export const LoginForm = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: 'white',
-        paddingInline: 4,
-        paddingY: 2,
-        borderRadius: 2,
+        gap: 3,
+        backgroundColor: 'var(--color-bg-card)',
+        padding: 'var(--padding-card)',
+        borderRadius: 'var(--border-radius-card)',
         boxShadow: 3,
-        gap: 2,
+        border: '1px solid var(--color-border)',
+        color: 'var(--color-text-primary)'
       }}
     >
       <Input

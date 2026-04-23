@@ -15,13 +15,13 @@ import PagNuevoActivo from './pages/PagNuevoActivo/PagNuevoActivo';
 import PagDetalleAveria from './pages/PagDetalleAveria/PagDetalleAveria';
 import EditarActivo from './pages/PagEditarActivo/PagEditarActivo';
 import { LoginPage } from './pages/Login/LoginPage';
-import { RegisterForm } from './components/features/usuarios/RegisterForm/RegisterForm';
+import { RegisterPage } from './pages/Register/RegisterPage';
 
 function App() {
   return (
     <Routes>
       {/* ================= RUTAS PÚBLICAS ================= */}
-      <Route path="/registro" element={<RegisterForm></RegisterForm>}></Route>
+      <Route path="/registro" element={<RegisterPage />}></Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="*" element={<NotFound />} />
       <Route path="/unauthorized" element={<Unauthorized />} />

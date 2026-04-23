@@ -1,8 +1,7 @@
-//import { LoginForm } from '@/components/features/usuarios/LoginForm/LoginForm';
-import { LoginForm } from '@/components/features/usuarios/LoginForm/LoginForm';
+import { RegisterForm } from '@/components/features/usuarios/RegisterForm/RegisterForm';
 import { Box, Typography } from '@mui/material';
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
   return (
     <Box
       sx={{
@@ -17,9 +16,9 @@ export const LoginPage = () => {
       }}
     >
       <Typography variant="h4" fontWeight="bold" mb={4} sx={{ color: 'var(--color-text-primary)' }}>
-        Bienvenido
+        Crear Cuenta
       </Typography>
-      <LoginForm />
+      <RegisterForm />
     </Box>
   );
 };
