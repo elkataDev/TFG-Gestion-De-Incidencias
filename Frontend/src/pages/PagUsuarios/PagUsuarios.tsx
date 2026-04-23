@@ -14,7 +14,8 @@ export default function PagUsuarios() {
       await apiJson(`/usuarios/${id}`, { method: 'DELETE' });
       setRefreshKey((prev) => prev + 1);
     } catch (error) {
-      alert('Error eliminando usuario');
+      console.error('Error eliminando usuario:', error);
+      alert('Error al eliminar el usuario. Compruebe que tiene permisos de administrador.');
     }
   };
   return (
@@ -36,11 +37,11 @@ export default function PagUsuarios() {
                 <button
                   onClick={() => void handleDelete(Number(row.id))}
                   style={{
-                    backgroundColor: 'red', color: 'white', border: 'none', padding: '5px 10px',
-                    borderRadius: '4px', cursor: 'pointer'
+                    backgroundColor: '#e53935', color: 'white', border: 'none', padding: '5px 12px',
+                    borderRadius: '4px', cursor: 'pointer', fontWeight: 600
                   }}
                 >
-                  Eliminar
+                  ELIMINAR
                 </button>
               );
             }

@@ -2,9 +2,12 @@ package iesalonsocano.gestiondeaverias.Services.impl;
 
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
 import iesalonsocano.gestiondeaverias.Repository.IncidenciasRepository;
+import iesalonsocano.gestiondeaverias.Repository.ComentarioRepository;
+import iesalonsocano.gestiondeaverias.Repository.HistorialEstadoRepository;
 import iesalonsocano.gestiondeaverias.Services.IncidenciasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +22,12 @@ public class IncidenciasServiceImpl implements IncidenciasService {
 
     @Autowired
     private IncidenciasRepository incidenciasRepository;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
+
+    @Autowired
+    private HistorialEstadoRepository historialEstadoRepository;
 
     @Override
     public List<IncidenciasEntity> findAll() {
@@ -39,8 +48,11 @@ public class IncidenciasServiceImpl implements IncidenciasService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
-        // Elimina la incidencia por ID. / Deletes the incident by ID.
+        // Borrar hijos primero para evitar error de Foreign Key
+        comentarioRepository.deleteByIncidenciaId(id);
+        historialEstadoRepository.deleteByIncidenciaId(id);
         incidenciasRepository.deleteById(id);
     }
 

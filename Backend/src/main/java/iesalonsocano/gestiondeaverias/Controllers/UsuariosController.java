@@ -135,9 +135,15 @@ public class UsuariosController {
     }
 
     /**
-     * Elimina un usuario del sistema.
+     * Elimina un usuario del sistema de forma física.
      * <p>
-     * Acceso: Solo ADMIN o TECNICO
+     * Antes de eliminar el usuario, borra en cascada:
+     * sus incidencias (con sus comentarios e historial),
+     * sus comentarios en incidencias ajenas, y desvincula
+     * su participación en el historial de cambios de estado.
+     * </p>
+     * <p>
+     * Acceso: Solo ADMIN
      * </p>
      *
      * @param id identificador del usuario a eliminar

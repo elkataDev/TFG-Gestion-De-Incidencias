@@ -2,10 +2,14 @@ package iesalonsocano.gestiondeaverias.Services.impl;
 
 import iesalonsocano.gestiondeaverias.entity.UsuariosEntity;
 import iesalonsocano.gestiondeaverias.Repository.UsuariosRepository;
+import iesalonsocano.gestiondeaverias.Repository.IncidenciasRepository;
+import iesalonsocano.gestiondeaverias.Repository.ComentarioRepository;
+import iesalonsocano.gestiondeaverias.Repository.HistorialEstadoRepository;
 import iesalonsocano.gestiondeaverias.Services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,15 @@ public class UsuariosServiceImpl implements UsuariosService {
 
     private final UsuariosRepository usuariosRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IncidenciasRepository incidenciasRepository;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
+
+    @Autowired
+    private HistorialEstadoRepository historialEstadoRepository;
 
     @Autowired
     public UsuariosServiceImpl(
@@ -63,7 +76,27 @@ public class UsuariosServiceImpl implements UsuariosService {
         return usuariosRepository.save(usuario);
     }
     @Override
+    @Transactional
     public void deleteById(Long id) {
+        // 1. Obtener IDs de las incidencias del usuario
+        List<Long> incidenciaIds = incidenciasRepository.findByUsuarioId(id)
+                .stream().map(i -> i.getId()).toList();
+
+        if (!incidenciaIds.isEmpty()) {
+            // 2. Borrar comentarios e historial de esas incidencias
+            comentarioRepository.deleteByIncidenciaIdIn(incidenciaIds);
+            historialEstadoRepository.deleteByIncidenciaIdIn(incidenciaIds);
+            // 3. Borrar las incidencias del usuario
+            incidenciasRepository.deleteAllById(incidenciaIds);
+        }
+
+        // 4. Borrar comentarios que el usuario hizo en incidencias ajenas
+        comentarioRepository.deleteByUsuarioId(id);
+
+        // 5. Desvincular al usuario del historial en incidencias ajenas (campo nullable)
+        historialEstadoRepository.clearUsuarioFromHistorial(id);
+
+        // 6. Finalmente borrar el usuario
         usuariosRepository.deleteById(id);
     }
 
