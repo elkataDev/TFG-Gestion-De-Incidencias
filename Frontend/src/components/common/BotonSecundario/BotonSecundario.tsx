@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import type { ButtonPrimarioProps } from '../BotonPrimario/BotonPrimario';
+import './BotonSecundario.css';
 
 export default function BotonSecundario({
   text,
@@ -22,18 +23,7 @@ export default function BotonSecundario({
       endIcon={endIcon}
       type={type}
       size={size}
-      sx={{
-        borderRadius: 2,
-        textTransform: 'none',
-        fontWeight: 500,
-        paddingX: 2.5,
-        paddingY: 1,
-        borderWidth: 2,
-        '&:hover': {
-          borderWidth: 2,
-          backgroundColor: 'rgba(0, 0, 0, 0.04)',
-        },
-      }}
+      className="app-btn app-btn--secondary"
     >
       {text}
     </Button>

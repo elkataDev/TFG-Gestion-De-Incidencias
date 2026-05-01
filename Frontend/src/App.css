@@ -1,41 +1,95 @@
-/* variables.css */
 :root {
-  /* Colores generales */
-  --color-bg-body: #1e1e2c;
-  --color-bg-sidebar: #2d384b;
-  --color-bg-card: #2d384b;
-  --color-bg-active-link: #135092;
-  --color-text-primary: #fff;
-  --color-text-secondary: #cbd5e1;
-  --color-text-tertiary: #a0aec0;
-  --color-border: #394867;
-  --color-border-light: #404856;
-  --color-progress-fill: deepskyblue;
+  --color-bg-body: #0b1220;
+  --color-background-secondary: #111b2f;
+  --color-bg-sidebar: #111a2d;
+  --color-bg-card: #17243b;
+  --color-bg-card-elevated: #1c2c47;
+  --color-bg-active-link: #243e68;
+  --color-text-primary: #f7faff;
+  --color-text-secondary: #b9c6df;
+  --color-text-tertiary: #8da3c8;
+  --color-border: #2d4267;
+  --color-border-light: #334b73;
+  --color-accent: #4cc9f0;
+  --color-accent-strong: #35b6e6;
+  --color-danger: #ff6b6b;
+  --color-progress-fill: linear-gradient(90deg, #4cc9f0, #6c8cff);
 
-  /* Tipografía */
-  --font-family: monospace;
-  --font-size-title: 2rem;
-  --font-size-subtitle: 1.75rem;
+  --font-family: 'IBM Plex Sans', 'Segoe UI', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  --font-size-title: clamp(1.6rem, 2.2vw, 2.1rem);
+  --font-size-subtitle: 1.2rem;
   --font-size-card-title: 1rem;
   --font-size-number: 2rem;
   --font-size-small: 0.9rem;
-  --font-weight-bold: 600;
+  --font-weight-bold: 650;
 
-  /* Espaciados */
-  --padding-card: 20px;
-  --padding-sidebar: 10px;
-  --gap-card: 20px;
-  --gap-sidebar-links: 8px;
+  --padding-card: 1.5rem;
+  --padding-sidebar: 1rem;
+  --padding-page: 1.75rem;
+  --gap-card: 1.25rem;
+  --gap-sidebar-links: 0.45rem;
 
-  /* Bordes y radios */
-  --border-radius-card: 8px;
-  --border-radius-button: 8px;
-  --border-radius-hamburger: 2px;
+  --border-radius-card: 14px;
+  --border-radius-button: 12px;
+  --border-radius-hamburger: 4px;
 
-  /* Tamaños */
-  --sidebar-width: 20%;
-  --user-picture-size: 50px;
+  --sidebar-width: 280px;
+  --user-picture-size: 48px;
   --hamburger-width: 30px;
-  --hamburger-height: 22px;
-  --hamburger-line-height: 3px;
+  --hamburger-height: 20px;
+  --hamburger-line-height: 2px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(76, 201, 240, 0.09), transparent 38%),
+    radial-gradient(circle at 90% 8%, rgba(108, 140, 255, 0.1), transparent 35%),
+    var(--color-bg-body);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+.surface-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-card);
+  box-shadow: 0 10px 28px rgba(6, 10, 20, 0.45);
+}
+
+.app-danger-button {
+  background: rgba(255, 107, 107, 0.14);
+  color: #ffdede;
+  border: 1px solid rgba(255, 107, 107, 0.45);
+  border-radius: 10px;
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.app-danger-button:hover {
+  background: rgba(255, 107, 107, 0.22);
+  transform: translateY(-1px);
 }

@@ -1,4 +1,5 @@
 import Button from '@mui/material/Button';
+import './BotonPrimario.css';
 
 export interface ButtonPrimarioProps {
   text: string;
@@ -41,13 +42,7 @@ export default function BotonPrimario({
       endIcon={endIcon}
       type={type}
       size={size}
-      sx={{
-        borderRadius: 2,
-        textTransform: 'none',
-        fontWeight: 600,
-        paddingX: 2.5,
-        paddingY: 1,
-      }}
+      className="app-btn app-btn--primary"
     >
       {text}
     </Button>

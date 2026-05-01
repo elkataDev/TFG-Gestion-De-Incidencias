@@ -1,5 +1,5 @@
 .pag-averias-container {
-  padding: 20px;
+  padding: var(--padding-page);
   background-color: var(--color-background-secondary);
   min-height: 100vh;
 }
@@ -8,23 +8,26 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  margin-top: 10px;
+  margin-bottom: 1rem;
+  margin-top: 0.25rem;
 }
 
 .header-container h1 {
-  font-size: 2rem;
+  font-size: var(--font-size-title);
   color: var(--color-text-primary);
 }
 
 .selects-container {
   display: flex;
-  gap: 15px;
+  gap: 0.85rem;
+  flex-wrap: wrap;
 }
 
 .table-container {
   background-color: var(--color-bg-card);
   border-radius: var(--border-radius-card);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 40px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 12px 24px rgba(3, 6, 14, 0.34);
+  margin-top: 1.4rem;
+  overflow: hidden;
 }

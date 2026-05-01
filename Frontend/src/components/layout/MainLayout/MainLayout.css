@@ -2,9 +2,10 @@
 
 .layout-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .main-content {
   flex: 1;
+  background-color: var(--color-background-secondary);
 }

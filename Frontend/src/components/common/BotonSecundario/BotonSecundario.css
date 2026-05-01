@@ -1,0 +1,13 @@
+.app-btn--secondary {
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border-light) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-width: 1px !important;
+}
+
+.app-btn--secondary:hover {
+  border-color: var(--color-accent) !important;
+  color: var(--color-text-primary) !important;
+  background: rgba(76, 201, 240, 0.12) !important;
+  transform: translateY(-1px);
+}

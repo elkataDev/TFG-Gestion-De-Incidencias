@@ -13,7 +13,23 @@ const LogoutButton = () => {
   };
 
   return (
-    <Button variant="contained" color="error" onClick={handleLogout}>
+    <Button
+      variant="outlined"
+      onClick={handleLogout}
+      sx={{
+        m: 2,
+        mt: 1,
+        borderColor: 'rgba(255, 107, 107, 0.55)',
+        color: '#ffdede',
+        textTransform: 'none',
+        borderRadius: '10px',
+        fontWeight: 600,
+        '&:hover': {
+          borderColor: 'rgba(255, 107, 107, 0.85)',
+          backgroundColor: 'rgba(255, 107, 107, 0.12)'
+        }
+      }}
+    >
       Cerrar sesión
     </Button>
   );

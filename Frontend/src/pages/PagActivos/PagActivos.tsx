@@ -5,6 +5,7 @@ import SelectAutoWidth from '@/components/common/Select/Select';
 import { EstadoBadge } from '@/components/common/EstadoBadge/EstadoBadge';
 import { useNavigate } from 'react-router-dom';
 import { apiJson } from '@/services/api/apiService';
+import './PagActivos.css';
 
 interface Activo extends Record<string, unknown> {
   id: number;

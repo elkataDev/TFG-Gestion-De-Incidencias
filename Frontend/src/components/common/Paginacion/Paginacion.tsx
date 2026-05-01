@@ -27,13 +27,7 @@ const Paginacion: React.FC<PaginacionProps> = ({
         size="small"
       />
 
-      <span className="page-indicator" style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        padding: '0 12px',
-        fontWeight: 500,
-        color: 'var(--color-text-secondary, #666)'
-      }}>
+      <span className="page-indicator">
         Página {paginaActual + 1} de {paginasTotales}
       </span>
 

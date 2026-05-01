@@ -1,18 +1,7 @@
 /* SideBar.css */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: var(--color-bg-body);
-  font-family: var(--font-family);
-}
-
 .sidebar {
-  background-color: var(--color-bg-sidebar);
+  background: linear-gradient(180deg, #101a2b 0%, #0d1526 100%);
   width: var(--sidebar-width);
   height: 100vh;
   display: flex;
@@ -21,13 +10,14 @@ body {
     transform 0.3s ease,
     width 0.3s ease;
   flex-shrink: 0;
+  border-right: 1px solid var(--color-border);
 }
 
 .title-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
   padding: var(--padding-sidebar);
 }
 
@@ -55,6 +45,8 @@ body {
 .sidebar-title {
   color: var(--color-text-primary);
   font-size: var(--font-size-subtitle);
+  font-weight: 700;
+  letter-spacing: 0.01em;
   margin: 0;
 }
 
@@ -62,23 +54,28 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--gap-sidebar-links);
+  padding: 0.5rem;
 }
 
 .sidebar-link {
-  padding: 8px 16px;
+  padding: 0.65rem 0.9rem;
   color: var(--color-text-secondary);
   text-decoration: none;
-  border-radius: var(--border-radius-card);
-  font-size: 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
   display: flex;
   align-items: center;
   transition:
     background-color 0.2s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .sidebar-link:hover {
   color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateX(2px);
 }
 
 .sidebar-icon {
@@ -89,8 +86,9 @@ body {
 }
 
 .sidebar-link.active {
-  background-color: var(--color-bg-active-link);
-  color: rgb(237, 149, 6);
+  background: linear-gradient(90deg, rgba(76, 201, 240, 0.18), rgba(108, 140, 255, 0.2));
+  border: 1px solid rgba(76, 201, 240, 0.3);
+  color: var(--color-text-primary);
   width: 100%;
 }
 
@@ -103,7 +101,7 @@ body {
 }
 
 .nav-icon.active {
-  fill: rgb(237, 149, 6);
+  color: var(--color-accent);
 }
 
 .hamburger:hover {

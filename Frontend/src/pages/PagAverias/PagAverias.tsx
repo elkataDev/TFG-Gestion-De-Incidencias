@@ -80,6 +80,7 @@ export default function PagAverias() {
           />
           {isAdminOrTech && (
             <button
+              className="app-danger-button"
               onClick={async () => {
                 if (!window.confirm('¿Eliminar esta avería definitivamente?')) return;
                 try {
@@ -88,15 +89,6 @@ export default function PagAverias() {
                 } catch {
                   alert('Error al eliminar la avería');
                 }
-              }}
-              style={{
-                backgroundColor: 'red',
-                color: 'white',
-                border: 'none',
-                padding: '5px 10px',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
               }}
             >
               Eliminar

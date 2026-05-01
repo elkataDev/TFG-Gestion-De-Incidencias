@@ -1,0 +1,25 @@
+.app-btn {
+  text-transform: none !important;
+  border-radius: var(--border-radius-button) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  padding-inline: 1.15rem !important;
+  padding-block: 0.52rem !important;
+  transition: all 0.22s ease !important;
+}
+
+.app-btn--primary {
+  color: #06131d !important;
+  background: linear-gradient(120deg, var(--color-accent), #8ca4ff) !important;
+  box-shadow: 0 6px 18px rgba(76, 201, 240, 0.27) !important;
+}
+
+.app-btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(76, 201, 240, 0.32) !important;
+}
+
+.app-btn--primary.Mui-disabled {
+  color: rgba(255, 255, 255, 0.5) !important;
+  background: #324765 !important;
+}

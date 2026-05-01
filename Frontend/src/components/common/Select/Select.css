@@ -4,41 +4,40 @@
 
 /* Label */
 .select-blanco .MuiInputLabel-root {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-text-tertiary);
   background-color: var(--color-bg-card, #1e293b);
   padding: 0 4px;
 }
 
 .select-blanco .MuiInputLabel-root.Mui-focused {
-  color: #3b82f6;
+  color: var(--color-accent);
   background-color: var(--color-bg-card, #1e293b);
 }
 
 /* Select / Input */
 .select-blanco .MuiOutlinedInput-root {
-  color: #ffffff;
-  border-radius: 8px;
-  background-color: rgba(255,255,255, 0.03);
+  color: var(--color-text-primary);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 .select-blanco .MuiOutlinedInput-root fieldset {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: var(--color-border-light);
   transition: all 0.2s ease-in-out;
 }
 
 .select-blanco .MuiOutlinedInput-root:hover fieldset {
-  border-color: rgba(255, 255, 255, 0.5);
-  background-color: rgba(255,255,255, 0.05);
+  border-color: rgba(76, 201, 240, 0.5);
 }
 
 .select-blanco .MuiOutlinedInput-root.Mui-focused fieldset {
-  border-color: #3b82f6;
+  border-color: var(--color-accent);
   border-width: 2px;
 }
 
 /* Icono desplegable */
 .select-blanco .MuiSelect-icon {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-text-secondary);
 }
 
 /* Texto del menú */
@@ -48,5 +47,5 @@
 
 /* Fondo del desplegable (opcional, modo oscuro) */
 .MuiPaper-root {
-  background-color: #1e293b;
+  background-color: var(--color-bg-card);
 }

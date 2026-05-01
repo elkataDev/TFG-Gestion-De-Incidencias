@@ -35,11 +35,8 @@ export default function PagUsuarios() {
             if (key === 'acciones' && role === 'ADMIN') {
               return (
                 <button
+                  className="app-danger-button"
                   onClick={() => void handleDelete(Number(row.id))}
-                  style={{
-                    backgroundColor: '#e53935', color: 'white', border: 'none', padding: '5px 12px',
-                    borderRadius: '4px', cursor: 'pointer', fontWeight: 600
-                  }}
                 >
                   ELIMINAR
                 </button>

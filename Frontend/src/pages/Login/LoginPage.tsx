@@ -12,11 +12,16 @@ export const LoginPage = () => {
         justifyContent: 'center',
         minHeight: '100vh',
         width: '100vw',
-        backgroundColor: 'var(--color-bg-body)',
+        backgroundColor: 'transparent',
         color: 'var(--color-text-primary)'
       }}
     >
-      <Typography variant="h4" fontWeight="bold" mb={4} sx={{ color: 'var(--color-text-primary)' }}>
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+        mb={3}
+        sx={{ color: 'var(--color-text-primary)', letterSpacing: '0.01em' }}
+      >
         Bienvenido
       </Typography>
       <LoginForm />

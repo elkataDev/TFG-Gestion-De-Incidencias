@@ -1,7 +1,19 @@
 .botones-paginacion {
   display: flex;
-  gap: 10px; /* espacio entre botones */
-  justify-content: center; /* centrado horizontal */
-  margin-top: 15px; /* separación respecto a la tabla */
-  background-color: var(--color-bg-card);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+  padding: 0.8rem 1rem 1rem;
+  background-color: transparent;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.page-indicator {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 0.92rem;
 }

@@ -66,10 +66,10 @@ export const LoginForm = () => {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 3,
-        backgroundColor: 'var(--color-bg-card)',
+        backgroundColor: 'var(--color-bg-card-elevated)',
         padding: 'var(--padding-card)',
         borderRadius: 'var(--border-radius-card)',
-        boxShadow: 3,
+        boxShadow: '0 20px 38px rgba(2, 6, 18, 0.5)',
         border: '1px solid var(--color-border)',
         color: 'var(--color-text-primary)'
       }}
@@ -94,9 +94,14 @@ export const LoginForm = () => {
       <BotonPrimario text={loading ? 'Cargando...' : 'Login'} type="submit" />
 
       {/* Enlace a registro */}
-      <Typography variant="body2" sx={{ mt: 1 }}>
+      <Typography variant="body2" sx={{ mt: 1, color: 'var(--color-text-secondary)' }}>
         ¿No tienes cuenta?{' '}
-        <Link component="button" variant="body2" onClick={() => void navigate('/registro')}>
+        <Link
+          component="button"
+          variant="body2"
+          sx={{ color: 'var(--color-accent)' }}
+          onClick={() => void navigate('/registro')}
+        >
           Regístrate aquí
         </Link>
       </Typography>
