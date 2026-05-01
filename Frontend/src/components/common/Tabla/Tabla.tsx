@@ -27,10 +27,13 @@ const HEADER_LABELS: Record<string, string> = {
   fechaCreacion: 'Fecha Creacion',
   fechaIngreso: 'Fecha Ingreso',
   codigoQR: 'Codigo QR',
+  nombreTecnicoAsignado: 'Técnico asignado',
+  nombreActivo: 'Activo',
+  codigoQRActivo: 'QR Activo',
   acciones: 'Acciones',
 };
 
-const HIDDEN_COLUMNS = ['aulaId', 'usuarioId', 'adjuntoUrl'];
+const HIDDEN_COLUMNS = ['aulaId', 'usuarioId', 'adjuntoUrl', 'tecnicoAsignadoId', 'activoId'];
 
 interface TablaGenericaProps<T extends Record<string, unknown>> {
   endpoint?: string;

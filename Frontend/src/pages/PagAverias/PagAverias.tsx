@@ -118,7 +118,14 @@ export default function PagAverias() {
       <span className="selects-container">
         <SelectAutoWidth
           inputText="Estado"
-          options={[{ label: 'ABIERTO' }, { label: 'EN_PROGRESO' }, { label: 'RESUELTO' }]}
+          options={[
+            { label: 'ABIERTO' },
+            { label: 'EN_PROGRESO' },
+            { label: 'EN_ESPERA' },
+            { label: 'RESUELTO' },
+            { label: 'CERRADO' },
+            { label: 'REABIERTO' },
+          ]}
           value={estado}
           onChange={setEstado}
         />

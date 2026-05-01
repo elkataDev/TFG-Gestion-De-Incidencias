@@ -25,3 +25,31 @@
   margin-top: 1.4rem;
   overflow: hidden;
 }
+
+.role-select {
+  min-width: 135px;
+  padding: 0.55rem 0.75rem;
+  color: var(--color-text-primary, #f7faff);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border-light, #334b73);
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.role-select:focus {
+  outline: none;
+  border-color: var(--color-accent, #4cc9f0);
+  box-shadow: 0 0 0 2px rgba(76, 201, 240, 0.2);
+}
+
+.role-select:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.role-select option {
+  color: #0f172a;
+  background: #ffffff;
+}

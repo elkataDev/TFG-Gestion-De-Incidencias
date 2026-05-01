@@ -49,6 +49,9 @@ public interface InventarioRepository extends JpaRepository<InventarioEntity, Lo
     @Query("SELECT i FROM InventarioEntity i LEFT JOIN FETCH i.aula WHERE i.id = :id")
     Optional<InventarioEntity> findByIdWithAula(Long id);
 
+    @Query("SELECT i FROM InventarioEntity i LEFT JOIN FETCH i.aula WHERE i.codigoQR = :codigoQR")
+    Optional<InventarioEntity> findByCodigoQrWithAula(String codigoQR);
+
     /**
      * Busca todos los artículos ubicados en un aula específica.
      *

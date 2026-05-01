@@ -67,6 +67,14 @@
   background-color: #6b7280; /* gris */
 }
 
+.estado-en_espera {
+  background-color: #9333ea;
+}
+
+.estado-reabierto {
+  background-color: #dc2626;
+}
+
 .estado-disponible {
   background-color: #22c55e;
 }

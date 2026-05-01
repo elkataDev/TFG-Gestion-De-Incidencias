@@ -1,7 +1,10 @@
 package iesalonsocano.gestiondeaverias.Controllers;
 
 import iesalonsocano.gestiondeaverias.DTO.IncidenciasDTO;
+import iesalonsocano.gestiondeaverias.DTO.ParteTrabajoDTO;
+import iesalonsocano.gestiondeaverias.Repository.ParteTrabajoRepository;
 import iesalonsocano.gestiondeaverias.Services.AulasService;
+import iesalonsocano.gestiondeaverias.Services.InventarioService;
 import iesalonsocano.gestiondeaverias.Services.UsuariosService;
 import iesalonsocano.gestiondeaverias.entity.AulasEntity;
 import iesalonsocano.gestiondeaverias.entity.IncidenciasEntity;
@@ -13,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -58,11 +62,15 @@ public class IncidenciaController {
     @Autowired
     private AulasService aulasService;
     @Autowired
+    private InventarioService inventarioService;
+    @Autowired
     private iesalonsocano.gestiondeaverias.Services.StorageService storageService;
     @Autowired
     private iesalonsocano.gestiondeaverias.Services.ComentarioService comentarioService;
     @Autowired
     private iesalonsocano.gestiondeaverias.Services.HistorialEstadoService historialEstadoService;
+    @Autowired
+    private ParteTrabajoRepository parteTrabajoRepository;
 
     /**
      * Obtiene todas las incidencias o filtra por estado.
@@ -75,10 +83,20 @@ public class IncidenciaController {
      * @return ResponseEntity con lista de IncidenciasDTO
      */
     @GetMapping
-    public ResponseEntity<List<IncidenciasDTO>> getIncidencias(@RequestParam(required = false) IncidenciasEntity.EstadoIncidencia estado) {
+    public ResponseEntity<List<IncidenciasDTO>> getIncidencias(
+            @RequestParam(required = false) IncidenciasEntity.EstadoIncidencia estado,
+            Principal principal) {
+        UsuariosEntity usuarioActual = getUsuarioActual(principal);
         List<IncidenciasEntity> entidades;
 
-        if (estado != null) {
+        if (!isAdminOrTech(usuarioActual)) {
+            entidades = incidenciasService.findByUsuarioId(usuarioActual.getId());
+            if (estado != null) {
+                entidades = entidades.stream()
+                        .filter(i -> i.getEstado() == estado)
+                        .collect(Collectors.toList());
+            }
+        } else if (estado != null) {
             entidades = incidenciasService.findByEstado(estado);
         } else {
             entidades = incidenciasService.findAll();
@@ -102,7 +120,12 @@ public class IncidenciaController {
      * @return ResponseEntity con lista de IncidenciasDTO del usuario
      */
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<IncidenciasDTO>> getByUsuario(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<IncidenciasDTO>> getByUsuario(@PathVariable Long usuarioId, Principal principal) {
+        UsuariosEntity usuarioActual = getUsuarioActual(principal);
+        if (!isAdminOrTech(usuarioActual) && !usuarioActual.getId().equals(usuarioId)) {
+            return ResponseEntity.status(403).build();
+        }
+
         List<IncidenciasEntity> entidades = incidenciasService.findByUsuarioId(usuarioId);
 
         List<IncidenciasDTO> dtos = entidades.stream()
@@ -122,6 +145,7 @@ public class IncidenciaController {
      * @return ResponseEntity con lista de IncidenciasDTO del aula
      */
     @GetMapping("/aula/{aulaId}")
+    @PreAuthorize("hasAnyRole('TECNICO', 'ADMIN')")
     public ResponseEntity<List<IncidenciasDTO>> getByAula(@PathVariable Long aulaId) {
         List<IncidenciasEntity> entidades = incidenciasService.findByAulaId(aulaId);
 
@@ -133,9 +157,12 @@ public class IncidenciaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IncidenciasDTO> getIncidenciaById(@PathVariable Long id) {
+    public ResponseEntity<IncidenciasDTO> getIncidenciaById(@PathVariable Long id, Principal principal) {
         IncidenciasEntity incidencia = incidenciasService.findById(id)
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+        if (!canAccessIncidencia(incidencia, principal)) {
+            return ResponseEntity.status(403).build();
+        }
         return ResponseEntity.ok(IncidenciasDTO.fromEntity(incidencia));
     }
 
@@ -218,8 +245,41 @@ public class IncidenciaController {
 
         } catch (IllegalArgumentException e) {
             // 5. Capturamos si envían un estado inventado (ej: "TERMINADO")
-            return ResponseEntity.badRequest().body("Estado no válido. Valores permitidos: ABIERTO, EN_PROGRESO, RESUELTO, CERRADO");
+            return ResponseEntity.badRequest().body("Estado no válido. Valores permitidos: ABIERTO, EN_PROGRESO, EN_ESPERA, RESUELTO, CERRADO, REABIERTO");
         }
+    }
+
+    @PatchMapping("/{id}/asignar-tecnico")
+    @PreAuthorize("hasAnyRole('TECNICO', 'ADMIN')")
+    public ResponseEntity<?> asignarTecnico(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> requestBody
+    ) {
+        Object tecnicoIdRaw = requestBody.get("tecnicoId");
+        if (tecnicoIdRaw == null) {
+            return ResponseEntity.badRequest().body("El campo 'tecnicoId' es obligatorio");
+        }
+
+        Long tecnicoId;
+        try {
+            tecnicoId = Long.valueOf(String.valueOf(tecnicoIdRaw));
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("tecnicoId no válido");
+        }
+
+        IncidenciasEntity incidencia = incidenciasService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+
+        UsuariosEntity tecnico = usuariosService.findById(tecnicoId)
+                .orElseThrow(() -> new RuntimeException("Técnico no encontrado"));
+
+        if (tecnico.getRol() != UsuariosEntity.RolUsuario.TECNICO && tecnico.getRol() != UsuariosEntity.RolUsuario.ADMIN) {
+            return ResponseEntity.badRequest().body("Solo se puede asignar un usuario con rol TECNICO o ADMIN");
+        }
+
+        incidencia.setTecnicoAsignado(tecnico);
+        IncidenciasEntity guardada = incidenciasService.save(incidencia);
+        return ResponseEntity.ok(IncidenciasDTO.fromEntity(guardada));
     }
 
     /**
@@ -243,6 +303,26 @@ public class IncidenciaController {
             @RequestPart("incidencia") IncidenciasDTO dto,
             @RequestPart(value = "file", required = false) org.springframework.web.multipart.MultipartFile file,
             Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).body(Map.of("message", "Usuario no autenticado"));
+        }
+
+        if (dto.getTitulo() == null || dto.getTitulo().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "El título es obligatorio"));
+        }
+
+        if (dto.getDescripcion() == null || dto.getDescripcion().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "La descripción es obligatoria"));
+        }
+
+        if (dto.getCategoria() == null || dto.getCategoria().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "La categoría es obligatoria"));
+        }
+
+        if (dto.getActivoId() == null) {
+            return ResponseEntity.badRequest().body(Map.of("message", "El activo afectado es obligatorio"));
+        }
+
         // 1. Buscamos al usuario real que está logueado
         String username = principal.getName();
         UsuariosEntity usuario = usuariosService.findByNombreUsuario(username)
@@ -250,26 +330,22 @@ public class IncidenciaController {
 
         // 2. Mapeamos a la entidad
         IncidenciasEntity incidencia = new IncidenciasEntity();
-        incidencia.setTitulo(dto.getTitulo());
-        incidencia.setDescripcion(dto.getDescripcion());
+        incidencia.setTitulo(dto.getTitulo().trim());
+        incidencia.setDescripcion(dto.getDescripcion().trim());
         
-        if (dto.getCategoria() != null) {
-            try {
-                incidencia.setCategoria(IncidenciasEntity.CategoriaIncidencia.valueOf(dto.getCategoria().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body("Categoría no válida. Valores: HARDWARE, SOFTWARE, RED");
-            }
+        try {
+            incidencia.setCategoria(IncidenciasEntity.CategoriaIncidencia.valueOf(dto.getCategoria().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Categoría no válida. Valores: HARDWARE, SOFTWARE, RED"));
         }
 
         // ASIGNAMOS EL USUARIO AUTENTICADO
         incidencia.setUsuario(usuario);
 
-        // ASIGNAMOS EL AULA SI VIENE EN EL DTO
-        if (dto.getAulaId() != null) {
-            AulasEntity aula = aulasService.findById(dto.getAulaId())
-                    .orElseThrow(() -> new RuntimeException("Aula no encontrada con id: " + dto.getAulaId()));
-            incidencia.setAula(aula);
-        }
+        var activo = inventarioService.findById(dto.getActivoId())
+                .orElseThrow(() -> new RuntimeException("Activo no encontrado con id: " + dto.getActivoId()));
+        incidencia.setActivo(activo);
+        incidencia.setAula(activo.getAula());
 
         // File upload
         if (file != null && !file.isEmpty()) {
@@ -299,15 +375,17 @@ public class IncidenciaController {
     public ResponseEntity<?> filtrar(
             @RequestParam(required = false) String estado,
             @RequestParam(required = false) String categoria,
-            @RequestParam(required = false) String nombreAula
+            @RequestParam(required = false) String nombreAula,
+            Principal principal
     ) {
+        UsuariosEntity usuarioActual = getUsuarioActual(principal);
         // Convertir Strings a enums
         IncidenciasEntity.EstadoIncidencia estadoEnum = null;
         if (estado != null) {
             try {
                 estadoEnum = IncidenciasEntity.EstadoIncidencia.valueOf(estado.toUpperCase());
             } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body("Estado no válido: " + estado + ". Valores permitidos: ABIERTO, EN_PROGRESO, RESUELTO, CERRADO");
+                return ResponseEntity.badRequest().body("Estado no válido: " + estado + ". Valores permitidos: ABIERTO, EN_PROGRESO, EN_ESPERA, RESUELTO, CERRADO, REABIERTO");
             }
         }
 
@@ -321,6 +399,11 @@ public class IncidenciaController {
         }
 
         List<IncidenciasEntity> entidades = incidenciasService.filtrar(estadoEnum, categoriaEnum, nombreAula);
+        if (!isAdminOrTech(usuarioActual)) {
+            entidades = entidades.stream()
+                    .filter(i -> i.getUsuario() != null && usuarioActual.getId().equals(i.getUsuario().getId()))
+                    .collect(Collectors.toList());
+        }
 
         List<IncidenciasDTO> dtos = entidades.stream()
                 .map(IncidenciasDTO::fromEntity)
@@ -330,8 +413,24 @@ public class IncidenciaController {
     }
 
     @GetMapping("/{id}/comentarios")
-    public ResponseEntity<List<iesalonsocano.gestiondeaverias.DTO.ComentarioDTO>> getComentarios(@PathVariable Long id) {
+    public ResponseEntity<List<iesalonsocano.gestiondeaverias.DTO.ComentarioDTO>> getComentarios(@PathVariable Long id, Principal principal) {
+        IncidenciasEntity incidencia = incidenciasService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+        if (!canAccessIncidencia(incidencia, principal)) {
+            return ResponseEntity.status(403).build();
+        }
+
+        String role = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .map(a -> a.getAuthority())
+                .filter(a -> a.startsWith("ROLE_"))
+                .map(a -> a.replace("ROLE_", ""))
+                .findFirst().orElse("USUARIO");
+        boolean isAdminOrTech = "ADMIN".equals(role) || "TECNICO".equals(role);
+
         List<iesalonsocano.gestiondeaverias.entity.ComentarioEntity> comentarios = comentarioService.findByIncidenciaId(id);
+        if (!isAdminOrTech) {
+            comentarios = comentarios.stream().filter(c -> !Boolean.TRUE.equals(c.getEsInterna())).collect(Collectors.toList());
+        }
         List<iesalonsocano.gestiondeaverias.DTO.ComentarioDTO> dtos = comentarios.stream()
                 .map(iesalonsocano.gestiondeaverias.DTO.ComentarioDTO::fromEntity)
                 .collect(Collectors.toList());
@@ -350,12 +449,27 @@ public class IncidenciaController {
 
         IncidenciasEntity incidencia = incidenciasService.findById(id)
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+        if (!canAccessIncidencia(incidencia, principal)) {
+            return ResponseEntity.status(403).build();
+        }
 
         UsuariosEntity usuario = usuariosService.findByNombreUsuario(principal.getName())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         iesalonsocano.gestiondeaverias.entity.ComentarioEntity comentario = new iesalonsocano.gestiondeaverias.entity.ComentarioEntity();
         comentario.setTexto(texto);
+        boolean esInterna = Boolean.parseBoolean(String.valueOf(requestBody.getOrDefault("esInterna", "false")));
+        if (esInterna) {
+            String role = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                    .map(a -> a.getAuthority())
+                    .filter(a -> a.startsWith("ROLE_"))
+                    .map(a -> a.replace("ROLE_", ""))
+                    .findFirst().orElse("USUARIO");
+            if (!"ADMIN".equals(role) && !"TECNICO".equals(role)) {
+                return ResponseEntity.status(403).build();
+            }
+        }
+        comentario.setEsInterna(esInterna);
         comentario.setIncidencia(incidencia);
         comentario.setUsuario(usuario);
 
@@ -363,8 +477,74 @@ public class IncidenciaController {
         return ResponseEntity.ok(iesalonsocano.gestiondeaverias.DTO.ComentarioDTO.fromEntity(saved));
     }
 
+    @GetMapping("/{id}/partes")
+    public ResponseEntity<List<ParteTrabajoDTO>> getPartes(@PathVariable Long id, Principal principal) {
+        IncidenciasEntity incidencia = incidenciasService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+        if (!canAccessIncidencia(incidencia, principal)) {
+            return ResponseEntity.status(403).build();
+        }
+
+        List<iesalonsocano.gestiondeaverias.entity.ParteTrabajoEntity> partes = parteTrabajoRepository.findByIncidenciaId(id);
+        return ResponseEntity.ok(partes.stream().map(ParteTrabajoDTO::fromEntity).collect(Collectors.toList()));
+    }
+
+    @PostMapping("/{id}/partes")
+    @PreAuthorize("hasAnyRole('TECNICO', 'ADMIN')")
+    public ResponseEntity<?> addParte(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> requestBody,
+            Principal principal
+    ) {
+        IncidenciasEntity incidencia = incidenciasService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+
+        UsuariosEntity tecnico = usuariosService.findByNombreUsuario(principal.getName())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        Integer minutos;
+        try {
+            minutos = Integer.valueOf(String.valueOf(requestBody.getOrDefault("minutos", "0")));
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body("minutos debe ser un número");
+        }
+
+        String descripcion = String.valueOf(requestBody.getOrDefault("descripcion", "")).trim();
+        if (minutos <= 0 || descripcion.isEmpty()) {
+            return ResponseEntity.badRequest().body("minutos y descripcion son obligatorios");
+        }
+
+        BigDecimal coste = null;
+        Object costeRaw = requestBody.get("coste");
+        if (costeRaw != null && !String.valueOf(costeRaw).isBlank()) {
+            try {
+                coste = new BigDecimal(String.valueOf(costeRaw));
+            } catch (NumberFormatException e) {
+                return ResponseEntity.badRequest().body("coste no válido");
+            }
+        }
+
+        iesalonsocano.gestiondeaverias.entity.ParteTrabajoEntity parte = iesalonsocano.gestiondeaverias.entity.ParteTrabajoEntity.builder()
+                .incidencia(incidencia)
+                .tecnico(tecnico)
+                .minutos(minutos)
+                .descripcion(descripcion)
+                .piezasUsadas(String.valueOf(requestBody.getOrDefault("piezasUsadas", "")))
+                .coste(coste)
+                .build();
+
+        iesalonsocano.gestiondeaverias.entity.ParteTrabajoEntity saved = parteTrabajoRepository.save(parte);
+        return ResponseEntity.ok(ParteTrabajoDTO.fromEntity(saved));
+    }
+
     @GetMapping("/{id}/historial")
-    public ResponseEntity<List<iesalonsocano.gestiondeaverias.DTO.HistorialEstadoDTO>> getHistorial(@PathVariable Long id) {
+    public ResponseEntity<List<iesalonsocano.gestiondeaverias.DTO.HistorialEstadoDTO>> getHistorial(@PathVariable Long id, Principal principal) {
+        IncidenciasEntity incidencia = incidenciasService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+        if (!canAccessIncidencia(incidencia, principal)) {
+            return ResponseEntity.status(403).build();
+        }
+
         List<iesalonsocano.gestiondeaverias.entity.HistorialEstadoEntity> historial = historialEstadoService.findByIncidenciaId(id);
         List<iesalonsocano.gestiondeaverias.DTO.HistorialEstadoDTO> dtos = historial.stream()
                 .map(iesalonsocano.gestiondeaverias.DTO.HistorialEstadoDTO::fromEntity)
@@ -380,5 +560,28 @@ public class IncidenciaController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    private UsuariosEntity getUsuarioActual(Principal principal) {
+        if (principal == null) {
+            throw new RuntimeException("Usuario no autenticado");
+        }
+        return usuariosService.findByNombreUsuario(principal.getName())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
+    private boolean isAdminOrTech(UsuariosEntity usuario) {
+        return usuario.getRol() == UsuariosEntity.RolUsuario.ADMIN
+                || usuario.getRol() == UsuariosEntity.RolUsuario.TECNICO;
+    }
+
+    private boolean canAccessIncidencia(IncidenciasEntity incidencia, Principal principal) {
+        UsuariosEntity usuarioActual = getUsuarioActual(principal);
+        if (isAdminOrTech(usuarioActual)) {
+            return true;
+        }
+        return incidencia.getUsuario() != null
+                && incidencia.getUsuario().getId() != null
+                && incidencia.getUsuario().getId().equals(usuarioActual.getId());
     }
 }

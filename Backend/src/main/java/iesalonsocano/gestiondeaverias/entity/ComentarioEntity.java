@@ -18,6 +18,10 @@ public class ComentarioEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime fecha;
 
+    @Column(name = "es_interna", nullable = false)
+    @Builder.Default
+    private Boolean esInterna = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "incidencia_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

@@ -1,0 +1,121 @@
+.pag-activo-qr {
+  width: 100%;
+  min-width: 0;
+  padding: var(--padding-page, 1.75rem);
+  color: var(--color-text-primary);
+}
+
+.activo-qr-card {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
+  background-color: var(--color-bg-card, #17243b);
+  border: 1px solid var(--color-border, #2d4267);
+  border-radius: var(--border-radius-card, 14px);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  box-shadow: 0 10px 28px rgba(6, 10, 20, 0.45);
+  overflow-wrap: anywhere;
+}
+
+.activo-qr-eyebrow {
+  display: inline-flex;
+  margin-bottom: 0.75rem;
+  color: var(--color-accent, #4cc9f0);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.activo-qr-card h1 {
+  margin: 0 0 1.5rem;
+  color: var(--color-text-primary, #f7faff);
+  font-size: var(--font-size-title, 2rem);
+}
+
+.activo-qr-muted {
+  color: var(--color-text-secondary, #b9c6df);
+}
+
+.activo-qr-error {
+  color: #ffdede;
+  background: rgba(255, 107, 107, 0.14);
+  border: 1px solid rgba(255, 107, 107, 0.45);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+}
+
+.activo-qr-summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+  background: var(--color-bg-card-elevated, #1c2c47);
+  border: 1px solid var(--color-border-light, #334b73);
+  border-radius: 12px;
+}
+
+.activo-qr-label,
+.activo-qr-field span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--color-text-tertiary, #8da3c8);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.activo-qr-summary strong {
+  display: block;
+  color: var(--color-text-primary, #f7faff);
+  font-size: 1.35rem;
+}
+
+.activo-qr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 1rem;
+}
+
+.activo-qr-field {
+  min-width: 0;
+  padding: 1rem;
+  background: rgba(11, 18, 32, 0.45);
+  border: 1px solid var(--color-border-light, #334b73);
+  border-radius: 12px;
+}
+
+.activo-qr-field-wide {
+  grid-column: 1 / -1;
+}
+
+.activo-qr-field p {
+  color: var(--color-text-secondary, #b9c6df);
+  line-height: 1.5;
+}
+
+.activo-qr-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+  color: var(--color-text-primary, #f7faff) !important;
+}
+
+.activo-qr-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .pag-activo-qr {
+    padding: 1rem;
+  }
+
+  .activo-qr-summary {
+    flex-direction: column;
+  }
+}

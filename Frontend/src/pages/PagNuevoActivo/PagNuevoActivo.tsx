@@ -26,7 +26,6 @@ type CategoriaInventario =
 interface NuevoActivoForm {
   nombre: string;
   descripcion: string;
-  codigoQR: string;
   estado: EstadoInventario;
   categoria: CategoriaInventario;
   aulaId: string;
@@ -35,7 +34,6 @@ interface NuevoActivoForm {
 const INITIAL_FORM: NuevoActivoForm = {
   nombre: '',
   descripcion: '',
-  codigoQR: '',
   estado: 'DISPONIBLE',
   categoria: 'COMPUTADORA',
   aulaId: '',
@@ -63,7 +61,6 @@ export default function PagNuevoActivo() {
     const payload = {
       nombre: form.nombre,
       descripcion: form.descripcion,
-      codigoQR: form.codigoQR || undefined,
       estado: form.estado,
       categoria: form.categoria,
       aulaId: form.aulaId ? Number(form.aulaId) : null,
@@ -76,7 +73,7 @@ export default function PagNuevoActivo() {
       });
 
       setSuccessMsg('Activo creado correctamente');
-      setTimeout(() => void navigate('/inventario'), 1500);
+      setTimeout(() => void navigate('/activos'), 1500);
     } catch (err: unknown) {
       console.error('Error al crear activo:', err);
       setErrorMsg(err instanceof Error ? err.message : 'Error al crear el activo');
@@ -116,18 +113,9 @@ export default function PagNuevoActivo() {
             onChange={(e) => handleChange('descripcion', e.target.value)}
           />
 
-          <span style={{ marginBottom: '1rem', display: 'block' }}>
-            <h3>Código QR</h3>
-            <Input
-              name="codigoQR"
-              label="Código QR único del activo"
-              type="text"
-              value={form.codigoQR}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleChange('codigoQR', e.target.value)
-              }
-            />
-          </span>
+          <p style={{ color: 'var(--color-text-secondary)', margin: '1rem 0' }}>
+            El código QR se generará automáticamente al crear el activo y podrás descargarlo desde la lista de Activos.
+          </p>
 
           <span className="select-container">
             <h3>Categoría *</h3>

@@ -68,6 +68,11 @@ public class IncidenciasDTO {
      * Identificador del usuario que reportó la incidencia.
      */
     private Long usuarioId;
+    private Long tecnicoAsignadoId;
+    private String nombreTecnicoAsignado;
+    private Long activoId;
+    private String nombreActivo;
+    private String codigoQRActivo;
 
     /**
      * URL del archivo adjunto asociado.
@@ -104,6 +109,22 @@ public class IncidenciasDTO {
             nombreUsuario = entity.getUsuario().getNombreUsuario();
         }
 
+        Long tecnicoAsignadoId = null;
+        String nombreTecnicoAsignado = "Sin asignar";
+        if (entity.getTecnicoAsignado() != null && Hibernate.isInitialized(entity.getTecnicoAsignado())) {
+            tecnicoAsignadoId = entity.getTecnicoAsignado().getId();
+            nombreTecnicoAsignado = entity.getTecnicoAsignado().getNombreUsuario();
+        }
+
+        Long activoId = null;
+        String nombreActivo = null;
+        String codigoQRActivo = null;
+        if (entity.getActivo() != null && Hibernate.isInitialized(entity.getActivo())) {
+            activoId = entity.getActivo().getId();
+            nombreActivo = entity.getActivo().getNombre();
+            codigoQRActivo = entity.getActivo().getCodigoQR();
+        }
+
         return IncidenciasDTO.builder()
                 .id(entity.getId())
                 .titulo(entity.getTitulo())
@@ -114,6 +135,11 @@ public class IncidenciasDTO {
                 .nombreUsuario(nombreUsuario)
                 .aulaId(aulaId)
                 .usuarioId(usuarioId)
+                .tecnicoAsignadoId(tecnicoAsignadoId)
+                .nombreTecnicoAsignado(nombreTecnicoAsignado)
+                .activoId(activoId)
+                .nombreActivo(nombreActivo)
+                .codigoQRActivo(codigoQRActivo)
                 .fechaReporte(entity.getFechaReporte())
                 .fechaCierre(entity.getFechaCierre())
                 .adjuntoUrl(entity.getAdjuntoUrl())

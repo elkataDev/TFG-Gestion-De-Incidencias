@@ -29,7 +29,7 @@ public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, 
      * @param estado estado de la incidencia a filtrar
      * @return lista de incidencias con el estado especificado
      */
-    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario WHERE i.estado = :estado")
+    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario LEFT JOIN FETCH i.tecnicoAsignado LEFT JOIN FETCH i.activo WHERE i.estado = :estado")
     List<IncidenciasEntity> findByEstado(@Param("estado") EstadoIncidencia estado);
 
     /**
@@ -38,7 +38,7 @@ public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, 
      *
      * @return lista de incidencias con relaciones cargadas
      */
-    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario")
+    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario LEFT JOIN FETCH i.tecnicoAsignado LEFT JOIN FETCH i.activo")
     List<IncidenciasEntity> findAllWithRelations();
 
     /**
@@ -47,7 +47,7 @@ public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, 
      * @param id identificador de la incidencia
      * @return incidencia con relaciones cargadas
      */
-    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario WHERE i.id = :id")
+    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario LEFT JOIN FETCH i.tecnicoAsignado LEFT JOIN FETCH i.activo WHERE i.id = :id")
     java.util.Optional<IncidenciasEntity> findByIdWithRelations(@Param("id") Long id);
 
     /**
@@ -56,7 +56,7 @@ public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, 
      * @param usuarioId identificador del usuario
      * @return lista de incidencias del usuario con relaciones cargadas
      */
-    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario WHERE i.usuario.id = :usuarioId")
+    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario LEFT JOIN FETCH i.tecnicoAsignado LEFT JOIN FETCH i.activo WHERE i.usuario.id = :usuarioId")
     List<IncidenciasEntity> findByUsuarioIdWithRelations(@Param("usuarioId") Long usuarioId);
 
     /**
@@ -73,7 +73,7 @@ public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, 
      * @param aulaId identificador del aula
      * @return lista de incidencias del aula
      */
-    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario WHERE i.aula.id = :aulaId")
+    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario LEFT JOIN FETCH i.tecnicoAsignado LEFT JOIN FETCH i.activo WHERE i.aula.id = :aulaId")
     List<IncidenciasEntity> findByAulaId(@Param("aulaId") Long aulaId);
 
     /**
@@ -85,7 +85,7 @@ public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, 
      * @param estados lista de estados a buscar
      * @return lista de incidencias con alguno de los estados especificados
      */
-    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario WHERE i.estado IN :estados")
+    @Query("SELECT i FROM IncidenciasEntity i LEFT JOIN FETCH i.aula LEFT JOIN FETCH i.usuario LEFT JOIN FETCH i.tecnicoAsignado LEFT JOIN FETCH i.activo WHERE i.estado IN :estados")
     List<IncidenciasEntity> findByEstadoIn(@Param("estados") List<EstadoIncidencia> estados);
 
 
@@ -93,6 +93,8 @@ public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, 
         SELECT i FROM IncidenciasEntity i
         LEFT JOIN FETCH i.aula
         LEFT JOIN FETCH i.usuario
+        LEFT JOIN FETCH i.tecnicoAsignado
+        LEFT JOIN FETCH i.activo
         WHERE (:estado IS NULL OR i.estado = :estado)
           AND (:categoria IS NULL OR i.categoria = :categoria)
           AND (:nombreAula IS NULL OR i.aula.nombre = :nombreAula)
@@ -103,5 +105,3 @@ public interface IncidenciasRepository extends JpaRepository<IncidenciasEntity, 
             @Param("nombreAula") String nombreAula
     );
 }
-
-

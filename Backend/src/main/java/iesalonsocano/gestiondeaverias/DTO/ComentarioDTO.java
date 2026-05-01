@@ -13,6 +13,7 @@ public class ComentarioDTO {
     private LocalDateTime fecha;
     private Long usuarioId;
     private String nombreUsuario;
+    private Boolean esInterna;
 
     public static ComentarioDTO fromEntity(ComentarioEntity entity) {
         if (entity == null) return null;
@@ -30,6 +31,7 @@ public class ComentarioDTO {
                 .fecha(entity.getFecha())
                 .usuarioId(usuarioId)
                 .nombreUsuario(nombreUsuario)
+                .esInterna(Boolean.TRUE.equals(entity.getEsInterna()))
                 .build();
     }
 }

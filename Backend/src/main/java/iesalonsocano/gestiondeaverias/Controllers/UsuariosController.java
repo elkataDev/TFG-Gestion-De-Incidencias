@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -91,7 +92,7 @@ public class UsuariosController {
      * @return ResponseEntity con UsuariosDTO creado y código HTTP 201 Created
      */
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuariosDTO> createUsuario(@Valid @RequestBody UsuariosEntity usuario) {
         // El service debería gestionar el cifrado de password si usas BCrypt
         UsuariosEntity nuevo = usuariosService.save(usuario);
@@ -113,7 +114,7 @@ public class UsuariosController {
      * @return ResponseEntity con UsuariosDTO actualizado o 404 Not Found
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuariosDTO> updateUsuario(@PathVariable Long id, @Valid @RequestBody UsuariosEntity details) {
         return usuariosService.findById(id)
                 .map(u -> {
@@ -129,6 +130,30 @@ public class UsuariosController {
                     }
 
                     UsuariosEntity actualizado = usuariosService.save(u);
+                    return ResponseEntity.ok(UsuariosDTO.fromEntity(actualizado));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{id}/rol")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateRol(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+        String rolRaw = requestBody.get("rol");
+        if (rolRaw == null || rolRaw.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "El rol es obligatorio"));
+        }
+
+        UsuariosEntity.RolUsuario nuevoRol;
+        try {
+            nuevoRol = UsuariosEntity.RolUsuario.valueOf(rolRaw.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Rol no válido. Valores: USUARIO, TECNICO, ADMIN"));
+        }
+
+        return usuariosService.findById(id)
+                .map(usuario -> {
+                    usuario.setRol(nuevoRol);
+                    UsuariosEntity actualizado = usuariosService.save(usuario);
                     return ResponseEntity.ok(UsuariosDTO.fromEntity(actualizado));
                 })
                 .orElse(ResponseEntity.notFound().build());

@@ -120,6 +120,16 @@ public class IncidenciasEntity {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AulasEntity aula;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inventario_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private InventarioEntity activo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tecnico_asignado_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private UsuariosEntity tecnicoAsignado;
+
     /**
      * URL o identificador del archivo adjunto (opcional).
      */
@@ -182,9 +192,13 @@ public class IncidenciasEntity {
         ABIERTO,
         /** Incidencia en proceso de resolución */
         EN_PROGRESO,
+        /** Incidencia bloqueada a la espera de acción externa */
+        EN_ESPERA,
         /** Incidencia completamente resuelta */
         RESUELTO,
         /** Incidencia cerrada permanentemente */
-        CERRADO
+        CERRADO,
+        /** Incidencia reabierta tras cierre/resolución */
+        REABIERTO
     }
 }

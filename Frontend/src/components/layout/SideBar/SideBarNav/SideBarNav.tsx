@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-import { Home, Wrench, Package, Users, Monitor } from 'lucide-react';
+import { Home, Wrench, Users, Monitor } from 'lucide-react';
 
 interface MenuItem {
   name: string;
@@ -12,7 +12,6 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { name: 'Panel de control', path: '/', icon: Home, roles: ['USUARIO', 'TECNICO', 'ADMIN'] },
   { name: 'Averías', path: '/averias', icon: Wrench, roles: ['USUARIO', 'TECNICO', 'ADMIN'] },
-  { name: 'Inventario', path: '/inventario', icon: Package, roles: ['TECNICO', 'ADMIN'] },
   { name: 'Activos', path: '/activos', icon: Monitor, roles: ['TECNICO', 'ADMIN'] },
   { name: 'Usuarios', path: '/usuarios', icon: Users, roles: ['ADMIN'] },
 ];

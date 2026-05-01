@@ -36,7 +36,13 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
   }
 
   if (!response.ok) {
-    const errorData: Record<string, unknown> = await response.json().catch(() => ({}));
+    const responseText = await response.text().catch(() => '');
+    let errorData: Record<string, unknown> = {};
+    try {
+      errorData = responseText ? (JSON.parse(responseText) as Record<string, unknown>) : {};
+    } catch {
+      errorData = { message: responseText };
+    }
     const msg =
       typeof errorData.message === 'string' ? errorData.message : `Error HTTP: ${response.status}`;
     throw new Error(msg);

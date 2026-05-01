@@ -57,7 +57,8 @@ public class InventarioServiceImpl implements InventarioService {
 
     @Override
     public InventarioEntity findByCodigo_QR(String codigo_QR) {
-        // Busca por código QR. / Finds by QR code.
-        return inventarioRepository.findByCodigoQR(codigo_QR);
+        // Busca por código QR con aula precargada si existe.
+        return inventarioRepository.findByCodigoQrWithAula(codigo_QR)
+                .orElse(null);
     }
 }

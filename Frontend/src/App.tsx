@@ -4,7 +4,6 @@ import PrivateRoute from './components/common/PrivateRoute/PrivateRoute';
 import Unauthorized from './pages/403/NotAuthorized';
 import PagPanelControl from './pages/PagPanelControl/PagPanelControl';
 import MainLayout from './components/layout/MainLayout/MainLayout';
-import PagInventario from './pages/PagInventario/PagInventario';
 import NotFound from './pages/404/NotFound';
 import './styles/modern-normalize.css';
 import PagAverias from './pages/PagAverias/PagAverias';
@@ -14,6 +13,7 @@ import PagActivos from './pages/PagActivos/PagActivos';
 import PagNuevoActivo from './pages/PagNuevoActivo/PagNuevoActivo';
 import PagDetalleAveria from './pages/PagDetalleAveria/PagDetalleAveria';
 import EditarActivo from './pages/PagEditarActivo/PagEditarActivo';
+import PagActivoPorQR from './pages/PagActivoPorQR/PagActivoPorQR';
 import { LoginPage } from './pages/Login/LoginPage';
 import { RegisterPage } from './pages/Register/RegisterPage';
 
@@ -65,16 +65,6 @@ function App() {
           }
         />
 
-        {/* Inventario */}
-        <Route
-          path="inventario"
-          element={
-            <PrivateRoute allowedRoles={['TECNICO', 'ADMIN']}>
-              <PagInventario />
-            </PrivateRoute>
-          }
-        />
-
         {/* Activos */}
         <Route
           path="activos"
@@ -121,6 +111,15 @@ function App() {
           element={
             <PrivateRoute allowedRoles={['ADMIN']}>
               <EditarActivo />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="activos/qr/:codigoQR"
+          element={
+            <PrivateRoute allowedRoles={['USUARIO', 'TECNICO', 'ADMIN']}>
+              <PagActivoPorQR />
             </PrivateRoute>
           }
         />

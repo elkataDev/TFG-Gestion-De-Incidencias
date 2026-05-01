@@ -20,6 +20,8 @@ interface Incidencia {
   fechaReporte: string;
   fechaCierre: string | null;
   adjuntoUrl: string | null;
+  tecnicoAsignadoId?: number | null;
+  nombreTecnicoAsignado?: string;
 }
 
 interface Comentario {
@@ -27,6 +29,23 @@ interface Comentario {
   texto: string;
   fecha: string;
   nombreUsuario: string;
+  esInterna?: boolean;
+}
+
+interface UsuarioSistema {
+  id: number;
+  nombreUsuario: string;
+  rol: 'USUARIO' | 'TECNICO' | 'ADMIN';
+}
+
+interface ParteTrabajo {
+  id: number;
+  minutos: number;
+  descripcion: string;
+  piezasUsadas?: string;
+  coste?: number;
+  fechaParte: string;
+  nombreTecnico: string;
 }
 
 interface Historial {
@@ -46,20 +65,34 @@ export default function PagDetalleAveria() {
   const [nuevoComentario, setNuevoComentario] = useState('');
   const [nuevoEstado, setNuevoEstado] = useState('');
   const [loading, setLoading] = useState(true);
+  const [tecnicos, setTecnicos] = useState<UsuarioSistema[]>([]);
+  const [tecnicoId, setTecnicoId] = useState<string>('');
+  const [esInterna, setEsInterna] = useState(false);
+  const [partes, setPartes] = useState<ParteTrabajo[]>([]);
+  const [minutosParte, setMinutosParte] = useState('');
+  const [descripcionParte, setDescripcionParte] = useState('');
+  const [piezasParte, setPiezasParte] = useState('');
+  const [costeParte, setCosteParte] = useState('');
 
   const role = localStorage.getItem('role') ?? 'USUARIO';
   const isAdminOrTech = role === 'ADMIN' || role === 'TECNICO';
 
   const fetchIncidencia = async () => {
     try {
-      const [resInc, resCom, resHist] = await Promise.all([
+      const [resInc, resCom, resHist, resPartes] = await Promise.all([
         apiJson(`/incidencias/${id}`),
         apiJson(`/incidencias/${id}/comentarios`),
         apiJson(`/incidencias/${id}/historial`),
+        apiJson(`/incidencias/${id}/partes`),
       ]);
       setIncidencia(resInc as Incidencia);
       setComentarios(resCom as Comentario[]);
       setHistorial(resHist as Historial[]);
+      setPartes(Array.isArray(resPartes) ? (resPartes as ParteTrabajo[]) : []);
+      const tecnicoAsignado = resInc as Incidencia;
+      setTecnicoId(
+        tecnicoAsignado.tecnicoAsignadoId ? String(tecnicoAsignado.tecnicoAsignadoId) : ''
+      );
     } catch (err) {
       console.error('Error fetching details', err);
     } finally {
@@ -73,17 +106,63 @@ export default function PagDetalleAveria() {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (!isAdminOrTech) return;
+    void apiJson('/usuarios')
+      .then((data) => {
+        const users = Array.isArray(data) ? (data as UsuarioSistema[]) : [];
+        setTecnicos(users.filter((u) => u.rol === 'TECNICO' || u.rol === 'ADMIN'));
+      })
+      .catch(console.error);
+  }, [isAdminOrTech]);
+
   const handleAddComment = async () => {
     if (!nuevoComentario.trim()) return;
     try {
       await apiJson(`/incidencias/${id}/comentarios`, {
         method: 'POST',
-        body: JSON.stringify({ texto: nuevoComentario }),
+        body: JSON.stringify({ texto: nuevoComentario, esInterna }),
       });
       setNuevoComentario('');
+      setEsInterna(false);
       void fetchIncidencia(); // refresh
     } catch (err) {
       console.error('Error posting comment', err);
+    }
+  };
+
+  const handleAsignarTecnico = async () => {
+    if (!tecnicoId) return;
+    try {
+      await apiJson(`/incidencias/${id}/asignar-tecnico`, {
+        method: 'PATCH',
+        body: JSON.stringify({ tecnicoId: Number(tecnicoId) }),
+      });
+      void fetchIncidencia();
+    } catch (err) {
+      console.error('Error asignando técnico', err);
+    }
+  };
+
+  const handleAddParte = async () => {
+    if (!minutosParte || !descripcionParte.trim()) return;
+    try {
+      await apiJson(`/incidencias/${id}/partes`, {
+        method: 'POST',
+        body: JSON.stringify({
+          minutos: Number(minutosParte),
+          descripcion: descripcionParte,
+          piezasUsadas: piezasParte,
+          coste: costeParte || null,
+        }),
+      });
+      setMinutosParte('');
+      setDescripcionParte('');
+      setPiezasParte('');
+      setCosteParte('');
+      void fetchIncidencia();
+    } catch (err) {
+      console.error('Error creando parte', err);
     }
   };
 
@@ -132,6 +211,9 @@ export default function PagDetalleAveria() {
             <strong>Aula:</strong> {incidencia.nombreAula}
           </p>
           <p>
+            <strong>Técnico asignado:</strong> {incidencia.nombreTecnicoAsignado || 'Sin asignar'}
+          </p>
+          <p>
             <strong>Fecha Reporte:</strong> {new Date(incidencia.fechaReporte).toLocaleString()}
           </p>
           {incidencia.adjuntoUrl && (
@@ -153,11 +235,36 @@ export default function PagDetalleAveria() {
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                 <SelectAutoWidth
                   inputText="Nuevo Estado"
-                  options={[{ label: 'ABIERTO' }, { label: 'EN_PROGRESO' }, { label: 'RESUELTO' }]}
+                  options={[
+                    { label: 'ABIERTO' },
+                    { label: 'EN_PROGRESO' },
+                    { label: 'EN_ESPERA' },
+                    { label: 'RESUELTO' },
+                    { label: 'CERRADO' },
+                    { label: 'REABIERTO' },
+                  ]}
                   value={nuevoEstado}
                   onChange={setNuevoEstado}
                 />
                 <BotonPrimario text="Actualizar" onClick={() => void handleUpdateEstado()} />
+              </div>
+            </div>
+          )}
+
+          {isAdminOrTech && (
+            <div className="estado-updater">
+              <h3>Asignar Técnico</h3>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <SelectAutoWidth
+                  inputText="Técnico"
+                  options={tecnicos.map((t) => ({ label: t.nombreUsuario }))}
+                  value={tecnicos.find((t) => String(t.id) === tecnicoId)?.nombreUsuario ?? ''}
+                  onChange={(nombre) => {
+                    const selected = tecnicos.find((t) => t.nombreUsuario === nombre);
+                    setTecnicoId(selected ? String(selected.id) : '');
+                  }}
+                />
+                <BotonPrimario text="Asignar" onClick={() => void handleAsignarTecnico()} />
               </div>
             </div>
           )}
@@ -190,6 +297,7 @@ export default function PagDetalleAveria() {
                   {c.fecha ? new Date(c.fecha).toLocaleString() : 'Sin fecha'}
                 </p>
                 <p>{c.texto}</p>
+                {c.esInterna && <p style={{ fontSize: '0.8rem', color: '#b45309' }}>Nota interna</p>}
               </div>
             ))}
           </div>
@@ -200,8 +308,106 @@ export default function PagDetalleAveria() {
               onChange={(e) => setNuevoComentario(e.target.value)}
               minRows={3}
             />
+            {isAdminOrTech && (
+              <label style={{ display: 'flex', gap: '8px', margin: '8px 0' }}>
+                <input
+                  type="checkbox"
+                  checked={esInterna}
+                  onChange={(e) => setEsInterna(e.target.checked)}
+                />
+                Guardar como nota interna
+              </label>
+            )}
             <BotonPrimario text="Añadir Comentario" onClick={() => void handleAddComment()} />
           </div>
+        </div>
+
+        <div className="partes-section">
+          <div className="partes-header">
+            <div>
+              <span className="section-eyebrow">Trabajo técnico</span>
+              <h2>Partes de trabajo</h2>
+            </div>
+            <span className="partes-count">{partes.length} partes</span>
+          </div>
+
+          {partes.length === 0 ? (
+            <div className="empty-partes">
+              <strong>No hay partes registrados</strong>
+              <p>Cuando un técnico registre trabajo, aparecerá aquí con tiempo, piezas y coste.</p>
+            </div>
+          ) : (
+            <div className="partes-list">
+              {partes.map((p) => (
+                <article key={p.id} className="parte-card">
+                  <div className="parte-card-header">
+                    <div>
+                      <strong>{p.nombreTecnico || 'Técnico'}</strong>
+                      <span>{new Date(p.fechaParte).toLocaleString()}</span>
+                    </div>
+                    <span className="parte-time">{p.minutos} min</span>
+                  </div>
+                  <p className="parte-description">{p.descripcion}</p>
+                  <div className="parte-meta-grid">
+                    <span>
+                      <strong>Piezas</strong>
+                      {p.piezasUsadas || 'Sin piezas'}
+                    </span>
+                    <span>
+                      <strong>Coste</strong>
+                      {p.coste ? `${p.coste}€` : 'Sin coste'}
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+
+          {isAdminOrTech && (
+            <div className="parte-form">
+              <h3>Nuevo parte</h3>
+              <div className="parte-form-grid">
+                <label>
+                  <span>Minutos invertidos *</span>
+                  <input
+                    placeholder="Ej: 45"
+                    type="number"
+                    min="1"
+                    value={minutosParte}
+                    onChange={(e) => setMinutosParte(e.target.value)}
+                  />
+                </label>
+                <label>
+                  <span>Coste opcional</span>
+                  <input
+                    placeholder="Ej: 12.50"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={costeParte}
+                    onChange={(e) => setCosteParte(e.target.value)}
+                  />
+                </label>
+              </div>
+              <TextArea
+                placeHolder="Descripción del trabajo realizado"
+                value={descripcionParte}
+                onChange={(e) => setDescripcionParte(e.target.value)}
+                minRows={2}
+              />
+              <label className="parte-full-field">
+                <span>Piezas usadas</span>
+                <input
+                  placeholder="Ej: cable HDMI, lámpara proyector..."
+                  value={piezasParte}
+                  onChange={(e) => setPiezasParte(e.target.value)}
+                />
+              </label>
+              <div className="parte-form-actions">
+                <BotonPrimario text="Guardar parte" onClick={() => void handleAddParte()} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

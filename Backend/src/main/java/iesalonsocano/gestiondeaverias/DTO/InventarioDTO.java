@@ -47,6 +47,11 @@ public class InventarioDTO {
     private String estado;
 
     /**
+     * Categoría del artículo (COMPUTADORA, IMPRESORA, etc.).
+     */
+    private String categoria;
+
+    /**
      * Fecha de ingreso del artículo al inventario.
      */
     private LocalDateTime fechaIngreso;
@@ -83,6 +88,7 @@ public class InventarioDTO {
                 .descripcion(entity.getDescripcion())
                 .codigoQR(entity.getCodigoQR())
                 .estado(entity.getEstado() != null ? entity.getEstado().name() : null)
+                .categoria(entity.getCategoria() != null ? entity.getCategoria().name() : null)
                 .fechaIngreso(entity.getFechaIngreso())
                 .aulaId(aulaId)
                 .nombreAula(aulaName)

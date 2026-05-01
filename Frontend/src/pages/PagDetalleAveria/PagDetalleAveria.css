@@ -1,7 +1,9 @@
 .pag-detalle {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: var(--padding-page, 1.75rem);
   color: var(--color-text-primary);
   font-family: var(--font-family, sans-serif);
 }
@@ -9,6 +11,7 @@
 .detalle-header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -22,27 +25,26 @@
 
 .detalle-content {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+  gap: 1.25rem;
   align-items: start;
+  width: 100%;
+  min-width: 0;
 }
 
-@media (min-width: 768px) {
-  .detalle-content {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.incidencia-info, .historial-info, .comentarios-section {
+.incidencia-info, .historial-info, .comentarios-section, .partes-section {
   background: var(--color-bg-card, #2d384b);
-  padding: 2.5rem;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 1.5rem;
   border-radius: var(--border-radius-card, 12px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--color-border-light, #404856);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow-wrap: anywhere;
 }
 
-.incidencia-info:hover, .historial-info:hover, .comentarios-section:hover {
+.incidencia-info:hover, .historial-info:hover, .comentarios-section:hover, .partes-section:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
 }
@@ -78,6 +80,10 @@
   margin-top: 2.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--color-border-light, #404856);
+}
+
+.estado-updater > div {
+  flex-wrap: wrap;
 }
 
 .historial-info ul {
@@ -150,4 +156,216 @@
   padding: 1.5rem;
   border-radius: 8px;
   border: 1px solid var(--color-border-light, #404856);
+}
+
+.pag-detalle input,
+.pag-detalle textarea,
+.pag-detalle select {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  margin-bottom: 0.35rem;
+  color: var(--color-accent, #4cc9f0);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.partes-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  border-bottom: 2px solid var(--color-border, #394867);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.partes-header h2 {
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.partes-count {
+  flex-shrink: 0;
+  color: var(--color-text-secondary, #cbd5e1);
+  background: rgba(76, 201, 240, 0.12);
+  border: 1px solid rgba(76, 201, 240, 0.28);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.empty-partes {
+  padding: 1.25rem;
+  color: var(--color-text-secondary, #cbd5e1);
+  background: rgba(11, 18, 32, 0.36);
+  border: 1px dashed var(--color-border-light, #404856);
+  border-radius: 12px;
+}
+
+.empty-partes strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--color-text-primary, #fff);
+}
+
+.empty-partes p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.partes-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.parte-card {
+  padding: 1rem;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+  background-color: rgba(11, 18, 32, 0.45);
+  border: 1px solid var(--color-border-light, #404856);
+  border-left: 4px solid var(--color-accent, #4cc9f0);
+  border-radius: 12px;
+}
+
+.parte-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 0.85rem;
+}
+
+.parte-card-header strong,
+.parte-card-header span {
+  display: block;
+}
+
+.parte-card-header strong {
+  color: var(--color-text-primary, #fff);
+}
+
+.parte-card-header span {
+  color: var(--color-text-tertiary, #a0aec0);
+  font-size: 0.88rem;
+}
+
+.parte-time {
+  flex-shrink: 0;
+  color: #dff8ff !important;
+  background: rgba(76, 201, 240, 0.16);
+  border: 1px solid rgba(76, 201, 240, 0.32);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  font-weight: 800;
+}
+
+.parte-description {
+  margin: 0 0 1rem;
+  color: var(--color-text-secondary, #cbd5e1);
+  line-height: 1.55;
+}
+
+.parte-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 0.75rem;
+}
+
+.parte-meta-grid span {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  color: var(--color-text-secondary, #cbd5e1);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+
+.parte-meta-grid strong,
+.parte-form label span,
+.parte-full-field span {
+  color: var(--color-text-tertiary, #a0aec0);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.parte-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding: 1rem;
+  background: rgba(30, 30, 44, 0.5);
+  border: 1px solid var(--color-border-light, #404856);
+  border-radius: 12px;
+}
+
+.parte-form h3 {
+  margin: 0;
+}
+
+.parte-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 0.75rem;
+}
+
+.parte-form label,
+.parte-full-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.parte-form input {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  color: var(--color-text-primary, #fff);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border-light, #404856);
+  border-radius: 10px;
+  font: inherit;
+}
+
+.parte-form input:focus {
+  outline: none;
+  border-color: var(--color-accent, #4cc9f0);
+  box-shadow: 0 0 0 2px rgba(76, 201, 240, 0.2);
+}
+
+.parte-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (min-width: 1400px) {
+  .detalle-content {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+
+  .comentarios-section {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .pag-detalle {
+    padding: 1rem;
+  }
+
+  .incidencia-info, .historial-info, .comentarios-section, .partes-section {
+    padding: 1rem;
+  }
+
+  .partes-header,
+  .parte-card-header {
+    flex-direction: column;
+  }
 }
