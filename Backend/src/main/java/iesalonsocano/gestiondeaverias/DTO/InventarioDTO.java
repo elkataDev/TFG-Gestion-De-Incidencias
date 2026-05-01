@@ -57,6 +57,26 @@ public class InventarioDTO {
     private Long aulaId;
 
     /**
+     * Categoría del artículo (COMPUTADORA, IMPRESORA, PROYECTOR, etc.).
+     */
+    private String categoria;
+
+    /**
+     * Marca del fabricante.
+     */
+    private String marca;
+
+    /**
+     * Modelo del activo.
+     */
+    private String modelo;
+
+    /**
+     * Número de serie del activo.
+     */
+    private String numeroSerie;
+
+    /**
      * Nombre del aula donde se encuentra el artículo.
      */
     private String nombreAula;
@@ -83,6 +103,10 @@ public class InventarioDTO {
                 .descripcion(entity.getDescripcion())
                 .codigoQR(entity.getCodigoQR())
                 .estado(entity.getEstado() != null ? entity.getEstado().name() : null)
+                .categoria(entity.getCategoria() != null ? entity.getCategoria().name() : null)
+                .marca(entity.getMarca())
+                .modelo(entity.getModelo())
+                .numeroSerie(entity.getNumeroSerie())
                 .fechaIngreso(entity.getFechaIngreso())
                 .aulaId(aulaId)
                 .nombreAula(aulaName)

@@ -13,6 +13,8 @@ public class ComentarioDTO {
     private LocalDateTime fecha;
     private Long usuarioId;
     private String nombreUsuario;
+    /** true = nota interna solo visible para TECNICO/ADMIN */
+    private Boolean esInterno;
 
     public static ComentarioDTO fromEntity(ComentarioEntity entity) {
         if (entity == null) return null;
@@ -30,6 +32,8 @@ public class ComentarioDTO {
                 .fecha(entity.getFecha())
                 .usuarioId(usuarioId)
                 .nombreUsuario(nombreUsuario)
+                .esInterno(entity.getEsInterno() != null ? entity.getEsInterno() : false)
                 .build();
     }
 }
+

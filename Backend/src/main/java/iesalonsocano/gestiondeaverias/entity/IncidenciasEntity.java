@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  *
  * <p>
  * Incluye un sistema de estados para seguimiento del flujo de trabajo:
- * ABIERTO → EN_PROGRESO → RESUELTO
+ * ABIERTO → EN_CURSO → EN_ESPERA → RESUELTO → CERRADO → REABIERTO
  * </p>
  *
  * <p>
@@ -150,8 +150,14 @@ public class IncidenciasEntity {
      */
     @PreUpdate
     protected void onUpdate() {
-        if (estado == EstadoIncidencia.RESUELTO ) {
-            fechaCierre = LocalDateTime.now();
+        if (estado == EstadoIncidencia.RESUELTO || estado == EstadoIncidencia.CERRADO) {
+            if (fechaCierre == null) {
+                fechaCierre = LocalDateTime.now();
+            }
+        }
+        // Al reabrir, borrar la fecha de cierre
+        if (estado == EstadoIncidencia.REABIERTO) {
+            fechaCierre = null;
         }
     }
 
@@ -180,11 +186,15 @@ public class IncidenciasEntity {
     public enum EstadoIncidencia {
         /** Incidencia recién reportada, aún no asignada */
         ABIERTO,
-        /** Incidencia en proceso de resolución */
-        EN_PROGRESO,
+        /** Incidencia asignada y en proceso de resolución */
+        EN_CURSO,
+        /** Incidencia bloqueada, esperando respuesta del solicitante o pieza */
+        EN_ESPERA,
         /** Incidencia completamente resuelta */
         RESUELTO,
         /** Incidencia cerrada permanentemente */
-        CERRADO
+        CERRADO,
+        /** Incidencia reabierta porque el problema ha vuelto a aparecer */
+        REABIERTO
     }
 }

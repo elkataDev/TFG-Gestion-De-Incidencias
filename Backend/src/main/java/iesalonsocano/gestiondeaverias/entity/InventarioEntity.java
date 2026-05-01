@@ -85,6 +85,27 @@ public class InventarioEntity {
     private LocalDateTime fechaIngreso;
 
     /**
+     * Marca del fabricante del activo (ej: HP, Dell, Epson).
+     */
+    @Size(max = 100)
+    @Column(length = 100)
+    private String marca;
+
+    /**
+     * Modelo del activo (ej: LaserJet Pro M404, Latitude 5500).
+     */
+    @Size(max = 100)
+    @Column(length = 100)
+    private String modelo;
+
+    /**
+     * Número de serie único del activo físico.
+     */
+    @Size(max = 100)
+    @Column(name = "numero_serie", unique = true, length = 100)
+    private String numeroSerie;
+
+    /**
      * Categoría del artículo.
      * @see CategoriaInventario
      */
@@ -150,13 +171,10 @@ public class InventarioEntity {
         /** Periféricos (teclados, ratones, webcams, etc.) */
         PERIFERICO,
         /** Equipamiento de seguridad (cámaras, sistemas de acceso) */
-        SEGURIDAD
+        SEGURIDAD,
+        /** Licencias de software */
+        LICENCIA,
+        /** Consumibles (tinta, papel, toner, cables, etc.) */
+        CONSUMIBLE
     }
 }
- /*nombre, cantidad, codigoInventario: datos principales de cada ítem del inventario.
-
-estado: útil para marcar si el objeto está disponible, prestado o dañado.
-
-aula: relación @ManyToOne hacia AulasEntity, para saber a qué aula pertenece (opcional).
-
-fechaIngreso : gestionadas automáticamente con @PrePersist.*/

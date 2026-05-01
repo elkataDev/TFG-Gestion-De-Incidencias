@@ -9,4 +9,7 @@ public interface HistorialEstadoService {
     HistorialEstadoEntity save(HistorialEstadoEntity historial);
     HistorialEstadoEntity registrarCambio(IncidenciasEntity incidencia, IncidenciasEntity.EstadoIncidencia estadoAnterior, IncidenciasEntity.EstadoIncidencia estadoNuevo, UsuariosEntity usuario);
     List<HistorialEstadoEntity> findByIncidenciaId(Long incidenciaId);
+    /** Obtiene todos los registros de historial (usado para métricas globales). */
+    List<HistorialEstadoEntity> findAll();
 }
+

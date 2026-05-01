@@ -18,6 +18,13 @@ public interface HistorialEstadoRepository extends JpaRepository<HistorialEstado
 
     void deleteByIncidenciaId(Long incidenciaId);
 
+    /**
+     * Obtiene todo el historial con incidencia y usuario precargados (para métricas globales).
+     */
+    @Query("SELECT h FROM HistorialEstadoEntity h JOIN FETCH h.incidencia LEFT JOIN FETCH h.usuario ORDER BY h.fechaCambio ASC")
+    List<HistorialEstadoEntity> findAllWithRelations();
+
+
     /** Borra historial de una lista de incidencias (al eliminar usuario). */
     void deleteByIncidenciaIdIn(List<Long> incidenciaIds);
 

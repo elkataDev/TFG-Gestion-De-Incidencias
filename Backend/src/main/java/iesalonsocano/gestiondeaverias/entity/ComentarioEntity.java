@@ -18,6 +18,14 @@ public class ComentarioEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime fecha;
 
+    /**
+     * Indica si es una nota interna visible solo para TECNICO y ADMIN.
+     * false = comentario público, visible para todos.
+     */
+    @Column(name = "es_interno", nullable = false)
+    @Builder.Default
+    private Boolean esInterno = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "incidencia_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -31,5 +39,7 @@ public class ComentarioEntity {
     @PrePersist
     protected void onCreate() {
         fecha = LocalDateTime.now();
+        if (esInterno == null) esInterno = false;
     }
 }
+

@@ -7,6 +7,7 @@ import iesalonsocano.gestiondeaverias.Services.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -105,17 +106,21 @@ public class AuthController {
     /**
      * Registra un nuevo usuario en el sistema.
      * <p>
-     * La contraseña será encriptada automáticamente por el servicio de usuarios.
+     * Solo accesible para administradores. La contraseña será encriptada
+     * automáticamente por el servicio de usuarios.
      * </p>
      *
      * @param usuario entidad con los datos del usuario a registrar
      * @return ResponseEntity con el usuario creado (sin contraseña visible)
      */
     @PostMapping("/registro")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> registrar(@RequestBody UsuariosEntity usuario) {
 
-        // Force role and active status to prevent privilege escalation
-        usuario.setRol(UsuariosEntity.RolUsuario.USUARIO);
+        // El rol por defecto es USUARIO, el admin puede especificar otro via JSON
+        if (usuario.getRol() == null) {
+            usuario.setRol(UsuariosEntity.RolUsuario.USUARIO);
+        }
         usuario.setActivo(true);
 
         UsuariosEntity guardado = usuariosService.save(usuario);
@@ -125,7 +130,8 @@ public class AuthController {
                         "message", "Usuario registrado correctamente",
                         "id", guardado.getId(),
                         "username", guardado.getNombreUsuario(),
-                        "email", guardado.getEmail()
+                        "email", guardado.getEmail(),
+                        "rol", guardado.getRol().name()
                 )
         );
     }

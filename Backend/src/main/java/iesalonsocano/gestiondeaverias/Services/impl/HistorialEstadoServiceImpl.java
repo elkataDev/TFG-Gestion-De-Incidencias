@@ -36,4 +36,9 @@ public class HistorialEstadoServiceImpl implements HistorialEstadoService {
         // Usa JOIN FETCH para evitar LazyInitializationException
         return repository.findByIncidenciaIdWithUsuario(incidenciaId);
     }
+
+    @Override
+    public List<HistorialEstadoEntity> findAll() {
+        return repository.findAllWithRelations();
+    }
 }

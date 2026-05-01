@@ -218,7 +218,7 @@ public class IncidenciaController {
 
         } catch (IllegalArgumentException e) {
             // 5. Capturamos si envían un estado inventado (ej: "TERMINADO")
-            return ResponseEntity.badRequest().body("Estado no válido. Valores permitidos: ABIERTO, EN_PROGRESO, RESUELTO, CERRADO");
+            return ResponseEntity.badRequest().body("Estado no válido. Valores permitidos: ABIERTO, EN_CURSO, EN_ESPERA, RESUELTO, CERRADO, REABIERTO");
         }
     }
 
@@ -330,9 +330,24 @@ public class IncidenciaController {
     }
 
     @GetMapping("/{id}/comentarios")
-    public ResponseEntity<List<iesalonsocano.gestiondeaverias.DTO.ComentarioDTO>> getComentarios(@PathVariable Long id) {
+    public ResponseEntity<List<iesalonsocano.gestiondeaverias.DTO.ComentarioDTO>> getComentarios(
+            @PathVariable Long id,
+            Principal principal) {
+        // Determinar si el usuario puede ver notas internas
+        boolean esTecnicoOAdmin = false;
+        if (principal != null) {
+            iesalonsocano.gestiondeaverias.entity.UsuariosEntity usuario =
+                    usuariosService.findByNombreUsuario(principal.getName()).orElse(null);
+            if (usuario != null) {
+                esTecnicoOAdmin = usuario.getRol() == iesalonsocano.gestiondeaverias.entity.UsuariosEntity.RolUsuario.TECNICO
+                        || usuario.getRol() == iesalonsocano.gestiondeaverias.entity.UsuariosEntity.RolUsuario.ADMIN;
+            }
+        }
+
+        final boolean canSeeInternal = esTecnicoOAdmin;
         List<iesalonsocano.gestiondeaverias.entity.ComentarioEntity> comentarios = comentarioService.findByIncidenciaId(id);
         List<iesalonsocano.gestiondeaverias.DTO.ComentarioDTO> dtos = comentarios.stream()
+                .filter(c -> canSeeInternal || !Boolean.TRUE.equals(c.getEsInterno()))
                 .map(iesalonsocano.gestiondeaverias.DTO.ComentarioDTO::fromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
@@ -354,10 +369,21 @@ public class IncidenciaController {
         UsuariosEntity usuario = usuariosService.findByNombreUsuario(principal.getName())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        iesalonsocano.gestiondeaverias.entity.ComentarioEntity comentario = new iesalonsocano.gestiondeaverias.entity.ComentarioEntity();
+        // Determinar si es nota interna (solo TECNICO/ADMIN pueden marcarla como interna)
+        boolean esInterno = false;
+        String esInternoStr = requestBody.get("esInterno");
+        if ("true".equalsIgnoreCase(esInternoStr)) {
+            boolean esTecnicoOAdmin = usuario.getRol() == iesalonsocano.gestiondeaverias.entity.UsuariosEntity.RolUsuario.TECNICO
+                    || usuario.getRol() == iesalonsocano.gestiondeaverias.entity.UsuariosEntity.RolUsuario.ADMIN;
+            esInterno = esTecnicoOAdmin;
+        }
+
+        iesalonsocano.gestiondeaverias.entity.ComentarioEntity comentario =
+                new iesalonsocano.gestiondeaverias.entity.ComentarioEntity();
         comentario.setTexto(texto);
         comentario.setIncidencia(incidencia);
         comentario.setUsuario(usuario);
+        comentario.setEsInterno(esInterno);
 
         iesalonsocano.gestiondeaverias.entity.ComentarioEntity saved = comentarioService.save(comentario);
         return ResponseEntity.ok(iesalonsocano.gestiondeaverias.DTO.ComentarioDTO.fromEntity(saved));
@@ -380,5 +406,60 @@ public class IncidenciaController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Calcula métricas de tiempo para todas las incidencias:
+     * - Tiempo promedio de primera respuesta (fecha_reporte → primer cambio de estado)
+     * - Tiempo promedio total de cierre (fecha_reporte → fecha_cierre)
+     * - Distribución de incidencias por estado
+     * Acceso: TECNICO y ADMIN.
+     */
+    @GetMapping("/metricas")
+    @PreAuthorize("hasAnyRole('TECNICO', 'ADMIN')")
+    public ResponseEntity<Map<String, Object>> getMetricas() {
+        List<IncidenciasEntity> todas = incidenciasService.findAll();
+
+        // Total por estado
+        Map<String, Long> porEstado = todas.stream()
+                .collect(Collectors.groupingBy(
+                        i -> i.getEstado() != null ? i.getEstado().name() : "SIN_ESTADO",
+                        Collectors.counting()
+                ));
+
+        // Tiempo promedio de cierre en horas (solo incidencias cerradas/resueltas)
+        double promedioHorasCierre = todas.stream()
+                .filter(i -> i.getFechaReporte() != null && i.getFechaCierre() != null)
+                .mapToLong(i -> java.time.Duration.between(i.getFechaReporte(), i.getFechaCierre()).toMinutes())
+                .average()
+                .orElse(0);
+
+        // Tiempo promedio hasta primera respuesta: usar historial (primer cambio de estado)
+        double promedioHorasPrimeraRespuesta = historialEstadoService.findAll().stream()
+                .collect(Collectors.groupingBy(
+                        h -> h.getIncidencia().getId(),
+                        Collectors.minBy(java.util.Comparator.comparing(
+                                iesalonsocano.gestiondeaverias.entity.HistorialEstadoEntity::getFechaCambio))
+                ))
+                .values().stream()
+                .filter(java.util.Optional::isPresent)
+                .mapToLong(hOpt -> {
+                    iesalonsocano.gestiondeaverias.entity.HistorialEstadoEntity h = hOpt.get();
+                    IncidenciasEntity inc = h.getIncidencia();
+                    if (inc.getFechaReporte() == null) return 0;
+                    return java.time.Duration.between(inc.getFechaReporte(), h.getFechaCambio()).toMinutes();
+                })
+                .average()
+                .orElse(0);
+
+        Map<String, Object> metricas = new java.util.LinkedHashMap<>();
+        metricas.put("totalIncidencias", todas.size());
+        metricas.put("porEstado", porEstado);
+        metricas.put("promedioMinutosCierre", Math.round(promedioHorasCierre));
+        metricas.put("promedioMinutosPrimeraRespuesta", Math.round(promedioHorasPrimeraRespuesta));
+        metricas.put("promedioHorasCierre", Math.round(promedioHorasCierre / 60.0 * 10) / 10.0);
+        metricas.put("promedioHorasPrimeraRespuesta", Math.round(promedioHorasPrimeraRespuesta / 60.0 * 10) / 10.0);
+
+        return ResponseEntity.ok(metricas);
     }
 }
