@@ -23,9 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-# Lock files - permitir que cada desarrollador use su gestor preferido
+# Lock files - npm es el gestor oficial del proyecto
 pnpm-lock.yaml
-package-lock.json
 yarn.lock
 .npmrc
 # Prueba de componentes - Ignorar modificaciones locales
