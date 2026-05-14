@@ -10,3 +10,13 @@
   min-width: 0;
   background-color: var(--color-background-secondary);
 }
+
+@media (max-width: 768px) {
+  .layout-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    width: 100%;
+  }
+}

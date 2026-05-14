@@ -3,6 +3,7 @@
   min-width: 0;
   padding: var(--padding-page, 1.75rem);
   color: var(--color-text-primary);
+  overflow-x: hidden;
 }
 
 .activo-qr-card {
@@ -73,6 +74,7 @@
   display: block;
   color: var(--color-text-primary, #f7faff);
   font-size: 1.35rem;
+  line-height: 1.2;
 }
 
 .activo-qr-grid {
@@ -112,10 +114,72 @@
 
 @media (max-width: 640px) {
   .pag-activo-qr {
+    padding: 0.75rem;
+    min-height: calc(100vh - 8rem);
+  }
+
+  .activo-qr-card {
+    border-radius: 18px;
     padding: 1rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  }
+
+  .activo-qr-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+  }
+
+  .activo-qr-card h1 {
+    margin-bottom: 1rem;
+    font-size: clamp(1.55rem, 8vw, 2rem);
   }
 
   .activo-qr-summary {
     flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .activo-qr-summary strong {
+    font-size: clamp(1.15rem, 6vw, 1.45rem);
+  }
+
+  .activo-qr-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .activo-qr-field {
+    padding: 0.9rem;
+  }
+
+  .activo-qr-field p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .activo-qr-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .activo-qr-actions button,
+  .activo-qr-actions .MuiButton-root {
+    width: 100%;
+    min-height: 46px;
+  }
+}
+
+@media (max-width: 380px) {
+  .activo-qr-card {
+    padding: 0.85rem;
+  }
+
+  .activo-qr-label,
+  .activo-qr-field span {
+    font-size: 0.72rem;
   }
 }

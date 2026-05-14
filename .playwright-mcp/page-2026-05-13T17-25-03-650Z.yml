@@ -1,0 +1,200 @@
+- generic [ref=e3]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e10]: Cloud9
+        - generic [ref=e11]: File
+        - generic [ref=e12]: Edit
+        - generic [ref=e13]: Find
+        - generic [ref=e14]: View
+        - generic [ref=e15]: Goto
+        - generic [ref=e16]: Run
+        - generic [ref=e17]: Tools
+        - generic [ref=e18]: Window
+      - generic [ref=e19]:
+        - generic [ref=e23]: Preview
+        - generic "(Alt-F5)" [ref=e201]:
+          - generic [ref=e26]: Run
+      - generic [ref=e27]:
+        - generic "John Doe" [ref=e28]: John Doe
+        - generic "Preferences (Ctrl-,)" [ref=e32]
+    - link "c9.io" [ref=e34] [cursor=pointer]:
+      - /url: http://c9.io/
+  - generic [ref=e35]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - generic "toggletree (Ctrl-I)" [ref=e38]: Workspace
+        - generic "navigate (Ctrl-E)" [ref=e39]: Navigate
+        - generic "commands (Ctrl-.)" [ref=e40]: Commands
+        - generic "changes" [ref=e41]: Changes
+      - generic "vite.svg | 1.46KB" [ref=e399]:
+        - textbox [ref=e45]
+        - generic [ref=e47]:
+          - generic:
+            - generic:
+              - generic: code
+            - generic:
+              - generic: .c9
+            - generic:
+              - generic: antonio864
+            - generic:
+              - generic: api
+            - generic:
+              - generic: assets
+            - generic:
+              - generic: editarActivo
+            - generic:
+              - generic: interfaces
+            - generic:
+              - generic: phpMyAdmin
+            - generic:
+              - generic: Plaxer-Tarea
+            - generic:
+              - generic: portfolio
+            - generic:
+              - generic: SupuestoVI
+            - generic:
+              - generic: TFG-Gestion-De-Incidencias
+            - generic:
+              - generic: yoga
+            - generic:
+              - generic: .htaccess
+            - generic:
+              - generic: activos
+            - generic:
+              - generic: averias
+            - generic:
+              - generic: index.html
+            - generic:
+              - generic: indexA.html
+            - generic:
+              - generic: info.php
+            - generic:
+              - generic: latest-es_ES.zip
+            - generic:
+              - generic: login
+            - generic:
+              - generic: nuevaAveria
+            - generic:
+              - generic: nuevoActivo
+            - generic:
+              - generic: registro
+            - generic:
+              - generic: unauthorized
+            - generic:
+              - generic: usuarios
+            - generic:
+              - generic: vite.svg
+    - generic [ref=e50]:
+      - generic [ref=e56]:
+        - generic [ref=e58]:
+          - generic [ref=e61]:
+            - generic [ref=e62]: bash - "ecfa55572342"
+            - strong [ref=e63] [cursor=pointer]
+          - generic [ref=e66]:
+            - generic [ref=e67]: wp-cron.php
+            - strong [ref=e68] [cursor=pointer]
+          - generic [ref=e71]:
+            - generic [ref=e72]: wp-config.php
+            - strong [ref=e73] [cursor=pointer]
+          - generic [ref=e76]:
+            - generic [ref=e77]: bash - "ecfa55572342"
+            - strong [ref=e78] [cursor=pointer]
+          - generic [ref=e81]:
+            - generic [ref=e82]: bash - "ecfa55572342"
+            - strong [ref=e83] [cursor=pointer]
+          - generic [ref=e86]:
+            - generic [ref=e87]: bash - "ecfa55572342"
+            - strong [ref=e88] [cursor=pointer]
+          - generic [ref=e91]:
+            - generic [ref=e92]: functions.php
+            - strong [ref=e93] [cursor=pointer]
+          - generic [ref=e96]:
+            - generic [ref=e97]: single-product.php
+            - strong [ref=e98] [cursor=pointer]
+          - generic [ref=e204]:
+            - generic [ref=e205]: sudo - "ecfa55572342"
+            - strong [ref=e206] [cursor=pointer]
+        - generic [ref=e210]:
+          - textbox [active] [ref=e211]
+          - generic [ref=e213]:
+            - generic:
+              - generic: "> margin: 0;"
+              - generic: "> font-size: 0.95rem;"
+              - generic: "> }"
+              - generic: ">"
+              - generic: "> .activo-qr-actions {"
+              - generic: "> display: grid;"
+              - generic: "> grid-template-columns: 1fr;"
+              - generic: "> gap: 0.75rem;"
+              - generic: "> margin-top: 1rem;"
+              - generic: "> }"
+              - generic: ">"
+              - generic: "> .activo-qr-actions button,"
+              - generic: "> .activo-qr-actions .MuiButton-root {"
+              - generic: "> width: 100%;"
+              - generic: "> min-height: 46px;"
+              - generic: "> }"
+              - generic: "> }"
+              - generic: ">"
+              - generic: "> @media (max-width: 380px) {"
+              - generic: "> .activo-qr-card {"
+              - generic: "> padding: 0.85rem;"
+              - generic: "> }"
+              - generic: ">"
+              - generic: "> .activo-qr-label,"
+              - generic: "> .activo-qr-field span {"
+              - generic: "> font-size: 0.72rem;"
+              - generic: "> }"
+              - generic: "> }"
+              - generic: "> CSS"
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ sudo docker build --build-arg VITE_API_UR
+              - generic: L=/api/index.php -f /tmp/Dockerfile.frontend-build -t incidencias_frontend_build ./Frontend
+              - generic: "[+] Building 28.4s (11/11) FINISHED"
+              - generic: => [internal] load build definition from Dockerfile.frontend-build 0.0s
+              - generic: "=> => transferring dockerfile: 230B 0.0s"
+              - generic: => [internal] load metadata for docker.io/library/node:20-alpine 0.0s
+              - generic: => [internal] load .dockerignore 0.0s
+              - generic: "=> => transferring context: 2B 0.0s"
+              - generic: => [internal] load build context 0.0s
+              - generic: "=> => transferring context: 15.46kB 0.0s"
+              - generic: => [1/6] FROM docker.io/library/node:20-alpine 0.0s
+              - generic: => CACHED [2/6] WORKDIR /app 0.0s
+              - generic: => CACHED [3/6] COPY package*.json ./ 0.0s
+              - generic: => CACHED [4/6] RUN npm install 0.0s
+              - generic: => [5/6] COPY . . 0.0s
+              - generic: => [6/6] RUN npm run build 28.3s
+              - generic: => exporting to image 0.0s
+              - generic: => => exporting layers 0.0s
+              - generic: => => writing image sha256:ecb5bfcadc243f12802a518429d42ac7eda9cd762eceb9bf2a68a9f91 0.0s
+              - generic: => => naming to docker.io/library/incidencias_frontend_build:latest 0.0s
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ sudo rm -rf /tmp/incidencias-dist
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ CID=$(sudo docker create incidencias_fron
+              - generic: tend_build)
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ sudo docker cp "$CID:/app/dist" /tmp/inci
+              - generic: dencias-dist
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ sudo docker rm "$CID" >/dev/null
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ sudo cp -a /tmp/incidencias-dist/. /code/
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ for route in login registro unauthorized
+              - generic: averias usuarios nuevaAveria nuevoActivo; do sudo rm -rf "/code/$route"; sudo cp /code/index
+              - generic: .html "/code/$route"; done
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ sudo rm -f /code/activos
+              - generic: "rm: cannot remove '/code/activos': Is a directory"
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ sudo mkdir -p /code/activos/qr
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ sudo cp /code/index.html /code/activos/in
+              - generic: dex.html
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ for code in $(sudo docker exec incidencia
+              - generic: s_db mysql -uadmin -padmin_password -N -B incidencias -e 'SELECT codigo_qr FROM inventario W
+              - generic: HERE codigo_qr IS NOT NULL AND codigo_qr <> "";' 2>/dev/null); do sudo cp /code/index.html "
+              - generic: /code/activos/qr/$code"; done
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ sudo mkdir -p /code/editarActivo
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ for id in $(sudo docker exec incidencias_
+              - generic: db mysql -uadmin -padmin_password -N -B incidencias -e 'SELECT id FROM inventario;' 2>/dev/n
+              - generic: ull); do sudo cp /code/index.html "/code/editarActivo/$id"; done
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$ grep -o "index-[A-Za-z0-9_-]*.js" /code/i
+              - generic: ndex.html
+              - generic: index-CDsuhzPK.js
+              - generic: abc@ecfa55572342:/code/TFG-Gestion-De-Incidencias$
+      - generic [ref=e118]:
+        - generic "outline (Ctrl-Shift-E)" [ref=e119]: Outline
+        - generic "toggledebugger" [ref=e120]: Debugger

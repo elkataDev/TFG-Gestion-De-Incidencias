@@ -20,6 +20,8 @@ interface Activo extends Record<string, unknown> {
 
 export default function PagActivos() {
   const navigate = useNavigate();
+  const role = localStorage.getItem('role');
+  const isAdmin = role === 'ADMIN';
 
   const [allActivos, setAllActivos] = useState<Activo[]>([]);
   const [estadoFilter, setEstadoFilter] = useState<string>('');
@@ -74,6 +76,17 @@ export default function PagActivos() {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Error al descargar QR:', err);
+    }
+  };
+
+  const handleDeleteActivo = async (activo: Activo) => {
+    if (!window.confirm(`¿Eliminar definitivamente el activo "${activo.nombre}"?`)) return;
+
+    try {
+      await apiFetch(`/inventario/${activo.id}`, { method: 'DELETE' });
+      setAllActivos((prev) => prev.filter((item) => item.id !== activo.id));
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error al eliminar el activo');
     }
   };
 
@@ -138,6 +151,14 @@ export default function PagActivos() {
                   >
                     Descargar QR
                   </button>
+                  {isAdmin && (
+                    <button
+                      className="app-danger-button"
+                      onClick={() => void handleDeleteActivo(row as Activo)}
+                    >
+                      Eliminar
+                    </button>
+                  )}
                 </div>
               );
             }

@@ -58,7 +58,7 @@ export default function PagAverias() {
   }, [misIncidencias, estado, categoria, nombreAula, isAdminOrTech]);
 
   // Endpoint con filtros server-side para ADMIN/TECNICO
-  const endpoint = new URL(`${API_BASE_URL}/incidencias/filtrar`);
+  const endpoint = new URL(`${API_BASE_URL}/incidencias/filtrar`, window.location.origin);
   if (estado) endpoint.searchParams.append('estado', estado);
   if (categoria) endpoint.searchParams.append('categoria', categoria);
   if (nombreAula) endpoint.searchParams.append('nombreAula', nombreAula);

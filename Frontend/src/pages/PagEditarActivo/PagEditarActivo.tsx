@@ -90,10 +90,16 @@ export default function EditarActivo() {
       setErrorMsg(null);
       setSuccessMsg(null);
 
+      const { fechaIngreso: _fechaIngreso, id: _activoId, aulaId, ...payloadBase } = activo;
+      const payload = {
+        ...payloadBase,
+        aula: aulaId ? { id: aulaId } : null,
+      };
+
       await apiFetch(`/inventario/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(activo),
+        body: JSON.stringify(payload),
       });
 
       setSuccessMsg('Activo actualizado correctamente');
